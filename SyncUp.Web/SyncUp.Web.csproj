@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\IntelliTect.SyncUp.Data\IntelliTect.SyncUp.Data.csproj" />
+    <ProjectReference Include="..\SyncUp.Data\SyncUp.Data.csproj" />
   </ItemGroup>
 
   <ItemGroup>
