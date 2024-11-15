@@ -1,9 +1,9 @@
 {
   "webProject": {
-    "projectFile": "./IntelliTect.SyncUp.Web/IntelliTect.SyncUp.Web.csproj"
+    "projectFile": "./SyncUp.Web/SyncUp.Web.csproj"
   },
   "dataProject": {
-    "projectFile": "./IntelliTect.SyncUp.Data/IntelliTect.SyncUp.Data.csproj"
+    "projectFile": "./SyncUp.Data/SyncUp.Data.csproj"
   },
 
   "rootGenerator": "Vue",
