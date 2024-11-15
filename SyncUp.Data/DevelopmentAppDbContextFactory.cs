@@ -10,7 +10,7 @@ public class DevelopmentAppDbContextFactory : IDesignTimeDbContextFactory<AppDbC
     {
         // This is only used when adding migrations and updating the database from the cmd line.
         // It shouldn't ever be used in code where it might end up running in production.
-        var connectionString = "Server=(localdb)\\\\MSSQLLocalDB;Database=IntelliTect.SyncUp;Trusted_Connection=True;TrustServerCertificate=True;";
+        var connectionString = "Server=(localdb)\\\\MSSQLLocalDB;Database=SyncUp;Trusted_Connection=True;TrustServerCertificate=True;";
         if (string.IsNullOrEmpty(connectionString)) throw new Exception("No connection string set");
         // Make sure this runs on an ARM64 system that doesn't support localDB by using a named pipe instead
         connectionString = Arm64LocalDb.UpdateArm64LocalDbConnectionString(connectionString);
