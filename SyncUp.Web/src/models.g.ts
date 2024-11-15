@@ -93,6 +93,38 @@ export class AuditLogProperty {
 }
 
 
+export interface Group extends Model<typeof metadata.Group> {
+  id: number | null
+  name: string | null
+  subTitle: string | null
+  modifiedBy: User | null
+  modifiedById: string | null
+  modifiedOn: Date | null
+  createdBy: User | null
+  createdById: string | null
+  createdOn: Date | null
+}
+export class Group {
+  
+  /** Mutates the input object and its descendents into a valid Group implementation. */
+  static convert(data?: Partial<Group>): Group {
+    return convertToModel(data || {}, metadata.Group) 
+  }
+  
+  /** Maps the input object and its descendents to a new, valid Group implementation. */
+  static map(data?: Partial<Group>): Group {
+    return mapToModel(data || {}, metadata.Group) 
+  }
+  
+  static [Symbol.hasInstance](x: any) { return x?.$metadata === metadata.Group; }
+  
+  /** Instantiate a new Group, optionally basing it on the given data. */
+  constructor(data?: Partial<Group> | {[k: string]: any}) {
+    Object.assign(this, Group.map(data || {}));
+  }
+}
+
+
 export interface Role extends Model<typeof metadata.Role> {
   name: string | null
   permissions: Permission[] | null
@@ -273,6 +305,7 @@ declare module "coalesce-vue/lib/model" {
   interface ModelTypeLookup {
     AuditLog: AuditLog
     AuditLogProperty: AuditLogProperty
+    Group: Group
     Role: Role
     Tenant: Tenant
     User: User

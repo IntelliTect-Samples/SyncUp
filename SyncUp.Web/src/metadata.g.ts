@@ -239,6 +239,106 @@ export const AuditLogProperty = domain.types.AuditLogProperty = {
   dataSources: {
   },
 }
+export const Group = domain.types.Group = {
+  name: "Group" as const,
+  displayName: "Group",
+  get displayProp() { return this.props.name }, 
+  type: "model",
+  controllerRoute: "Group",
+  get keyProp() { return this.props.id }, 
+  behaviorFlags: 7 as BehaviorFlags,
+  props: {
+    id: {
+      name: "id",
+      displayName: "Id",
+      type: "number",
+      role: "primaryKey",
+      hidden: 3 as HiddenAreas,
+    },
+    name: {
+      name: "name",
+      displayName: "Name",
+      type: "string",
+      role: "value",
+      rules: {
+        required: val => (val != null && val !== '') || "Name is required.",
+        maxLength: val => !val || val.length <= 500 || "Name may not be more than 500 characters.",
+      }
+    },
+    subTitle: {
+      name: "subTitle",
+      displayName: "Sub Title",
+      type: "string",
+      role: "value",
+      rules: {
+        required: val => (val != null && val !== '') || "Sub Title is required.",
+        maxLength: val => !val || val.length <= 500 || "Sub Title may not be more than 500 characters.",
+      }
+    },
+    modifiedById: {
+      name: "modifiedById",
+      displayName: "Modified By Id",
+      type: "string",
+      role: "foreignKey",
+      get principalKey() { return (domain.types.User as ModelType & { name: "User" }).props.id as PrimaryKeyProperty },
+      get principalType() { return (domain.types.User as ModelType & { name: "User" }) },
+      get navigationProp() { return (domain.types.Group as ModelType & { name: "Group" }).props.modifiedBy as ModelReferenceNavigationProperty },
+      hidden: 3 as HiddenAreas,
+      dontSerialize: true,
+    },
+    createdById: {
+      name: "createdById",
+      displayName: "Created By Id",
+      type: "string",
+      role: "foreignKey",
+      get principalKey() { return (domain.types.User as ModelType & { name: "User" }).props.id as PrimaryKeyProperty },
+      get principalType() { return (domain.types.User as ModelType & { name: "User" }) },
+      get navigationProp() { return (domain.types.Group as ModelType & { name: "Group" }).props.createdBy as ModelReferenceNavigationProperty },
+      hidden: 3 as HiddenAreas,
+      dontSerialize: true,
+    },
+    createdBy: {
+      name: "createdBy",
+      displayName: "Created By",
+      type: "model",
+      get typeDef() { return (domain.types.User as ModelType & { name: "User" }) },
+      role: "referenceNavigation",
+      get foreignKey() { return (domain.types.Group as ModelType & { name: "Group" }).props.createdById as ForeignKeyProperty },
+      get principalKey() { return (domain.types.User as ModelType & { name: "User" }).props.id as PrimaryKeyProperty },
+      dontSerialize: true,
+    },
+    createdOn: {
+      name: "createdOn",
+      displayName: "Created On",
+      type: "date",
+      dateKind: "datetime",
+      role: "value",
+      dontSerialize: true,
+    },
+    modifiedBy: {
+      name: "modifiedBy",
+      displayName: "Modified By",
+      type: "model",
+      get typeDef() { return (domain.types.User as ModelType & { name: "User" }) },
+      role: "referenceNavigation",
+      get foreignKey() { return (domain.types.Group as ModelType & { name: "Group" }).props.modifiedById as ForeignKeyProperty },
+      get principalKey() { return (domain.types.User as ModelType & { name: "User" }).props.id as PrimaryKeyProperty },
+      dontSerialize: true,
+    },
+    modifiedOn: {
+      name: "modifiedOn",
+      displayName: "Modified On",
+      type: "date",
+      dateKind: "datetime",
+      role: "value",
+      dontSerialize: true,
+    },
+  },
+  methods: {
+  },
+  dataSources: {
+  },
+}
 export const Role = domain.types.Role = {
   name: "Role" as const,
   displayName: "Role",
@@ -845,6 +945,7 @@ interface AppDomain extends Domain {
   types: {
     AuditLog: typeof AuditLog
     AuditLogProperty: typeof AuditLogProperty
+    Group: typeof Group
     Role: typeof Role
     Tenant: typeof Tenant
     User: typeof User

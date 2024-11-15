@@ -67,6 +67,35 @@ export class AuditLogPropertyListViewModel extends ListViewModel<$models.AuditLo
 }
 
 
+export interface GroupViewModel extends $models.Group {
+  id: number | null;
+  name: string | null;
+  subTitle: string | null;
+  get modifiedBy(): UserViewModel | null;
+  set modifiedBy(value: UserViewModel | $models.User | null);
+  modifiedById: string | null;
+  modifiedOn: Date | null;
+  get createdBy(): UserViewModel | null;
+  set createdBy(value: UserViewModel | $models.User | null);
+  createdById: string | null;
+  createdOn: Date | null;
+}
+export class GroupViewModel extends ViewModel<$models.Group, $apiClients.GroupApiClient, number> implements $models.Group  {
+  
+  constructor(initialData?: DeepPartial<$models.Group> | null) {
+    super($metadata.Group, new $apiClients.GroupApiClient(), initialData)
+  }
+}
+defineProps(GroupViewModel, $metadata.Group)
+
+export class GroupListViewModel extends ListViewModel<$models.Group, $apiClients.GroupApiClient, GroupViewModel> {
+  
+  constructor() {
+    super($metadata.Group, new $apiClients.GroupApiClient())
+  }
+}
+
+
 export interface RoleViewModel extends $models.Role {
   name: string | null;
   permissions: $models.Permission[] | null;
@@ -277,6 +306,7 @@ export class SecurityServiceViewModel extends ServiceViewModel<typeof $metadata.
 const viewModelTypeLookup = ViewModel.typeLookup = {
   AuditLog: AuditLogViewModel,
   AuditLogProperty: AuditLogPropertyViewModel,
+  Group: GroupViewModel,
   Role: RoleViewModel,
   Tenant: TenantViewModel,
   User: UserViewModel,
@@ -285,6 +315,7 @@ const viewModelTypeLookup = ViewModel.typeLookup = {
 const listViewModelTypeLookup = ListViewModel.typeLookup = {
   AuditLog: AuditLogListViewModel,
   AuditLogProperty: AuditLogPropertyListViewModel,
+  Group: GroupListViewModel,
   Role: RoleListViewModel,
   Tenant: TenantListViewModel,
   User: UserListViewModel,
