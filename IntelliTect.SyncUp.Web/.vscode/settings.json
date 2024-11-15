@@ -1,0 +1,10 @@
+{
+  "typescript.tsdk": "node_modules\\typescript\\lib",
+  "dotnet.defaultSolution": "../IntelliTect.SyncUp.sln",
+  "dotnet.automaticallyCreateSolutionInWorkspace": false,
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  "cSpell.words": ["Vite", "unplugin", "iconsets", "viewmodels", "composables"]
+}

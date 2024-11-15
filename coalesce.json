@@ -1,0 +1,16 @@
+{
+  "webProject": {
+    "projectFile": "./IntelliTect.SyncUp.Web/IntelliTect.SyncUp.Web.csproj"
+  },
+  "dataProject": {
+    "projectFile": "./IntelliTect.SyncUp.Data/IntelliTect.SyncUp.Data.csproj"
+  },
+
+  "rootGenerator": "Vue",
+
+  "generatorConfig": {
+    "Scripts": {
+      "targetDirectory": "../src"
+    }
+  }
+}
