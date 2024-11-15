@@ -8,10 +8,10 @@ using IntelliTect.Coalesce.Mapping;
 using IntelliTect.Coalesce.Mapping.IncludeTrees;
 using IntelliTect.Coalesce.Models;
 using IntelliTect.Coalesce.TypeDefinition;
-using IntelliTect.SyncUp.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SyncUp.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -19,7 +19,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace IntelliTect.SyncUp.Web.Api
+namespace SyncUp.Web.Api
 {
     [Route("api/User")]
     [Authorize]
@@ -93,13 +93,11 @@ namespace IntelliTect.SyncUp.Web.Api
         [Authorize]
         public virtual async Task<ActionResult<ItemResult<IntelliTect.Coalesce.Models.IFile>>> GetPhoto(
             [FromServices] IDataSourceFactory dataSourceFactory,
-            [FromQuery] string id,
-            [FromQuery] byte[] etag)
+            [FromQuery] string id)
         {
             var _params = new
             {
-                Id = id,
-                Etag = etag ?? await ((await Request.ReadFormAsync()).Files[nameof(etag)]?.OpenReadStream().ReadAllBytesAsync(true) ?? Task.FromResult<byte[]>(null))
+                Id = id
             };
 
             var dataSource = dataSourceFactory.GetDataSource<IntelliTect.SyncUp.Data.Models.User, IntelliTect.SyncUp.Data.Models.User>("Default");
@@ -109,24 +107,6 @@ namespace IntelliTect.SyncUp.Web.Api
                 return new ItemResult<IntelliTect.Coalesce.Models.IFile>(itemResult);
             }
             var item = itemResult.Object;
-
-            var _currentVaryValue = item.PhotoHash;
-            if (_currentVaryValue != default)
-            {
-                var _expectedEtagHeader = new Microsoft.Net.Http.Headers.EntityTagHeaderValue('"' + Microsoft.AspNetCore.WebUtilities.Base64UrlTextEncoder.Encode(_currentVaryValue) + '"');
-                var _cacheControlHeader = new Microsoft.Net.Http.Headers.CacheControlHeaderValue { Private = true, MaxAge = TimeSpan.Zero };
-                if (etag != default && _currentVaryValue.SequenceEqual(etag))
-                {
-                    _cacheControlHeader.MaxAge = TimeSpan.FromDays(30);
-                }
-                Response.GetTypedHeaders().CacheControl = _cacheControlHeader;
-                Response.GetTypedHeaders().ETag = _expectedEtagHeader;
-                if (Request.GetTypedHeaders().IfNoneMatch.Any(value => value.Compare(_expectedEtagHeader, true)))
-                {
-                    return StatusCode(StatusCodes.Status304NotModified);
-                }
-            }
-
             var _methodResult = item.GetPhoto(
                 User,
                 Db

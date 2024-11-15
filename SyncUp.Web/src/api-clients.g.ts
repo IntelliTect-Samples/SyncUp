@@ -34,11 +34,10 @@ export class TenantApiClient extends ModelApiClient<$models.Tenant> {
 
 export class UserApiClient extends ModelApiClient<$models.User> {
   constructor() { super($metadata.User) }
-  public getPhoto(id: string | null, etag?: string | null, $config?: AxiosRequestConfig): AxiosPromise<ItemResult<File>> {
+  public getPhoto(id: string | null, $config?: AxiosRequestConfig): AxiosPromise<ItemResult<File>> {
     const $method = this.$metadata.methods.getPhoto
     const $params =  {
       id,
-      etag,
     }
     return this.$invoke($method, $params, $config)
   }

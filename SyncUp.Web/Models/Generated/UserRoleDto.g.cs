@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 
-namespace IntelliTect.SyncUp.Web.Models
+namespace SyncUp.Web.Models
 {
     public partial class UserRoleParameter : GeneratedParameterDto<IntelliTect.SyncUp.Data.Models.UserRole>
     {
@@ -64,8 +64,8 @@ namespace IntelliTect.SyncUp.Web.Models
         public string Id { get; set; }
         public string UserId { get; set; }
         public string RoleId { get; set; }
-        public IntelliTect.SyncUp.Web.Models.UserResponse User { get; set; }
-        public IntelliTect.SyncUp.Web.Models.RoleResponse Role { get; set; }
+        public SyncUp.Web.Models.UserResponse User { get; set; }
+        public SyncUp.Web.Models.RoleResponse Role { get; set; }
 
         /// <summary>
         /// Map from the domain object to the properties of the current DTO instance.

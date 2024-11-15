@@ -481,13 +481,6 @@ export const User = domain.types.User = {
             required: val => (val != null && val !== '') || "Primary Key is required.",
           }
         },
-        etag: {
-          name: "etag",
-          displayName: "Etag",
-          type: "binary",
-          role: "value",
-          get source() { return (domain.types.User as ModelType & { name: "User" }).props.photoHash },
-        },
       },
       return: {
         name: "$return",

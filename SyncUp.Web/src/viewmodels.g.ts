@@ -150,9 +150,9 @@ export class UserViewModel extends ViewModel<$models.User, $apiClients.UserApiCl
   public get getPhoto() {
     const getPhoto = this.$apiClient.$makeCaller(
       this.$metadata.methods.getPhoto,
-      (c) => c.getPhoto(this.$primaryKey, this.photoHash),
+      (c) => c.getPhoto(this.$primaryKey),
       () => ({}),
-      (c, args) => c.getPhoto(this.$primaryKey, this.photoHash))
+      (c, args) => c.getPhoto(this.$primaryKey))
     
     Object.defineProperty(this, 'getPhoto', {value: getPhoto});
     return getPhoto

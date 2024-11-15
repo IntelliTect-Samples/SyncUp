@@ -80,7 +80,8 @@ public class User : IdentityUser
     [Description("Global admins can perform some administrative actions against ALL tenants.")]
     public bool IsGlobalAdmin { get; set; }
 
-    [Coalesce, Execute(HttpMethod = HttpMethod.Get, VaryByProperty = nameof(PhotoHash))]
+    //[Coalesce, Execute(HttpMethod = HttpMethod.Get, VaryByProperty = nameof(PhotoHash))]
+    [Coalesce, Execute(HttpMethod = HttpMethod.Get)]
     public ItemResult<IFile> GetPhoto(ClaimsPrincipal user, AppDbContext db)
     {
         return new IntelliTect.Coalesce.Models.File(db.UserPhotos

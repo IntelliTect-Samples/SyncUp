@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 
-namespace IntelliTect.SyncUp.Web.Models
+namespace SyncUp.Web.Models
 {
     public partial class UserParameter : GeneratedParameterDto<IntelliTect.SyncUp.Data.Models.User>
     {
@@ -76,7 +76,7 @@ namespace IntelliTect.SyncUp.Web.Models
         public byte[] PhotoHash { get; set; }
         public System.Collections.Generic.ICollection<string> RoleNames { get; set; }
         public bool? IsGlobalAdmin { get; set; }
-        public System.Collections.Generic.ICollection<IntelliTect.SyncUp.Web.Models.UserRoleResponse> UserRoles { get; set; }
+        public System.Collections.Generic.ICollection<SyncUp.Web.Models.UserRoleResponse> UserRoles { get; set; }
 
         /// <summary>
         /// Map from the domain object to the properties of the current DTO instance.
