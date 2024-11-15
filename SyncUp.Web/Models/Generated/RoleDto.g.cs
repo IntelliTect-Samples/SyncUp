@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 
-namespace IntelliTect.SyncUp.Web.Models
+namespace SyncUp.Web.Models
 {
     public partial class RoleParameter : GeneratedParameterDto<IntelliTect.SyncUp.Data.Models.Role>
     {

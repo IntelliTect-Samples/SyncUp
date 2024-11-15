@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 
-namespace IntelliTect.SyncUp.Web.Models
+namespace SyncUp.Web.Models
 {
     public partial class AuditLogParameter : GeneratedParameterDto<IntelliTect.SyncUp.Data.Models.AuditLog>
     {
@@ -120,8 +120,8 @@ namespace IntelliTect.SyncUp.Web.Models
         public string ClientIp { get; set; }
         public string Referrer { get; set; }
         public string Endpoint { get; set; }
-        public IntelliTect.SyncUp.Web.Models.UserResponse User { get; set; }
-        public System.Collections.Generic.ICollection<IntelliTect.SyncUp.Web.Models.AuditLogPropertyResponse> Properties { get; set; }
+        public SyncUp.Web.Models.UserResponse User { get; set; }
+        public System.Collections.Generic.ICollection<SyncUp.Web.Models.AuditLogPropertyResponse> Properties { get; set; }
 
         /// <summary>
         /// Map from the domain object to the properties of the current DTO instance.
