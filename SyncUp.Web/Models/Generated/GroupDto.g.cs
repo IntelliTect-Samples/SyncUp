@@ -12,14 +12,14 @@ namespace SyncUp.Web.Models
     {
         public GroupParameter() { }
 
-        private long? _Id;
+        private long? _GroupId;
         private string _Name;
         private string _SubTitle;
 
-        public long? Id
+        public long? GroupId
         {
-            get => _Id;
-            set { _Id = value; Changed(nameof(Id)); }
+            get => _GroupId;
+            set { _GroupId = value; Changed(nameof(GroupId)); }
         }
         public string Name
         {
@@ -41,7 +41,6 @@ namespace SyncUp.Web.Models
 
             if (OnUpdate(entity, context)) return;
 
-            if (ShouldMapTo(nameof(Id))) entity.Id = (Id ?? entity.Id);
             if (ShouldMapTo(nameof(Name))) entity.Name = Name;
             if (ShouldMapTo(nameof(SubTitle))) entity.SubTitle = SubTitle;
         }
@@ -55,12 +54,12 @@ namespace SyncUp.Web.Models
 
             var entity = new IntelliTect.SyncUp.Data.Models.Group()
             {
+                GroupId = (GroupId ?? default),
                 Name = Name,
                 SubTitle = SubTitle,
             };
 
             if (OnUpdate(entity, context)) return entity;
-            if (ShouldMapTo(nameof(Id))) entity.Id = (Id ?? entity.Id);
 
             return entity;
         }
@@ -70,7 +69,7 @@ namespace SyncUp.Web.Models
     {
         public GroupResponse() { }
 
-        public long? Id { get; set; }
+        public long? GroupId { get; set; }
         public string Name { get; set; }
         public string SubTitle { get; set; }
         public string ModifiedById { get; set; }
@@ -88,7 +87,7 @@ namespace SyncUp.Web.Models
             if (obj == null) return;
             var includes = context.Includes;
 
-            this.Id = obj.Id;
+            this.GroupId = obj.GroupId;
             this.Name = obj.Name;
             this.SubTitle = obj.SubTitle;
             this.ModifiedById = obj.ModifiedById;

@@ -4,7 +4,7 @@ namespace IntelliTect.SyncUp.Data.Models;
 
 public class Group : TenantedBase
 {
-    public long Id { get; set; }
+    public long GroupId { get; init; }
 
     [MaxLength(500)]
     public required string Name { get; set; }

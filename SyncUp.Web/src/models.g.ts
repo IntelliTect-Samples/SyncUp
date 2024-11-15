@@ -94,7 +94,7 @@ export class AuditLogProperty {
 
 
 export interface Group extends Model<typeof metadata.Group> {
-  id: number | null
+  groupId: number | null
   name: string | null
   subTitle: string | null
   modifiedBy: User | null

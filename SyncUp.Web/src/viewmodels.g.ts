@@ -68,7 +68,7 @@ export class AuditLogPropertyListViewModel extends ListViewModel<$models.AuditLo
 
 
 export interface GroupViewModel extends $models.Group {
-  id: number | null;
+  groupId: number | null;
   name: string | null;
   subTitle: string | null;
   get modifiedBy(): UserViewModel | null;

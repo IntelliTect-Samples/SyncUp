@@ -245,15 +245,16 @@ export const Group = domain.types.Group = {
   get displayProp() { return this.props.name }, 
   type: "model",
   controllerRoute: "Group",
-  get keyProp() { return this.props.id }, 
+  get keyProp() { return this.props.groupId }, 
   behaviorFlags: 7 as BehaviorFlags,
   props: {
-    id: {
-      name: "id",
-      displayName: "Id",
+    groupId: {
+      name: "groupId",
+      displayName: "Group Id",
       type: "number",
       role: "primaryKey",
       hidden: 3 as HiddenAreas,
+      createOnly: true,
     },
     name: {
       name: "name",
