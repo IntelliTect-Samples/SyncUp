@@ -4,7 +4,7 @@
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-toolbar-title>
         <router-link to="/" style="color: inherit">
-          IntelliTect.SyncUp &mdash; {{ $userInfo.tenantName }}
+          SyncUp &mdash; {{ $userInfo.tenantName }}
         </router-link>
       </v-toolbar-title>
 

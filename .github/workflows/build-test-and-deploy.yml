@@ -1,4 +1,4 @@
-name: Build, Test, and Deploy IntelliTect.SyncUp
+name: Build, Test, and Deploy SyncUp
 
 # https://docs.github.com/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows
 on:
@@ -20,7 +20,7 @@ on:
 #
 # 3. Change these variables for your configuration:
 env:
-  AZURE_WEBAPP_NAME: MY_WEBAPP_NAME # set this to your app service name
+  AZURE_WEBAPP_NAME: SyncUp-dev # set this to your app service name
 
 jobs:
   build-and-test:
@@ -34,7 +34,7 @@ jobs:
       - name: Use .NET SDK
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 8.x
+          dotnet-version: 9.x
           include-preview: true
 
       - name: Use Node.js
@@ -44,22 +44,22 @@ jobs:
 
       - name: npm ci
         run: npm ci
-        working-directory: IntelliTect.SyncUp.Web
+        working-directory: SyncUp.Web
 
       - name: Restore Nuget packages
         run: dotnet restore
 
       - name: Check Coalesce has been run
         run: dotnet coalesce --what-if --verify
-        working-directory: IntelliTect.SyncUp.Web
+        working-directory: SyncUp.Web
 
       - name: npm run lint
         run: npm run lint
-        working-directory: IntelliTect.SyncUp.Web
+        working-directory: SyncUp.Web
 
       - name: npm run build
         run: npm run build
-        working-directory: IntelliTect.SyncUp.Web
+        working-directory: SyncUp.Web
 
       - name: dotnet build
         run: dotnet build --configuration Release --no-restore --no-incremental 
@@ -68,7 +68,7 @@ jobs:
         run: dotnet test --configuration Release --no-restore --no-build
 
       - name: dotnet publish
-        run: dotnet publish ${{ github.workspace }}/IntelliTect.SyncUp.Web/IntelliTect.SyncUp.Web.csproj --configuration Release --output ${{ github.workspace }}/publish --no-restore --no-build
+        run: dotnet publish ${{ github.workspace }}/SyncUp.Web/SyncUp.Web.csproj --configuration Release --output ${{ github.workspace }}/publish --no-restore --no-build
 
       - name: Upload artifact for deployment
         if: github.event_name != 'pull_request'
@@ -80,12 +80,12 @@ jobs:
 
   # Deploys the app to Azure App Service
   # https://docs.github.com/actions/use-cases-and-examples/deploying/deploying-net-to-azure-app-service
-  deploy-production:
+  deploy-development:
     needs: build-and-test
     runs-on: ubuntu-latest
     if: github.event_name != 'pull_request'
     environment:
-      name: 'production'
+      name: 'Development'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
