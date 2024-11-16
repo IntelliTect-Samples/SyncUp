@@ -26,7 +26,7 @@ import { UserViewModel } from "@/viewmodels.g";
 const props = withDefaults(
   defineProps<{
     user: User | UserInfo;
-    color?: string | null;
+    color?: string;
   }>(),
   { color: "white" },
 );
