@@ -1,20 +1,19 @@
 <template>
   <v-container>
-    <c-loader-status no-initial-content :loaders="[group.$load]">
+    <c-loader-status no-initial-content :loaders="[groupService.group.$load]">
       <PageImageBanner
-        :title="group.name!"
-        :image-url="group.imageUrl!"
-        :description="group.description!"
-        :badge1-text="numberOfPosts"
-        :badge2-text="numberOfUsers"
-        :is-member="isMember"
-        @toggle-membership="toggleMembership(group)"
+        :title="groupService.group.name!"
+        :image-url="groupService.group.imageUrl!"
+        :description="groupService.group.description!"
+        :badge1-text="groupService.numberOfPosts.value"
+        :badge2-text="groupService.numberOfUsers.value"
+        :is-member="groupService.isMember.value"
+        @toggle-membership="groupService.toggleMembership()"
       />
-      <!-- TODO: Implement is-member -->
 
       <!-- Posts List -->
       <v-card
-        v-for="post in posts.$items"
+        v-for="post in groupService.posts.$items"
         :key="post.$stableId"
         class="mt-3"
         :to="`/post/${post.postId}`"
@@ -28,12 +27,8 @@
 </template>
 
 <script setup lang="ts">
-import { GroupUser, Post } from "@/models.g";
-import {
-  GroupUserListViewModel,
-  GroupViewModel,
-  PostListViewModel,
-} from "@/viewmodels.g";
+import GroupService from "@/services/GroupService";
+import { GroupViewModel } from "@/viewmodels.g";
 
 useTitle("Group");
 
@@ -42,32 +37,20 @@ const props = defineProps<{
 }>();
 
 // Load group
-const group = new GroupViewModel();
-group.$load(props.groupId);
+const groupService = new GroupService(new GroupViewModel());
 
-// Load posts
-const posts = new PostListViewModel();
-const postsDataSource = new Post.DataSources.PostsForGroup();
-postsDataSource.groupId = props.groupId;
-posts.$dataSource = postsDataSource;
-posts.$load();
-posts.$count();
+groupService.group
+  .$load(props.groupId)
+  .then(async () => groupService.lookupMembership());
 
-// Count members
-const groupUser = new GroupUserListViewModel();
-const groupUserDataSource = new GroupUser.DataSources.UsersForGroup();
-groupUserDataSource.groupId = props.groupId;
-groupUser.$dataSource = groupUserDataSource;
-groupUser.$count();
+groupService.posts.$load();
+groupService.posts.$count();
 
-// Import membership functions
-const { isMember, toggleMembership, lookupMembership } = useGroup();
+groupService.groupUser.$count();
 
-watch(isMember, () => {
-  groupUser.$count();
+watch(groupService.isMember, () => {
+  groupService.groupUser.$count();
 });
-
-group.$load.onFulfilled(async () => lookupMembership(group));
 
 // UI Functions
 function truncateText(text: string | null) {
@@ -79,12 +62,4 @@ function truncateText(text: string | null) {
   // Return the full text if it's 100 characters or less
   return text;
 }
-
-const numberOfPosts = computed(() => {
-  return (posts.$count.result ?? 0) + " posts";
-});
-
-const numberOfUsers = computed(() => {
-  return (groupUser.$count.result ?? 0) + " users";
-});
 </script>
