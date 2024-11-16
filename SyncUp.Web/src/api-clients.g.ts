@@ -49,8 +49,24 @@ export class TenantApiClient extends ModelApiClient<$models.Tenant> {
     return this.$invoke($method, $params, $config)
   }
   
-  public join(tenantId: string | null, $config?: AxiosRequestConfig): AxiosPromise<ItemResult<void>> {
-    const $method = this.$metadata.methods.join
+  public isMemberOf(tenantId: string | null, $config?: AxiosRequestConfig): AxiosPromise<ItemResult<boolean>> {
+    const $method = this.$metadata.methods.isMemberOf
+    const $params =  {
+      tenantId,
+    }
+    return this.$invoke($method, $params, $config)
+  }
+  
+  public joinOrganization(tenantId: string | null, $config?: AxiosRequestConfig): AxiosPromise<ItemResult<void>> {
+    const $method = this.$metadata.methods.joinOrganization
+    const $params =  {
+      tenantId,
+    }
+    return this.$invoke($method, $params, $config)
+  }
+  
+  public leaveOrganization(tenantId: string | null, $config?: AxiosRequestConfig): AxiosPromise<ItemResult<void>> {
+    const $method = this.$metadata.methods.leaveOrganization
     const $params =  {
       tenantId,
     }

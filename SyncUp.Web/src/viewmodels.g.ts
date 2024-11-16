@@ -251,15 +251,37 @@ export class TenantListViewModel extends ListViewModel<$models.Tenant, $apiClien
     return create
   }
   
-  public get join() {
-    const join = this.$apiClient.$makeCaller(
-      this.$metadata.methods.join,
-      (c, tenantId: string | null) => c.join(tenantId),
+  public get isMemberOf() {
+    const isMemberOf = this.$apiClient.$makeCaller(
+      this.$metadata.methods.isMemberOf,
+      (c, tenantId: string | null) => c.isMemberOf(tenantId),
       () => ({tenantId: null as string | null, }),
-      (c, args) => c.join(args.tenantId))
+      (c, args) => c.isMemberOf(args.tenantId))
     
-    Object.defineProperty(this, 'join', {value: join});
-    return join
+    Object.defineProperty(this, 'isMemberOf', {value: isMemberOf});
+    return isMemberOf
+  }
+  
+  public get joinOrganization() {
+    const joinOrganization = this.$apiClient.$makeCaller(
+      this.$metadata.methods.joinOrganization,
+      (c, tenantId: string | null) => c.joinOrganization(tenantId),
+      () => ({tenantId: null as string | null, }),
+      (c, args) => c.joinOrganization(args.tenantId))
+    
+    Object.defineProperty(this, 'joinOrganization', {value: joinOrganization});
+    return joinOrganization
+  }
+  
+  public get leaveOrganization() {
+    const leaveOrganization = this.$apiClient.$makeCaller(
+      this.$metadata.methods.leaveOrganization,
+      (c, tenantId: string | null) => c.leaveOrganization(tenantId),
+      () => ({tenantId: null as string | null, }),
+      (c, args) => c.leaveOrganization(args.tenantId))
+    
+    Object.defineProperty(this, 'leaveOrganization', {value: leaveOrganization});
+    return leaveOrganization
   }
   
   constructor() {

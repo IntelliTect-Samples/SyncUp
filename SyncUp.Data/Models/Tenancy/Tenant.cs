@@ -1,4 +1,4 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 
 namespace IntelliTect.SyncUp.Data.Models;
 
@@ -60,7 +60,29 @@ public class Tenant
     }
 
     [Coalesce]
-    public static async Task<ItemResult> Join(
+    public static async Task<ItemResult<bool>> IsMemberOf(
+        AppDbContext db,
+        ClaimsPrincipal user,
+        string tenantId
+    )
+    {
+        var currentTenantId = user.GetTenantId();
+        var tenant = db.Tenants.FirstOrDefault(t => t.TenantId == tenantId);
+        if (tenant == null)
+        {
+            return "Organization not found.";
+        }
+
+        db.ForceSetTenant(tenant.TenantId);
+
+        var isMember = db.TenantMemberships.Any(tm => tm.UserId == user.GetUserId());
+        db.ForceSetTenant(currentTenantId);
+
+        return new ItemResult<bool>(isMember, null);
+    }
+
+    [Coalesce]
+    public static async Task<ItemResult> JoinOrganization(
         AppDbContext db,
         ClaimsPrincipal user, 
         string tenantId
@@ -82,6 +104,30 @@ public class Tenant
             UserId = user.GetUserId()
         });
         db.SaveChanges();
+
+        return true;
+    }
+
+    [Coalesce]
+    public static async Task<ItemResult> LeaveOrganization(
+       AppDbContext db,
+       ClaimsPrincipal user,
+       string tenantId
+   )
+    {
+        var currentTenantId = user.GetTenantId();
+        var tenant = db.Tenants.FirstOrDefault(t => t.TenantId == tenantId);
+        if (tenant == null)
+        {
+            return "Organization not found.";
+        }
+
+        db.ForceSetTenant(tenant.TenantId);
+
+        db.RemoveRange(db.TenantMemberships.Where(tm => tm.UserId == user.GetUserId()).ToList());
+        db.SaveChanges();
+
+        db.ForceSetTenant(currentTenantId);
 
         return true;
     }

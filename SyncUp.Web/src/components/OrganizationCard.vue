@@ -14,12 +14,30 @@
         </v-btn>
       </div>
     </v-card-item>
-    <v-card-text
-      ><v-chip> <v-icon icon="fas fa-user" class="mr-2" />15 users</v-chip>
+    <v-card-text>
+      <v-chip> <v-icon icon="fas fa-user" class="mr-2" />15 users</v-chip>
     </v-card-text>
   </v-card>
 </template>
 
 <script setup lang="ts">
+import { TenantListViewModel } from "@/viewmodels.g";
+
 const { userInfo } = useUser();
+
+const isMember = ref(false);
+const tenantListViewModel = new TenantListViewModel();
+tenantListViewModel
+  .isMemberOf(userInfo.value.tenantId)
+  .then(
+    () => (isMember.value = tenantListViewModel.isMemberOf.result ?? false),
+  );
+
+async function leaveOrganization() {
+  await tenantListViewModel.leaveOrganization(userInfo.value.tenantId);
+}
+
+async function joinOrganization() {
+  await tenantListViewModel.joinOrganization(userInfo.value.tenantId);
+}
 </script>

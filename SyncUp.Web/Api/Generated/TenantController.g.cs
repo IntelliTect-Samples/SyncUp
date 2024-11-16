@@ -155,12 +155,12 @@ namespace SyncUp.Web.Api
         }
 
         /// <summary>
-        /// Method: Join
+        /// Method: IsMemberOf
         /// </summary>
-        [HttpPost("Join")]
+        [HttpPost("IsMemberOf")]
         [Authorize]
         [Consumes("application/x-www-form-urlencoded", "multipart/form-data")]
-        public virtual async Task<ItemResult> Join(
+        public virtual async Task<ItemResult<bool>> IsMemberOf(
             [FromForm(Name = "tenantId")] string tenantId)
         {
             var _params = new
@@ -171,11 +171,74 @@ namespace SyncUp.Web.Api
             if (Context.Options.ValidateAttributesForMethods)
             {
                 var _validationResult = ItemResult.FromParameterValidation(
-                    GeneratedForClassViewModel!.MethodByName("Join"), _params, HttpContext.RequestServices);
+                    GeneratedForClassViewModel!.MethodByName("IsMemberOf"), _params, HttpContext.RequestServices);
+                if (!_validationResult.WasSuccessful) return new ItemResult<bool>(_validationResult);
+            }
+
+            var _methodResult = await IntelliTect.SyncUp.Data.Models.Tenant.IsMemberOf(
+                Db,
+                User,
+                _params.TenantId
+            );
+            var _result = new ItemResult<bool>(_methodResult);
+            _result.Object = _methodResult.Object;
+            return _result;
+        }
+
+        public class IsMemberOfParameters
+        {
+            public string TenantId { get; set; }
+        }
+
+        /// <summary>
+        /// Method: IsMemberOf
+        /// </summary>
+        [HttpPost("IsMemberOf")]
+        [Authorize]
+        [Consumes("application/json")]
+        public virtual async Task<ItemResult<bool>> IsMemberOf(
+            [FromBody] IsMemberOfParameters _params
+        )
+        {
+            if (Context.Options.ValidateAttributesForMethods)
+            {
+                var _validationResult = ItemResult.FromParameterValidation(
+                    GeneratedForClassViewModel!.MethodByName("IsMemberOf"), _params, HttpContext.RequestServices);
+                if (!_validationResult.WasSuccessful) return new ItemResult<bool>(_validationResult);
+            }
+
+            var _methodResult = await IntelliTect.SyncUp.Data.Models.Tenant.IsMemberOf(
+                Db,
+                User,
+                _params.TenantId
+            );
+            var _result = new ItemResult<bool>(_methodResult);
+            _result.Object = _methodResult.Object;
+            return _result;
+        }
+
+        /// <summary>
+        /// Method: JoinOrganization
+        /// </summary>
+        [HttpPost("JoinOrganization")]
+        [Authorize]
+        [Consumes("application/x-www-form-urlencoded", "multipart/form-data")]
+        public virtual async Task<ItemResult> JoinOrganization(
+            [FromForm(Name = "tenantId")] string tenantId)
+        {
+            var _params = new
+            {
+                TenantId = tenantId
+            };
+
+            if (Context.Options.ValidateAttributesForMethods)
+            {
+                var _validationResult = ItemResult.FromParameterValidation(
+                    GeneratedForClassViewModel!.MethodByName("JoinOrganization"), _params, HttpContext.RequestServices);
                 if (!_validationResult.WasSuccessful) return _validationResult;
             }
 
-            var _methodResult = await IntelliTect.SyncUp.Data.Models.Tenant.Join(
+            var _methodResult = await IntelliTect.SyncUp.Data.Models.Tenant.JoinOrganization(
                 Db,
                 User,
                 _params.TenantId
@@ -184,29 +247,90 @@ namespace SyncUp.Web.Api
             return _result;
         }
 
-        public class JoinParameters
+        public class JoinOrganizationParameters
         {
             public string TenantId { get; set; }
         }
 
         /// <summary>
-        /// Method: Join
+        /// Method: JoinOrganization
         /// </summary>
-        [HttpPost("Join")]
+        [HttpPost("JoinOrganization")]
         [Authorize]
         [Consumes("application/json")]
-        public virtual async Task<ItemResult> Join(
-            [FromBody] JoinParameters _params
+        public virtual async Task<ItemResult> JoinOrganization(
+            [FromBody] JoinOrganizationParameters _params
         )
         {
             if (Context.Options.ValidateAttributesForMethods)
             {
                 var _validationResult = ItemResult.FromParameterValidation(
-                    GeneratedForClassViewModel!.MethodByName("Join"), _params, HttpContext.RequestServices);
+                    GeneratedForClassViewModel!.MethodByName("JoinOrganization"), _params, HttpContext.RequestServices);
                 if (!_validationResult.WasSuccessful) return _validationResult;
             }
 
-            var _methodResult = await IntelliTect.SyncUp.Data.Models.Tenant.Join(
+            var _methodResult = await IntelliTect.SyncUp.Data.Models.Tenant.JoinOrganization(
+                Db,
+                User,
+                _params.TenantId
+            );
+            var _result = new ItemResult(_methodResult);
+            return _result;
+        }
+
+        /// <summary>
+        /// Method: LeaveOrganization
+        /// </summary>
+        [HttpPost("LeaveOrganization")]
+        [Authorize]
+        [Consumes("application/x-www-form-urlencoded", "multipart/form-data")]
+        public virtual async Task<ItemResult> LeaveOrganization(
+            [FromForm(Name = "tenantId")] string tenantId)
+        {
+            var _params = new
+            {
+                TenantId = tenantId
+            };
+
+            if (Context.Options.ValidateAttributesForMethods)
+            {
+                var _validationResult = ItemResult.FromParameterValidation(
+                    GeneratedForClassViewModel!.MethodByName("LeaveOrganization"), _params, HttpContext.RequestServices);
+                if (!_validationResult.WasSuccessful) return _validationResult;
+            }
+
+            var _methodResult = await IntelliTect.SyncUp.Data.Models.Tenant.LeaveOrganization(
+                Db,
+                User,
+                _params.TenantId
+            );
+            var _result = new ItemResult(_methodResult);
+            return _result;
+        }
+
+        public class LeaveOrganizationParameters
+        {
+            public string TenantId { get; set; }
+        }
+
+        /// <summary>
+        /// Method: LeaveOrganization
+        /// </summary>
+        [HttpPost("LeaveOrganization")]
+        [Authorize]
+        [Consumes("application/json")]
+        public virtual async Task<ItemResult> LeaveOrganization(
+            [FromBody] LeaveOrganizationParameters _params
+        )
+        {
+            if (Context.Options.ValidateAttributesForMethods)
+            {
+                var _validationResult = ItemResult.FromParameterValidation(
+                    GeneratedForClassViewModel!.MethodByName("LeaveOrganization"), _params, HttpContext.RequestServices);
+                if (!_validationResult.WasSuccessful) return _validationResult;
+            }
+
+            var _methodResult = await IntelliTect.SyncUp.Data.Models.Tenant.LeaveOrganization(
                 Db,
                 User,
                 _params.TenantId
