@@ -1,12 +1,12 @@
 <template>
-<v-container>
+  <v-container>
     <v-card>
-        <div>
-            <h5>testing testing</h5>
-            {{ post.title }}
-        </div>
+      <div>
+        <h5>testing testing</h5>
+        {{ post.title }}
+      </div>
     </v-card>
-</v-container>
+  </v-container>
 </template>
 <script setup lang="ts">
 import { PostViewModel } from "@/viewmodels.g";
