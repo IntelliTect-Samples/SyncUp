@@ -18,7 +18,7 @@
           <v-list-item
             :title="$userInfo.fullName!"
             :subtitle="$userInfo.userName!"
-            :to="`/user/${$userInfo.id}`"
+            to="/profile"
           >
             <template #prepend>
               <UserAvatar :user="$userInfo" class="mr-2 ml-n1" />
