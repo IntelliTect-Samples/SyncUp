@@ -486,6 +486,19 @@ export const Event = domain.types.Event = {
   methods: {
   },
   dataSources: {
+    eventsByDate: {
+      type: "dataSource",
+      name: "EventsByDate" as const,
+      displayName: "Events By Date",
+      props: {
+        showPastEvents: {
+          name: "showPastEvents",
+          displayName: "Show Past Events",
+          type: "boolean",
+          role: "value",
+        },
+      },
+    },
   },
 }
 export const Group = domain.types.Group = {
