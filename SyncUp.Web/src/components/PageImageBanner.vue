@@ -5,6 +5,7 @@
       :style="{
         backgroundSize: 'cover',
         backgroundPosition: 'center',
+        backgroundImage: `url('${imageUrl}')`,
       }"
       :min-height="minHeight"
     >
@@ -43,6 +44,7 @@ const props = withDefaults(
   defineProps<{
     title: string | null;
     description: string | null;
+    imageUrl: string | null;
     isMember: boolean;
     badge1Text?: string | null;
     badge2Text?: string | null;
