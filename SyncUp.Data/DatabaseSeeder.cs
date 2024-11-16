@@ -1,4 +1,6 @@
-﻿namespace IntelliTect.SyncUp.Data;
+﻿using System.Data;
+
+namespace IntelliTect.SyncUp.Data;
 
 public class DatabaseSeeder(AppDbContext db)
 {
@@ -23,7 +25,19 @@ public class DatabaseSeeder(AppDbContext db)
         db.SaveChanges();
     }
 
-    private void SeedRoles()
+    public void SeedTenants()
+    {
+        if (!db.Tenants.Any())
+        {
+            db.Tenants.Add(new()
+            {
+                Name = "Demo Tenant - Gals Need Pals",
+            });
+            db.SaveChanges();
+        }
+    }
+
+    public void SeedRoles()
     {
         if (!db.Roles.Any())
         {
@@ -51,6 +65,79 @@ public class DatabaseSeeder(AppDbContext db)
 
         // If this user is the first user, make them the global admin
         user.IsGlobalAdmin = true;
+    }
 
+    public void SeedExistingUsersWithDemoTenantAccess()
+    {
+        foreach (var user in db.Users)
+        {
+            db.TenantMemberships.Add(new()
+            {
+                User = user
+            });
+        }
+        db.SaveChanges();
+    }
+
+    public void SeedGroups()
+    {
+        if (!db.Groups.Any())
+        {
+            db.Groups.AddRange(new()
+            {
+                Name = "Spokane",
+                SubTitle = "Generic group for the Spokane area",
+                Posts = [
+                    new()
+                    {
+                        Title = "What is there to do in Spokane?",
+                        Body = "Go check out IntelliTect! (And join their hackathon...)"
+                    },
+                    new()
+                    {
+                        Title = "Summer Activities",
+                        Body = "Learn more about Spokane's festivals like Bloomsday, Pig Out in the Park, etc."
+                    }]
+            },
+            new()
+            {
+                Name = "Seattle",
+                SubTitle = "Generic group for the Seattle area",
+                Posts = [new()
+                {
+                    Title = "What is there to do in Seattle?",
+                    Body = "There is too much to do here. Go to Spokane instead!"
+                }]
+            },
+            new()
+            {
+                Name = "Gym Girlies",
+                SubTitle = "Everything fitness and gym related!",
+
+            },
+            new()
+            {
+                Name = "Soccer Moms",
+                SubTitle = "Made for the busy mom life"
+            },
+            new()
+            {
+                Name = "DIY Divas",
+                SubTitle = "Share DIY tips and find new inspiration",
+                Posts = [
+                    new()
+                    {
+                        Title = "What should I do with this space?",
+                        Body = "Help brainstorm ideas to makeover this room."
+                    }]
+            });
+
+            db.SaveChanges();
+        }
+    }
+
+    public void SeedEvents()
+    {
+        ///TODO: Mock events
     }
 }
