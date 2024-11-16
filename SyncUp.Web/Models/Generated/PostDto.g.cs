@@ -16,6 +16,7 @@ namespace SyncUp.Web.Models
         private string _Title;
         private string _Body;
         private long? _GroupId;
+        private int? _LikeCount;
 
         public long? PostId
         {
@@ -37,6 +38,11 @@ namespace SyncUp.Web.Models
             get => _GroupId;
             set { _GroupId = value; Changed(nameof(GroupId)); }
         }
+        public int? LikeCount
+        {
+            get => _LikeCount;
+            set { _LikeCount = value; Changed(nameof(LikeCount)); }
+        }
 
         /// <summary>
         /// Map from the current DTO instance to the domain object.
@@ -50,6 +56,7 @@ namespace SyncUp.Web.Models
             if (ShouldMapTo(nameof(Title))) entity.Title = Title;
             if (ShouldMapTo(nameof(Body))) entity.Body = Body;
             if (ShouldMapTo(nameof(GroupId))) entity.GroupId = (GroupId ?? entity.GroupId);
+            if (ShouldMapTo(nameof(LikeCount))) entity.LikeCount = (LikeCount ?? entity.LikeCount);
         }
 
         /// <summary>
@@ -68,6 +75,7 @@ namespace SyncUp.Web.Models
 
             if (OnUpdate(entity, context)) return entity;
             if (ShouldMapTo(nameof(GroupId))) entity.GroupId = (GroupId ?? entity.GroupId);
+            if (ShouldMapTo(nameof(LikeCount))) entity.LikeCount = (LikeCount ?? entity.LikeCount);
 
             return entity;
         }
@@ -81,6 +89,7 @@ namespace SyncUp.Web.Models
         public string Title { get; set; }
         public string Body { get; set; }
         public long? GroupId { get; set; }
+        public int? LikeCount { get; set; }
         public string ModifiedById { get; set; }
         public System.DateTimeOffset? ModifiedOn { get; set; }
         public string CreatedById { get; set; }
@@ -102,6 +111,7 @@ namespace SyncUp.Web.Models
             this.Title = obj.Title;
             this.Body = obj.Body;
             this.GroupId = obj.GroupId;
+            this.LikeCount = obj.LikeCount;
             this.ModifiedById = obj.ModifiedById;
             this.ModifiedOn = obj.ModifiedOn;
             this.CreatedById = obj.CreatedById;

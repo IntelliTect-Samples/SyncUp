@@ -73,6 +73,7 @@ export interface CommentViewModel extends $models.Comment {
   postId: number | null;
   get post(): PostViewModel | null;
   set post(value: PostViewModel | $models.Post | null);
+  likeCount: number | null;
   get modifiedBy(): UserViewModel | null;
   set modifiedBy(value: UserViewModel | $models.User | null);
   modifiedById: string | null;
@@ -83,6 +84,7 @@ export interface CommentViewModel extends $models.Comment {
   createdOn: Date | null;
 }
 export class CommentViewModel extends ViewModel<$models.Comment, $apiClients.CommentApiClient, number> implements $models.Comment  {
+  static DataSources = $models.Comment.DataSources;
   
   constructor(initialData?: DeepPartial<$models.Comment> | null) {
     super($metadata.Comment, new $apiClients.CommentApiClient(), initialData)
@@ -91,6 +93,7 @@ export class CommentViewModel extends ViewModel<$models.Comment, $apiClients.Com
 defineProps(CommentViewModel, $metadata.Comment)
 
 export class CommentListViewModel extends ListViewModel<$models.Comment, $apiClients.CommentApiClient, CommentViewModel> {
+  static DataSources = $models.Comment.DataSources;
   
   constructor() {
     super($metadata.Comment, new $apiClients.CommentApiClient())
@@ -274,6 +277,7 @@ export interface PostViewModel extends $models.Post {
   groupId: number | null;
   get group(): GroupViewModel | null;
   set group(value: GroupViewModel | $models.Group | null);
+  likeCount: number | null;
   get comments(): ViewModelCollection<CommentViewModel, $models.Comment>;
   set comments(value: (CommentViewModel | $models.Comment)[] | null);
   get modifiedBy(): UserViewModel | null;

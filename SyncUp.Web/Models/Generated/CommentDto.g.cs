@@ -15,6 +15,7 @@ namespace SyncUp.Web.Models
         private long? _CommentId;
         private string _Body;
         private long? _PostId;
+        private int? _LikeCount;
 
         public long? CommentId
         {
@@ -31,6 +32,11 @@ namespace SyncUp.Web.Models
             get => _PostId;
             set { _PostId = value; Changed(nameof(PostId)); }
         }
+        public int? LikeCount
+        {
+            get => _LikeCount;
+            set { _LikeCount = value; Changed(nameof(LikeCount)); }
+        }
 
         /// <summary>
         /// Map from the current DTO instance to the domain object.
@@ -43,6 +49,7 @@ namespace SyncUp.Web.Models
 
             if (ShouldMapTo(nameof(Body))) entity.Body = Body;
             if (ShouldMapTo(nameof(PostId))) entity.PostId = (PostId ?? entity.PostId);
+            if (ShouldMapTo(nameof(LikeCount))) entity.LikeCount = (LikeCount ?? entity.LikeCount);
         }
 
         /// <summary>
@@ -60,6 +67,7 @@ namespace SyncUp.Web.Models
 
             if (OnUpdate(entity, context)) return entity;
             if (ShouldMapTo(nameof(PostId))) entity.PostId = (PostId ?? entity.PostId);
+            if (ShouldMapTo(nameof(LikeCount))) entity.LikeCount = (LikeCount ?? entity.LikeCount);
 
             return entity;
         }
@@ -72,6 +80,7 @@ namespace SyncUp.Web.Models
         public long? CommentId { get; set; }
         public string Body { get; set; }
         public long? PostId { get; set; }
+        public int? LikeCount { get; set; }
         public string ModifiedById { get; set; }
         public System.DateTimeOffset? ModifiedOn { get; set; }
         public string CreatedById { get; set; }
@@ -91,6 +100,7 @@ namespace SyncUp.Web.Models
             this.CommentId = obj.CommentId;
             this.Body = obj.Body;
             this.PostId = obj.PostId;
+            this.LikeCount = obj.LikeCount;
             this.ModifiedById = obj.ModifiedById;
             this.ModifiedOn = obj.ModifiedOn;
             this.CreatedById = obj.CreatedById;
