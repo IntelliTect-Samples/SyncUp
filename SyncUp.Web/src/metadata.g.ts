@@ -289,6 +289,12 @@ export const Comment = domain.types.Comment = {
       get inverseNavigation() { return (domain.types.Post as ModelType & { name: "Post" }).props.comments as ModelCollectionNavigationProperty },
       dontSerialize: true,
     },
+    commentLikeCount: {
+      name: "commentLikeCount",
+      displayName: "Comment Like Count",
+      type: "number",
+      role: "value",
+    },
     modifiedById: {
       name: "modifiedById",
       displayName: "Modified By Id",
@@ -351,6 +357,20 @@ export const Comment = domain.types.Comment = {
   methods: {
   },
   dataSources: {
+    commentsForPost: {
+      type: "dataSource",
+      name: "CommentsForPost" as const,
+      displayName: "Comments For Post",
+      isDefault: true,
+      props: {
+        postId: {
+          name: "postId",
+          displayName: "Post Id",
+          type: "number",
+          role: "value",
+        },
+      },
+    },
   },
 }
 export const Event = domain.types.Event = {
@@ -1025,6 +1045,12 @@ export const Post = domain.types.Post = {
       get principalKey() { return (domain.types.Group as ModelType & { name: "Group" }).props.groupId as PrimaryKeyProperty },
       get inverseNavigation() { return (domain.types.Group as ModelType & { name: "Group" }).props.posts as ModelCollectionNavigationProperty },
       dontSerialize: true,
+    },
+    postLikeCount: {
+      name: "postLikeCount",
+      displayName: "Post Like Count",
+      type: "number",
+      role: "value",
     },
     comments: {
       name: "comments",

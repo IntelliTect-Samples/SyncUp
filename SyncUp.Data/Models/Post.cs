@@ -22,6 +22,8 @@ public class Post : TenantedBase
     [ForeignKey(nameof(GroupId))]
     public Group? Group { get; set; }
 
+    public int PostLikeCount { get; set; }
+
     public ICollection<Comment> Comments { get; set; } = [];
 
     [DefaultDataSource]
