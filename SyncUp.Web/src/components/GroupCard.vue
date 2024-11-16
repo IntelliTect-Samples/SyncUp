@@ -13,7 +13,6 @@
             size="60"
             color="primary"
             class="mt-1 ml-1"
-            :image="group.imageUrl!"
           />
         </v-col>
         <v-col cols="auto">
