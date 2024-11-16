@@ -61,7 +61,7 @@ const vuetify = createVuetify({
 // SETUP: coalesce-vue
 CoalesceAxiosClient.defaults.baseURL = "/api";
 CoalesceAxiosClient.defaults.withCredentials = true;
-CoalesceAxiosClient.interceptors.response.use(undefined, (error) => {
+CoalesceAxiosClient.interceptors.response.use(undefined, (error: any) => {
   if (isAxiosError(error) && error.response?.status == 401) {
     console.warn("Received 401 from API endpoint. Refreshing for sign-in.");
     window.location.reload();

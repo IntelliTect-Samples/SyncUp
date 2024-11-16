@@ -25,6 +25,32 @@ export class EventApiClient extends ModelApiClient<$models.Event> {
 
 export class GroupApiClient extends ModelApiClient<$models.Group> {
   constructor() { super($metadata.Group) }
+  public checkMembership(id: number | null, $config?: AxiosRequestConfig): AxiosPromise<ItemResult<boolean>> {
+    const $method = this.$metadata.methods.checkMembership
+    const $params =  {
+      id,
+    }
+    return this.$invoke($method, $params, $config)
+  }
+  
+  public toggleMembership(id: number | null, $config?: AxiosRequestConfig): AxiosPromise<ItemResult<void>> {
+    const $method = this.$metadata.methods.toggleMembership
+    const $params =  {
+      id,
+    }
+    return this.$invoke($method, $params, $config)
+  }
+  
+}
+
+
+export class GroupUserApiClient extends ModelApiClient<$models.GroupUser> {
+  constructor() { super($metadata.GroupUser) }
+}
+
+
+export class ImageApiClient extends ModelApiClient<$models.Image> {
+  constructor() { super($metadata.Image) }
 }
 
 
@@ -128,6 +154,27 @@ export class UserApiClient extends ModelApiClient<$models.User> {
 
 export class UserRoleApiClient extends ModelApiClient<$models.UserRole> {
   constructor() { super($metadata.UserRole) }
+}
+
+
+export class ImageServiceApiClient extends ServiceApiClient<typeof $metadata.ImageService> {
+  constructor() { super($metadata.ImageService) }
+  public upload(content: string | Uint8Array | null, $config?: AxiosRequestConfig): AxiosPromise<ItemResult<$models.Image>> {
+    const $method = this.$metadata.methods.upload
+    const $params =  {
+      content,
+    }
+    return this.$invoke($method, $params, $config)
+  }
+  
+  public uploadFromUrl(url: string | null, $config?: AxiosRequestConfig): AxiosPromise<ItemResult<$models.Image>> {
+    const $method = this.$metadata.methods.uploadFromUrl
+    const $params =  {
+      url,
+    }
+    return this.$invoke($method, $params, $config)
+  }
+  
 }
 
 

@@ -515,14 +515,21 @@ export const Group = domain.types.Group = {
         maxLength: val => !val || val.length <= 500 || "Name may not be more than 500 characters.",
       }
     },
-    imageUrl: {
-      name: "imageUrl",
-      displayName: "Image Url",
+    bannerImageId: {
+      name: "bannerImageId",
+      displayName: "Banner Image Id",
       type: "string",
       role: "value",
-      rules: {
-        required: val => (val != null && val !== '') || "Image Url is required.",
-      }
+    },
+    bannerImage: {
+      name: "bannerImage",
+      displayName: "Banner Image",
+      type: "model",
+      get typeDef() { return (domain.types.Image as ModelType & { name: "Image" }) },
+      role: "referenceNavigation",
+      get foreignKey() { return (domain.types.Group as ModelType & { name: "Group" }).props.bannerImageId as ForeignKeyProperty },
+      get principalKey() { return (domain.types.Image as ModelType & { name: "Image" }).props.imageId as PrimaryKeyProperty },
+      dontSerialize: true,
     },
     description: {
       name: "description",
@@ -612,6 +619,293 @@ export const Group = domain.types.Group = {
       get typeDef() { return (domain.types.User as ModelType & { name: "User" }) },
       role: "referenceNavigation",
       get foreignKey() { return (domain.types.Group as ModelType & { name: "Group" }).props.modifiedById as ForeignKeyProperty },
+      get principalKey() { return (domain.types.User as ModelType & { name: "User" }).props.id as PrimaryKeyProperty },
+      dontSerialize: true,
+    },
+    modifiedOn: {
+      name: "modifiedOn",
+      displayName: "Modified On",
+      type: "date",
+      dateKind: "datetime",
+      role: "value",
+      dontSerialize: true,
+    },
+  },
+  methods: {
+    checkMembership: {
+      name: "checkMembership",
+      displayName: "Check Membership",
+      transportType: "item",
+      httpMethod: "POST",
+      params: {
+        id: {
+          name: "id",
+          displayName: "Primary Key",
+          type: "number",
+          role: "value",
+          get source() { return (domain.types.Group as ModelType & { name: "Group" }).props.groupId },
+          rules: {
+            required: val => val != null || "Primary Key is required.",
+          }
+        },
+      },
+      return: {
+        name: "$return",
+        displayName: "Result",
+        type: "boolean",
+        role: "value",
+      },
+    },
+    toggleMembership: {
+      name: "toggleMembership",
+      displayName: "Toggle Membership",
+      transportType: "item",
+      httpMethod: "POST",
+      params: {
+        id: {
+          name: "id",
+          displayName: "Primary Key",
+          type: "number",
+          role: "value",
+          get source() { return (domain.types.Group as ModelType & { name: "Group" }).props.groupId },
+          rules: {
+            required: val => val != null || "Primary Key is required.",
+          }
+        },
+      },
+      return: {
+        name: "$return",
+        displayName: "Result",
+        type: "void",
+        role: "value",
+      },
+    },
+  },
+  dataSources: {
+  },
+}
+export const GroupUser = domain.types.GroupUser = {
+  name: "GroupUser" as const,
+  displayName: "Group User",
+  get displayProp() { return this.props.groupUserId }, 
+  type: "model",
+  controllerRoute: "GroupUser",
+  get keyProp() { return this.props.groupUserId }, 
+  behaviorFlags: 7 as BehaviorFlags,
+  props: {
+    groupUserId: {
+      name: "groupUserId",
+      displayName: "Group User Id",
+      type: "number",
+      role: "primaryKey",
+      hidden: 3 as HiddenAreas,
+    },
+    isOwner: {
+      name: "isOwner",
+      displayName: "Is Owner",
+      type: "boolean",
+      role: "value",
+    },
+    userId: {
+      name: "userId",
+      displayName: "User Id",
+      type: "string",
+      role: "foreignKey",
+      get principalKey() { return (domain.types.User as ModelType & { name: "User" }).props.id as PrimaryKeyProperty },
+      get principalType() { return (domain.types.User as ModelType & { name: "User" }) },
+      get navigationProp() { return (domain.types.GroupUser as ModelType & { name: "GroupUser" }).props.user as ModelReferenceNavigationProperty },
+      hidden: 3 as HiddenAreas,
+      rules: {
+        required: val => (val != null && val !== '') || "User is required.",
+      }
+    },
+    user: {
+      name: "user",
+      displayName: "User",
+      type: "model",
+      get typeDef() { return (domain.types.User as ModelType & { name: "User" }) },
+      role: "referenceNavigation",
+      get foreignKey() { return (domain.types.GroupUser as ModelType & { name: "GroupUser" }).props.userId as ForeignKeyProperty },
+      get principalKey() { return (domain.types.User as ModelType & { name: "User" }).props.id as PrimaryKeyProperty },
+      dontSerialize: true,
+    },
+    groupId: {
+      name: "groupId",
+      displayName: "Group Id",
+      type: "number",
+      role: "foreignKey",
+      get principalKey() { return (domain.types.Group as ModelType & { name: "Group" }).props.groupId as PrimaryKeyProperty },
+      get principalType() { return (domain.types.Group as ModelType & { name: "Group" }) },
+      get navigationProp() { return (domain.types.GroupUser as ModelType & { name: "GroupUser" }).props.group as ModelReferenceNavigationProperty },
+      hidden: 3 as HiddenAreas,
+      rules: {
+        required: val => val != null || "Group is required.",
+      }
+    },
+    group: {
+      name: "group",
+      displayName: "Group",
+      type: "model",
+      get typeDef() { return (domain.types.Group as ModelType & { name: "Group" }) },
+      role: "referenceNavigation",
+      get foreignKey() { return (domain.types.GroupUser as ModelType & { name: "GroupUser" }).props.groupId as ForeignKeyProperty },
+      get principalKey() { return (domain.types.Group as ModelType & { name: "Group" }).props.groupId as PrimaryKeyProperty },
+      dontSerialize: true,
+    },
+    modifiedById: {
+      name: "modifiedById",
+      displayName: "Modified By Id",
+      type: "string",
+      role: "foreignKey",
+      get principalKey() { return (domain.types.User as ModelType & { name: "User" }).props.id as PrimaryKeyProperty },
+      get principalType() { return (domain.types.User as ModelType & { name: "User" }) },
+      get navigationProp() { return (domain.types.GroupUser as ModelType & { name: "GroupUser" }).props.modifiedBy as ModelReferenceNavigationProperty },
+      hidden: 3 as HiddenAreas,
+      dontSerialize: true,
+    },
+    createdById: {
+      name: "createdById",
+      displayName: "Created By Id",
+      type: "string",
+      role: "foreignKey",
+      get principalKey() { return (domain.types.User as ModelType & { name: "User" }).props.id as PrimaryKeyProperty },
+      get principalType() { return (domain.types.User as ModelType & { name: "User" }) },
+      get navigationProp() { return (domain.types.GroupUser as ModelType & { name: "GroupUser" }).props.createdBy as ModelReferenceNavigationProperty },
+      hidden: 3 as HiddenAreas,
+      dontSerialize: true,
+    },
+    createdBy: {
+      name: "createdBy",
+      displayName: "Created By",
+      type: "model",
+      get typeDef() { return (domain.types.User as ModelType & { name: "User" }) },
+      role: "referenceNavigation",
+      get foreignKey() { return (domain.types.GroupUser as ModelType & { name: "GroupUser" }).props.createdById as ForeignKeyProperty },
+      get principalKey() { return (domain.types.User as ModelType & { name: "User" }).props.id as PrimaryKeyProperty },
+      dontSerialize: true,
+    },
+    createdOn: {
+      name: "createdOn",
+      displayName: "Created On",
+      type: "date",
+      dateKind: "datetime",
+      role: "value",
+      dontSerialize: true,
+    },
+    modifiedBy: {
+      name: "modifiedBy",
+      displayName: "Modified By",
+      type: "model",
+      get typeDef() { return (domain.types.User as ModelType & { name: "User" }) },
+      role: "referenceNavigation",
+      get foreignKey() { return (domain.types.GroupUser as ModelType & { name: "GroupUser" }).props.modifiedById as ForeignKeyProperty },
+      get principalKey() { return (domain.types.User as ModelType & { name: "User" }).props.id as PrimaryKeyProperty },
+      dontSerialize: true,
+    },
+    modifiedOn: {
+      name: "modifiedOn",
+      displayName: "Modified On",
+      type: "date",
+      dateKind: "datetime",
+      role: "value",
+      dontSerialize: true,
+    },
+  },
+  methods: {
+  },
+  dataSources: {
+    usersForGroup: {
+      type: "dataSource",
+      name: "UsersForGroup" as const,
+      displayName: "Users For Group",
+      props: {
+        groupId: {
+          name: "groupId",
+          displayName: "Group Id",
+          type: "number",
+          role: "value",
+        },
+      },
+    },
+  },
+}
+export const Image = domain.types.Image = {
+  name: "Image" as const,
+  displayName: "Image",
+  get displayProp() { return this.props.imageId }, 
+  type: "model",
+  controllerRoute: "Image",
+  get keyProp() { return this.props.imageId }, 
+  behaviorFlags: 7 as BehaviorFlags,
+  props: {
+    imageId: {
+      name: "imageId",
+      displayName: "Image Id",
+      type: "string",
+      role: "primaryKey",
+      hidden: 3 as HiddenAreas,
+    },
+    color: {
+      name: "color",
+      displayName: "Color",
+      type: "string",
+      role: "value",
+      dontSerialize: true,
+    },
+    imageUrl: {
+      name: "imageUrl",
+      displayName: "Image Url",
+      type: "string",
+      role: "value",
+      dontSerialize: true,
+    },
+    modifiedById: {
+      name: "modifiedById",
+      displayName: "Modified By Id",
+      type: "string",
+      role: "foreignKey",
+      get principalKey() { return (domain.types.User as ModelType & { name: "User" }).props.id as PrimaryKeyProperty },
+      get principalType() { return (domain.types.User as ModelType & { name: "User" }) },
+      get navigationProp() { return (domain.types.Image as ModelType & { name: "Image" }).props.modifiedBy as ModelReferenceNavigationProperty },
+      hidden: 3 as HiddenAreas,
+      dontSerialize: true,
+    },
+    createdById: {
+      name: "createdById",
+      displayName: "Created By Id",
+      type: "string",
+      role: "foreignKey",
+      get principalKey() { return (domain.types.User as ModelType & { name: "User" }).props.id as PrimaryKeyProperty },
+      get principalType() { return (domain.types.User as ModelType & { name: "User" }) },
+      get navigationProp() { return (domain.types.Image as ModelType & { name: "Image" }).props.createdBy as ModelReferenceNavigationProperty },
+      hidden: 3 as HiddenAreas,
+      dontSerialize: true,
+    },
+    createdBy: {
+      name: "createdBy",
+      displayName: "Created By",
+      type: "model",
+      get typeDef() { return (domain.types.User as ModelType & { name: "User" }) },
+      role: "referenceNavigation",
+      get foreignKey() { return (domain.types.Image as ModelType & { name: "Image" }).props.createdById as ForeignKeyProperty },
+      get principalKey() { return (domain.types.User as ModelType & { name: "User" }).props.id as PrimaryKeyProperty },
+      dontSerialize: true,
+    },
+    createdOn: {
+      name: "createdOn",
+      displayName: "Created On",
+      type: "date",
+      dateKind: "datetime",
+      role: "value",
+      dontSerialize: true,
+    },
+    modifiedBy: {
+      name: "modifiedBy",
+      displayName: "Modified By",
+      type: "model",
+      get typeDef() { return (domain.types.User as ModelType & { name: "User" }) },
+      role: "referenceNavigation",
+      get foreignKey() { return (domain.types.Image as ModelType & { name: "Image" }).props.modifiedById as ForeignKeyProperty },
       get principalKey() { return (domain.types.User as ModelType & { name: "User" }).props.id as PrimaryKeyProperty },
       dontSerialize: true,
     },
@@ -858,6 +1152,22 @@ export const Tenant = domain.types.Tenant = {
       displayName: "Is Public",
       type: "boolean",
       role: "value",
+    },
+    bannerImageId: {
+      name: "bannerImageId",
+      displayName: "Banner Image Id",
+      type: "string",
+      role: "value",
+    },
+    bannerImage: {
+      name: "bannerImage",
+      displayName: "Banner Image",
+      type: "model",
+      get typeDef() { return (domain.types.Image as ModelType & { name: "Image" }) },
+      role: "referenceNavigation",
+      get foreignKey() { return (domain.types.Tenant as ModelType & { name: "Tenant" }).props.bannerImageId as ForeignKeyProperty },
+      get principalKey() { return (domain.types.Image as ModelType & { name: "Image" }).props.imageId as PrimaryKeyProperty },
+      dontSerialize: true,
     },
   },
   methods: {
@@ -1411,6 +1721,62 @@ export const UserInfo = domain.types.UserInfo = {
     },
   },
 }
+export const ImageService = domain.services.ImageService = {
+  name: "ImageService",
+  displayName: "Image Service",
+  type: "service",
+  controllerRoute: "ImageService",
+  methods: {
+    upload: {
+      name: "upload",
+      displayName: "Upload",
+      transportType: "item",
+      httpMethod: "POST",
+      params: {
+        content: {
+          name: "content",
+          displayName: "Content",
+          type: "binary",
+          role: "value",
+          rules: {
+            required: val => val != null || "Content is required.",
+          }
+        },
+      },
+      return: {
+        name: "$return",
+        displayName: "Result",
+        type: "model",
+        get typeDef() { return (domain.types.Image as ModelType & { name: "Image" }) },
+        role: "value",
+      },
+    },
+    uploadFromUrl: {
+      name: "uploadFromUrl",
+      displayName: "Upload From Url",
+      transportType: "item",
+      httpMethod: "POST",
+      params: {
+        url: {
+          name: "url",
+          displayName: "Url",
+          type: "string",
+          role: "value",
+          rules: {
+            required: val => (val != null && val !== '') || "Url is required.",
+          }
+        },
+      },
+      return: {
+        name: "$return",
+        displayName: "Result",
+        type: "model",
+        get typeDef() { return (domain.types.Image as ModelType & { name: "Image" }) },
+        role: "value",
+      },
+    },
+  },
+}
 export const SecurityService = domain.services.SecurityService = {
   name: "SecurityService",
   displayName: "Security Service",
@@ -1446,6 +1812,8 @@ interface AppDomain extends Domain {
     Comment: typeof Comment
     Event: typeof Event
     Group: typeof Group
+    GroupUser: typeof GroupUser
+    Image: typeof Image
     Post: typeof Post
     Role: typeof Role
     Tenant: typeof Tenant
@@ -1454,6 +1822,7 @@ interface AppDomain extends Domain {
     UserRole: typeof UserRole
   }
   services: {
+    ImageService: typeof ImageService
     SecurityService: typeof SecurityService
   }
 }

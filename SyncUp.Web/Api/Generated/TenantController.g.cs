@@ -94,6 +94,7 @@ namespace SyncUp.Web.Api
         [Consumes("application/x-www-form-urlencoded", "multipart/form-data")]
         public virtual async Task<ItemResult> Create(
             [FromServices] IntelliTect.SyncUp.Data.Auth.InvitationService invitationService,
+            [FromServices] IntelliTect.SyncUp.Data.Services.ImageService imageService,
             [FromForm(Name = "name")] string name,
             [FromForm(Name = "adminEmail")] string adminEmail)
         {
@@ -113,6 +114,7 @@ namespace SyncUp.Web.Api
             var _methodResult = await IntelliTect.SyncUp.Data.Models.Tenant.Create(
                 Db,
                 invitationService,
+                imageService,
                 _params.Name,
                 _params.AdminEmail
             );
@@ -134,6 +136,7 @@ namespace SyncUp.Web.Api
         [Consumes("application/json")]
         public virtual async Task<ItemResult> Create(
             [FromServices] IntelliTect.SyncUp.Data.Auth.InvitationService invitationService,
+            [FromServices] IntelliTect.SyncUp.Data.Services.ImageService imageService,
             [FromBody] CreateParameters _params
         )
         {
@@ -147,6 +150,7 @@ namespace SyncUp.Web.Api
             var _methodResult = await IntelliTect.SyncUp.Data.Models.Tenant.Create(
                 Db,
                 invitationService,
+                imageService,
                 _params.Name,
                 _params.AdminEmail
             );
@@ -247,7 +251,7 @@ namespace SyncUp.Web.Api
             return _result;
         }
 
-        public class ToggleMembershipParameters
+        public class TenantToggleMembershipParameters
         {
             public string TenantId { get; set; }
         }
@@ -259,7 +263,7 @@ namespace SyncUp.Web.Api
         [Authorize]
         [Consumes("application/json")]
         public virtual async Task<ItemResult> ToggleMembership(
-            [FromBody] ToggleMembershipParameters _params
+            [FromBody] TenantToggleMembershipParameters _params
         )
         {
             if (Context.Options.ValidateAttributesForMethods)

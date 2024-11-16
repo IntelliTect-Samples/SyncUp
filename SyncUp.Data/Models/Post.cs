@@ -9,9 +9,11 @@ public class Post : TenantedBase
     [MaxLength(500)]
     [Required]
     [ListText]
+    [Search(SearchMethod = SearchMethods.Contains)]
     public required string Title { get; set; }
 
     [Required]
+    [Search(SearchMethod = SearchMethods.Contains)]
     public required string Body { get; set; }
 
     [Required]
@@ -36,6 +38,11 @@ public class Post : TenantedBase
             }
 
             return base.GetQuery(parameters).Where(x => x.GroupId == GroupId);
+        }
+
+        public override IQueryable<Post> ApplyListDefaultSorting(IQueryable<Post> query)
+        {
+            return base.ApplyListDefaultSorting(query).OrderByDescending(x => x.CreatedOn);
         }
     }
 }

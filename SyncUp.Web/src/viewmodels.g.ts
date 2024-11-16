@@ -135,7 +135,9 @@ export class EventListViewModel extends ListViewModel<$models.Event, $apiClients
 export interface GroupViewModel extends $models.Group {
   groupId: number | null;
   name: string | null;
-  imageUrl: string | null;
+  bannerImageId: string | null;
+  get bannerImage(): ImageViewModel | null;
+  set bannerImage(value: ImageViewModel | $models.Image | null);
   description: string | null;
   get posts(): ViewModelCollection<PostViewModel, $models.Post>;
   set posts(value: (PostViewModel | $models.Post)[] | null);
@@ -162,6 +164,28 @@ export class GroupViewModel extends ViewModel<$models.Group, $apiClients.GroupAp
     return this.$addChild('events', initialData) as EventViewModel
   }
   
+  public get checkMembership() {
+    const checkMembership = this.$apiClient.$makeCaller(
+      this.$metadata.methods.checkMembership,
+      (c) => c.checkMembership(this.$primaryKey),
+      () => ({}),
+      (c, args) => c.checkMembership(this.$primaryKey))
+    
+    Object.defineProperty(this, 'checkMembership', {value: checkMembership});
+    return checkMembership
+  }
+  
+  public get toggleMembership() {
+    const toggleMembership = this.$apiClient.$makeCaller(
+      this.$metadata.methods.toggleMembership,
+      (c) => c.toggleMembership(this.$primaryKey),
+      () => ({}),
+      (c, args) => c.toggleMembership(this.$primaryKey))
+    
+    Object.defineProperty(this, 'toggleMembership', {value: toggleMembership});
+    return toggleMembership
+  }
+  
   constructor(initialData?: DeepPartial<$models.Group> | null) {
     super($metadata.Group, new $apiClients.GroupApiClient(), initialData)
   }
@@ -172,6 +196,71 @@ export class GroupListViewModel extends ListViewModel<$models.Group, $apiClients
   
   constructor() {
     super($metadata.Group, new $apiClients.GroupApiClient())
+  }
+}
+
+
+export interface GroupUserViewModel extends $models.GroupUser {
+  groupUserId: number | null;
+  isOwner: boolean | null;
+  userId: string | null;
+  get user(): UserViewModel | null;
+  set user(value: UserViewModel | $models.User | null);
+  groupId: number | null;
+  get group(): GroupViewModel | null;
+  set group(value: GroupViewModel | $models.Group | null);
+  get modifiedBy(): UserViewModel | null;
+  set modifiedBy(value: UserViewModel | $models.User | null);
+  modifiedById: string | null;
+  modifiedOn: Date | null;
+  get createdBy(): UserViewModel | null;
+  set createdBy(value: UserViewModel | $models.User | null);
+  createdById: string | null;
+  createdOn: Date | null;
+}
+export class GroupUserViewModel extends ViewModel<$models.GroupUser, $apiClients.GroupUserApiClient, number> implements $models.GroupUser  {
+  static DataSources = $models.GroupUser.DataSources;
+  
+  constructor(initialData?: DeepPartial<$models.GroupUser> | null) {
+    super($metadata.GroupUser, new $apiClients.GroupUserApiClient(), initialData)
+  }
+}
+defineProps(GroupUserViewModel, $metadata.GroupUser)
+
+export class GroupUserListViewModel extends ListViewModel<$models.GroupUser, $apiClients.GroupUserApiClient, GroupUserViewModel> {
+  static DataSources = $models.GroupUser.DataSources;
+  
+  constructor() {
+    super($metadata.GroupUser, new $apiClients.GroupUserApiClient())
+  }
+}
+
+
+export interface ImageViewModel extends $models.Image {
+  imageId: string | null;
+  color: string | null;
+  imageUrl: string | null;
+  get modifiedBy(): UserViewModel | null;
+  set modifiedBy(value: UserViewModel | $models.User | null);
+  modifiedById: string | null;
+  modifiedOn: Date | null;
+  get createdBy(): UserViewModel | null;
+  set createdBy(value: UserViewModel | $models.User | null);
+  createdById: string | null;
+  createdOn: Date | null;
+}
+export class ImageViewModel extends ViewModel<$models.Image, $apiClients.ImageApiClient, string> implements $models.Image  {
+  
+  constructor(initialData?: DeepPartial<$models.Image> | null) {
+    super($metadata.Image, new $apiClients.ImageApiClient(), initialData)
+  }
+}
+defineProps(ImageViewModel, $metadata.Image)
+
+export class ImageListViewModel extends ListViewModel<$models.Image, $apiClients.ImageApiClient, ImageViewModel> {
+  
+  constructor() {
+    super($metadata.Image, new $apiClients.ImageApiClient())
   }
 }
 
@@ -242,6 +331,9 @@ export interface TenantViewModel extends $models.Tenant {
   tenantId: string | null;
   name: string | null;
   isPublic: boolean | null;
+  bannerImageId: string | null;
+  get bannerImage(): ImageViewModel | null;
+  set bannerImage(value: ImageViewModel | $models.Image | null);
 }
 export class TenantViewModel extends ViewModel<$models.Tenant, $apiClients.TenantApiClient, string> implements $models.Tenant  {
   static DataSources = $models.Tenant.DataSources;
@@ -428,6 +520,36 @@ export class UserRoleListViewModel extends ListViewModel<$models.UserRole, $apiC
 }
 
 
+export class ImageServiceViewModel extends ServiceViewModel<typeof $metadata.ImageService, $apiClients.ImageServiceApiClient> {
+  
+  public get upload() {
+    const upload = this.$apiClient.$makeCaller(
+      this.$metadata.methods.upload,
+      (c, content: string | Uint8Array | null) => c.upload(content),
+      () => ({content: null as string | Uint8Array | null, }),
+      (c, args) => c.upload(args.content))
+    
+    Object.defineProperty(this, 'upload', {value: upload});
+    return upload
+  }
+  
+  public get uploadFromUrl() {
+    const uploadFromUrl = this.$apiClient.$makeCaller(
+      this.$metadata.methods.uploadFromUrl,
+      (c, url: string | null) => c.uploadFromUrl(url),
+      () => ({url: null as string | null, }),
+      (c, args) => c.uploadFromUrl(args.url))
+    
+    Object.defineProperty(this, 'uploadFromUrl', {value: uploadFromUrl});
+    return uploadFromUrl
+  }
+  
+  constructor() {
+    super($metadata.ImageService, new $apiClients.ImageServiceApiClient())
+  }
+}
+
+
 export class SecurityServiceViewModel extends ServiceViewModel<typeof $metadata.SecurityService, $apiClients.SecurityServiceApiClient> {
   
   public get whoAmI() {
@@ -453,6 +575,8 @@ const viewModelTypeLookup = ViewModel.typeLookup = {
   Comment: CommentViewModel,
   Event: EventViewModel,
   Group: GroupViewModel,
+  GroupUser: GroupUserViewModel,
+  Image: ImageViewModel,
   Post: PostViewModel,
   Role: RoleViewModel,
   Tenant: TenantViewModel,
@@ -465,6 +589,8 @@ const listViewModelTypeLookup = ListViewModel.typeLookup = {
   Comment: CommentListViewModel,
   Event: EventListViewModel,
   Group: GroupListViewModel,
+  GroupUser: GroupUserListViewModel,
+  Image: ImageListViewModel,
   Post: PostListViewModel,
   Role: RoleListViewModel,
   Tenant: TenantListViewModel,
@@ -472,6 +598,7 @@ const listViewModelTypeLookup = ListViewModel.typeLookup = {
   UserRole: UserRoleListViewModel,
 }
 const serviceViewModelTypeLookup = ServiceViewModel.typeLookup = {
+  ImageService: ImageServiceViewModel,
   SecurityService: SecurityServiceViewModel,
 }
 

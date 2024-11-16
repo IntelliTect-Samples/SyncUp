@@ -1,3 +1,5 @@
+using IntelliTect.SyncUp.Data.Services;
+using SyncUp.Data.Models;
 using System.ComponentModel;
 
 namespace IntelliTect.SyncUp.Data.Models;
@@ -15,6 +17,11 @@ public class Tenant
     public required string Name { get; set; }
 
     public bool IsPublic { get; set; }
+
+    [ForeignKey(nameof(BannerImageId))]
+    public string? BannerImageId { get; set; }
+    public Image? BannerImage { get; set; }
+
 
 
     [DefaultDataSource]
@@ -45,6 +52,7 @@ public class Tenant
     public static async Task<ItemResult> Create(
         AppDbContext db,
         [Inject] InvitationService invitationService,
+        [Inject] ImageService imageService,
         [Display(Name = "Org Name")] string name,
         [DataType(DataType.EmailAddress)] string adminEmail
     )
@@ -54,7 +62,7 @@ public class Tenant
         await db.SaveChangesAsync();
 
         db.ForceSetTenant(tenant.TenantId);
-        new DatabaseSeeder(db).SeedNewTenant(tenant);
+        await (new DatabaseSeeder(db)).SeedNewTenant(tenant, imageService);
 
         return await invitationService.CreateAndSendInvitation(adminEmail, db.Roles.ToArray());
     }

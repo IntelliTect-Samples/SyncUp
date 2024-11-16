@@ -25,6 +25,8 @@ using Azure.Identity;
 using IntelliTect.SyncUp.Utilities;
 using Microsoft.AspNetCore.Identity;
 using IntelliTect.SyncUp.Data.Models;
+using IntelliTect.SyncUp.Data.Services;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(new WebApplicationOptions
 {
@@ -67,6 +69,7 @@ if (string.IsNullOrEmpty(connectionString)) throw new Exception("No connection s
 // Make sure this runs on an ARM64 system that doesn't support localDB by using a named pipe instead
 connectionString = Arm64LocalDb.UpdateArm64LocalDbConnectionString(connectionString);
 
+services.Configure<AzureBlobStorageOptions>(builder.Configuration.GetSection(AzureBlobStorageOptions.SectionName));
 
 services.AddDbContext<AppDbContext>(options => options
     .UseSqlServer(connectionString, opt => opt
@@ -115,6 +118,7 @@ services.AddScoped<IUrlHelper>(x =>
 });
 
 services.AddScoped<InvitationService>();
+services.AddScoped<ImageService>();
 
 
 #endregion
@@ -180,6 +184,8 @@ app.MapFallbackToController("Index", "Home");
 using (var scope = app.Services.CreateScope())
 {
     var serviceScope = scope.ServiceProvider;
+    serviceScope.GetRequiredService<IOptions<AzureBlobStorageOptions>>().Value.SetStatics();
+
 
     // Run database migrations.
     using var db = serviceScope.GetRequiredService<AppDbContext>();
@@ -188,7 +194,8 @@ using (var scope = app.Services.CreateScope())
     ActivatorUtilities.GetServiceOrCreateInstance<DatabaseSeeder>(serviceScope).Seed();
 
     var userManager = serviceScope.GetRequiredService<UserManager<User>>();
-    await db.SeedAsync(userManager);
+    var imageService = serviceScope.GetRequiredService<ImageService>();
+    await db.SeedAsync(userManager, imageService);
 }
 
 app.Run();

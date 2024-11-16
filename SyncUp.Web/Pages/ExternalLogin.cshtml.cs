@@ -21,8 +21,7 @@ namespace IntelliTect.SyncUp.Web.Pages;
 [AllowAnonymous]
 public class ExternalLoginModel(
     AppDbContext db,
-    SignInManager<User> signInManager,
-    ILogger<ExternalLoginModel> logger
+    SignInManager<User> signInManager
 ) : PageModel
 {
     [BindProperty(SupportsGet = true)]

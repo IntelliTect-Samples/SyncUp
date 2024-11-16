@@ -4,6 +4,7 @@ using IntelliTect.SyncUp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IntelliTect.SyncUp.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241116173322_GroupUser")]
+    partial class GroupUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -223,9 +226,6 @@ namespace IntelliTect.SyncUp.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("GroupId"));
 
-                    b.Property<string>("BannerImageId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("CreatedById")
                         .HasColumnType("nvarchar(450)");
 
@@ -233,6 +233,10 @@ namespace IntelliTect.SyncUp.Data.Migrations
                         .HasColumnType("datetimeoffset");
 
                     b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImageUrl")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -254,8 +258,6 @@ namespace IntelliTect.SyncUp.Data.Migrations
                     b.HasIndex("CreatedById");
 
                     b.HasIndex("ModifiedById");
-
-                    b.HasIndex("TenantId", "BannerImageId");
 
                     b.ToTable("Groups");
                 });
@@ -381,9 +383,6 @@ namespace IntelliTect.SyncUp.Data.Migrations
                     b.Property<string>("TenantId")
                         .HasMaxLength(36)
                         .HasColumnType("nvarchar(36)");
-
-                    b.Property<string>("BannerImageId")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsPublic")
                         .HasColumnType("bit");
@@ -705,45 +704,6 @@ namespace IntelliTect.SyncUp.Data.Migrations
                     b.ToTable("GroupUsers");
                 });
 
-            modelBuilder.Entity("SyncUp.Data.Models.Image", b =>
-                {
-                    b.Property<string>("TenantId")
-                        .HasMaxLength(36)
-                        .HasColumnType("nvarchar(36)");
-
-                    b.Property<string>("ImageId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Color")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CreatedById")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTimeOffset>("CreatedOn")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("ModifiedById")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTimeOffset>("ModifiedOn")
-                        .HasColumnType("datetimeoffset");
-
-                    b.HasKey("TenantId", "ImageId");
-
-                    b.HasAlternateKey("ImageId");
-
-                    b.HasIndex("CreatedById");
-
-                    b.HasIndex("ModifiedById");
-
-                    b.HasIndex("TenantId")
-                        .IsUnique();
-
-                    b.ToTable("Images");
-                });
-
             modelBuilder.Entity("IntelliTect.Coalesce.AuditLogging.AuditLogProperty", b =>
                 {
                     b.HasOne("IntelliTect.SyncUp.Data.Models.AuditLog", null)
@@ -853,13 +813,6 @@ namespace IntelliTect.SyncUp.Data.Migrations
                         .HasForeignKey("TenantId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.HasOne("SyncUp.Data.Models.Image", "BannerImage")
-                        .WithMany()
-                        .HasForeignKey("TenantId", "BannerImageId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.Navigation("BannerImage");
 
                     b.Navigation("CreatedBy");
 
@@ -1084,31 +1037,6 @@ namespace IntelliTect.SyncUp.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("SyncUp.Data.Models.Image", b =>
-                {
-                    b.HasOne("IntelliTect.SyncUp.Data.Models.User", "CreatedBy")
-                        .WithMany()
-                        .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("IntelliTect.SyncUp.Data.Models.User", "ModifiedBy")
-                        .WithMany()
-                        .HasForeignKey("ModifiedById")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("IntelliTect.SyncUp.Data.Models.Tenant", "Tenant")
-                        .WithOne("BannerImage")
-                        .HasForeignKey("SyncUp.Data.Models.Image", "TenantId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("CreatedBy");
-
-                    b.Navigation("ModifiedBy");
-
-                    b.Navigation("Tenant");
-                });
-
             modelBuilder.Entity("IntelliTect.SyncUp.Data.Models.AuditLog", b =>
                 {
                     b.Navigation("Properties");
@@ -1124,11 +1052,6 @@ namespace IntelliTect.SyncUp.Data.Migrations
             modelBuilder.Entity("IntelliTect.SyncUp.Data.Models.Post", b =>
                 {
                     b.Navigation("Comments");
-                });
-
-            modelBuilder.Entity("IntelliTect.SyncUp.Data.Models.Tenant", b =>
-                {
-                    b.Navigation("BannerImage");
                 });
 
             modelBuilder.Entity("IntelliTect.SyncUp.Data.Models.User", b =>

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System.Runtime.CompilerServices;
 
 namespace IntelliTect.SyncUp.Data.Test;
 
@@ -9,7 +10,7 @@ public class SqliteDatabaseFixture : IDisposable
     private readonly SqliteConnection _HoldOpenConnection;
 
     public DbContextOptions<AppDbContext> Options { get; }
-        
+
     private static readonly ILoggerFactory _LoggerFac = LoggerFactory.Create(b =>
     {
         b.SetMinimumLevel(LogLevel.Error);
@@ -51,7 +52,7 @@ public class SqliteDatabaseFixture : IDisposable
             db.Add(tenant);
             db.SaveChanges();
             db.TenantId = tenant.TenantId;
-            seeder.SeedNewTenant(tenant);
+            seeder.SeedNewTenant(tenant, null).Wait();
         }
     }
 

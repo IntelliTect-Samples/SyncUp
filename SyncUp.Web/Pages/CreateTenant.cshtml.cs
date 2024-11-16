@@ -1,6 +1,7 @@
 using IntelliTect.SyncUp.Data;
 using IntelliTect.SyncUp.Data.Auth;
 using IntelliTect.SyncUp.Data.Models;
+using IntelliTect.SyncUp.Data.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -22,7 +23,8 @@ public class CreateTenantModel(AppDbContext db) : PageModel
     }
 
     public async Task<IActionResult> OnPostAsync(
-        [FromServices] SignInManager<User> signInManager
+        [FromServices] SignInManager<User> signInManager,
+        [FromServices] ImageService imageService
     )
     {
         if (!ModelState.IsValid) return Page();
@@ -32,7 +34,7 @@ public class CreateTenantModel(AppDbContext db) : PageModel
         await db.SaveChangesAsync();
 
         db.ForceSetTenant(tenant.TenantId);
-        new DatabaseSeeder(db).SeedNewTenant(tenant, User.GetUserId());
+        await (new DatabaseSeeder(db)).SeedNewTenant(tenant, imageService, User.GetUserId());
 
         // Sign the user into the new tenant (uses `db.TenantId`).
         var user = await db.Users.FindAsync(User.GetUserId());
