@@ -47,7 +47,7 @@
 <script setup lang="ts">
 const props = withDefaults(
   defineProps<{
-    title: string;
+    title?: string | null;
     imageUrl: string;
     description: string;
     badge1Text?: string | null;
@@ -58,6 +58,7 @@ const props = withDefaults(
     badge1Text: null,
     badge2Text: null,
     minHeight: "300",
+    title: "No title",
   },
 );
 
