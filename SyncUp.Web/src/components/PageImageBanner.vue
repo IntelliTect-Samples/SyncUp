@@ -32,10 +32,6 @@
             :is-member="isMember"
             @toggle-membership="$emit('toggleMembership')"
           />
-          <AddGroupButton
-            :group="newGroup"
-            @new-group-created="$emit('refreshGroups')"
-          />
         </v-col>
       </v-row>
       <v-card-text> {{ description }} </v-card-text>
@@ -44,8 +40,6 @@
 </template>
 
 <script setup lang="ts">
-import { GroupViewModel } from "@/viewmodels.g";
-
 const props = withDefaults(
   defineProps<{
     title: string | null;
@@ -63,8 +57,5 @@ const props = withDefaults(
   },
 );
 
-defineEmits(["toggleMembership", "refreshGroups"]);
-
-const newGroup = new GroupViewModel();
-newGroup.$stopAutoSave();
+defineEmits(["toggleMembership"]);
 </script>

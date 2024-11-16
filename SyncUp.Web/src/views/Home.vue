@@ -9,9 +9,13 @@
       description="This is a fake description that needs love"
       :is-member="isMember"
       @toggle-membership="toggleMembership"
-      @refresh-groups="groups.$load()"
     />
 
+    <v-row class="ma-1">
+      <v-col cols="12" md="6" lg="8">
+        <AddGroupButton :group="newGroup" @new-group-created="groups.$load" />
+      </v-col>
+    </v-row>
     <v-row class="ma-1">
       <v-col cols="12" md="6" lg="8">
         <v-row>
@@ -31,7 +35,11 @@
 </template>
 
 <script setup lang="ts">
-import { GroupListViewModel, TenantListViewModel } from "@/viewmodels.g";
+import {
+  GroupListViewModel,
+  GroupViewModel,
+  TenantListViewModel,
+} from "@/viewmodels.g";
 
 useTitle("Home");
 
@@ -39,6 +47,10 @@ const groups = new GroupListViewModel();
 groups.$useAutoLoad();
 groups.$load();
 groups.$count();
+
+const newGroup = new GroupViewModel();
+newGroup.$stopAutoSave();
+
 const { userInfo } = useUser();
 
 const tenantListViewModel = new TenantListViewModel();
