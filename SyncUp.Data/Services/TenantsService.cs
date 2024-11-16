@@ -1,9 +1,11 @@
 ﻿using IntelliTect.SyncUp.Data;
+using IntelliTect.SyncUp.Data.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace SyncUp.Data.Services;
 
 [Coalesce, Service]
-public class TenantsService(AppDbContext db)
+public class TenantsService(AppDbContext db, SignInManager<User> signInManager)
 {
     [Coalesce]
     public IQueryable<Tenant> LoadTenants()
@@ -12,29 +14,17 @@ public class TenantsService(AppDbContext db)
     }
 
     [Coalesce]
-    public async Task<ItemResult<IQueryable<Tenant>>> JoinOrSwitchTenant(ClaimsPrincipal claim, string tenantId)
+    public async Task<ItemResult> SwitchTenant(ClaimsPrincipal claim, string tenantId)
     {
-        // Check that the tenantId is valid
-        var tenant = db.Tenants.FirstOrDefault(x => x.TenantId == tenantId);
-
-        if(tenant is null)
+        if (!db.Tenants.Any(t => t.TenantId == tenantId))
         {
-            return "Tenant Id is not valid.";
+            return "Invalid Tenant Id.";
         }
 
-        // Check if the user is already a member
-        var membership = db.TenantMemberships.IgnoreTenancy()
-            .Where(x => x.UserId == claim.GetUserId() && x.TenantId == tenant.TenantId)
-            .FirstOrDefault();
+        db.ForceSetTenant(tenantId);
 
-        if (membership is not null)
-        {
-            await Tenant.ToggleMembership(db, claim, tenant.TenantId);
-        }
-        else
-        {
-            db.ForceSetTenant(tenant.TenantId);
-        }
+        var user = await db.Users.FindAsync(claim.GetUserId());
+        await signInManager.RefreshSignInAsync(user!);
 
         return true;
     }

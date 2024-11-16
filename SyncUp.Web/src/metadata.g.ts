@@ -1852,9 +1852,9 @@ export const TenantsService = domain.services.TenantsService = {
         role: "value",
       },
     },
-    joinOrSwitchTenant: {
-      name: "joinOrSwitchTenant",
-      displayName: "Join Or Switch Tenant",
+    switchTenant: {
+      name: "switchTenant",
+      displayName: "Switch Tenant",
       transportType: "item",
       httpMethod: "POST",
       params: {
@@ -1871,14 +1871,7 @@ export const TenantsService = domain.services.TenantsService = {
       return: {
         name: "$return",
         displayName: "Result",
-        type: "collection",
-        itemType: {
-          name: "$collectionItem",
-          displayName: "",
-          role: "value",
-          type: "model",
-          get typeDef() { return (domain.types.Tenant as ModelType & { name: "Tenant" }) },
-        },
+        type: "void",
         role: "value",
       },
     },

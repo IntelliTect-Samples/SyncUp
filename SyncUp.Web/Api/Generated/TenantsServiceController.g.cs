@@ -49,12 +49,12 @@ namespace SyncUp.Web.Api
         }
 
         /// <summary>
-        /// Method: JoinOrSwitchTenant
+        /// Method: SwitchTenant
         /// </summary>
-        [HttpPost("JoinOrSwitchTenant")]
+        [HttpPost("SwitchTenant")]
         [Authorize]
         [Consumes("application/x-www-form-urlencoded", "multipart/form-data")]
-        public virtual async Task<ItemResult<System.Collections.Generic.ICollection<TenantResponse>>> JoinOrSwitchTenant(
+        public virtual async Task<ItemResult> SwitchTenant(
             [FromForm(Name = "tenantId")] string tenantId)
         {
             var _params = new
@@ -65,51 +65,45 @@ namespace SyncUp.Web.Api
             if (Context.Options.ValidateAttributesForMethods)
             {
                 var _validationResult = ItemResult.FromParameterValidation(
-                    GeneratedForClassViewModel!.MethodByName("JoinOrSwitchTenant"), _params, HttpContext.RequestServices);
-                if (!_validationResult.WasSuccessful) return new ItemResult<System.Collections.Generic.ICollection<TenantResponse>>(_validationResult);
+                    GeneratedForClassViewModel!.MethodByName("SwitchTenant"), _params, HttpContext.RequestServices);
+                if (!_validationResult.WasSuccessful) return _validationResult;
             }
 
-            IncludeTree includeTree = null;
-            var _mappingContext = new MappingContext(Context);
-            var _methodResult = await Service.JoinOrSwitchTenant(
+            var _methodResult = await Service.SwitchTenant(
                 User,
                 _params.TenantId
             );
-            var _result = new ItemResult<System.Collections.Generic.ICollection<TenantResponse>>(_methodResult);
-            _result.Object = _methodResult.Object?.ToList().Select(o => Mapper.MapToDto<IntelliTect.SyncUp.Data.Models.Tenant, TenantResponse>(o, _mappingContext, includeTree ?? _methodResult.IncludeTree ?? (_methodResult.Object as IQueryable)?.GetIncludeTree())).ToList();
+            var _result = new ItemResult(_methodResult);
             return _result;
         }
 
-        public class JoinOrSwitchTenantParameters
+        public class SwitchTenantParameters
         {
             public string TenantId { get; set; }
         }
 
         /// <summary>
-        /// Method: JoinOrSwitchTenant
+        /// Method: SwitchTenant
         /// </summary>
-        [HttpPost("JoinOrSwitchTenant")]
+        [HttpPost("SwitchTenant")]
         [Authorize]
         [Consumes("application/json")]
-        public virtual async Task<ItemResult<System.Collections.Generic.ICollection<TenantResponse>>> JoinOrSwitchTenant(
-            [FromBody] JoinOrSwitchTenantParameters _params
+        public virtual async Task<ItemResult> SwitchTenant(
+            [FromBody] SwitchTenantParameters _params
         )
         {
             if (Context.Options.ValidateAttributesForMethods)
             {
                 var _validationResult = ItemResult.FromParameterValidation(
-                    GeneratedForClassViewModel!.MethodByName("JoinOrSwitchTenant"), _params, HttpContext.RequestServices);
-                if (!_validationResult.WasSuccessful) return new ItemResult<System.Collections.Generic.ICollection<TenantResponse>>(_validationResult);
+                    GeneratedForClassViewModel!.MethodByName("SwitchTenant"), _params, HttpContext.RequestServices);
+                if (!_validationResult.WasSuccessful) return _validationResult;
             }
 
-            IncludeTree includeTree = null;
-            var _mappingContext = new MappingContext(Context);
-            var _methodResult = await Service.JoinOrSwitchTenant(
+            var _methodResult = await Service.SwitchTenant(
                 User,
                 _params.TenantId
             );
-            var _result = new ItemResult<System.Collections.Generic.ICollection<TenantResponse>>(_methodResult);
-            _result.Object = _methodResult.Object?.ToList().Select(o => Mapper.MapToDto<IntelliTect.SyncUp.Data.Models.Tenant, TenantResponse>(o, _mappingContext, includeTree ?? _methodResult.IncludeTree ?? (_methodResult.Object as IQueryable)?.GetIncludeTree())).ToList();
+            var _result = new ItemResult(_methodResult);
             return _result;
         }
     }

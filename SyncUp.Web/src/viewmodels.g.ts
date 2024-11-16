@@ -585,15 +585,15 @@ export class TenantsServiceViewModel extends ServiceViewModel<typeof $metadata.T
     return loadTenants
   }
   
-  public get joinOrSwitchTenant() {
-    const joinOrSwitchTenant = this.$apiClient.$makeCaller(
-      this.$metadata.methods.joinOrSwitchTenant,
-      (c, tenantId: string | null) => c.joinOrSwitchTenant(tenantId),
+  public get switchTenant() {
+    const switchTenant = this.$apiClient.$makeCaller(
+      this.$metadata.methods.switchTenant,
+      (c, tenantId: string | null) => c.switchTenant(tenantId),
       () => ({tenantId: null as string | null, }),
-      (c, args) => c.joinOrSwitchTenant(args.tenantId))
+      (c, args) => c.switchTenant(args.tenantId))
     
-    Object.defineProperty(this, 'joinOrSwitchTenant', {value: joinOrSwitchTenant});
-    return joinOrSwitchTenant
+    Object.defineProperty(this, 'switchTenant', {value: switchTenant});
+    return switchTenant
   }
   
   constructor() {

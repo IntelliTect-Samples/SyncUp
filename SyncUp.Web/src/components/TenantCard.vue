@@ -1,17 +1,13 @@
 <template>
-  <v-card>
+  <v-card class="mt-3">
     <v-row align="center">
       <v-col>
-        <v-card-title>
+        <v-card-title class="linked-title" @click="switchTenant">
           {{ tenant.name }}
         </v-card-title>
-      </v-col>
-      <v-col align="right">
-        <JoinButton
-          class="ma-2"
-          :is-member="false"
-          @toggle-membership="toggleMembership"
-        />
+        <v-card-subtitle>
+          {{ tenant.tenantId }}
+        </v-card-subtitle>
       </v-col>
     </v-row>
     <v-card-text>
@@ -30,10 +26,12 @@ const props = defineProps<{
   tenantsService: TenantsServiceViewModel;
 }>();
 
-function toggleMembership() {
-  console.log("toggleMembership");
-  props.tenantsService.joinOrSwitchTenant(props.tenant.tenantId);
+async function switchTenant() {
+  await props.tenantsService.switchTenant(props.tenant.tenantId);
+  goToTenant();
+}
 
-  router.push(`/tenant`);
+function goToTenant() {
+  window.location.replace("/tenant");
 }
 </script>

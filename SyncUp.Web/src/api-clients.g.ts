@@ -199,8 +199,8 @@ export class TenantsServiceApiClient extends ServiceApiClient<typeof $metadata.T
     return this.$invoke($method, $params, $config)
   }
   
-  public joinOrSwitchTenant(tenantId: string | null, $config?: AxiosRequestConfig): AxiosPromise<ItemResult<$models.Tenant[]>> {
-    const $method = this.$metadata.methods.joinOrSwitchTenant
+  public switchTenant(tenantId: string | null, $config?: AxiosRequestConfig): AxiosPromise<ItemResult<void>> {
+    const $method = this.$metadata.methods.switchTenant
     const $params =  {
       tenantId,
     }
