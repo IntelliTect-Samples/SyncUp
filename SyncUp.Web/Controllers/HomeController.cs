@@ -1,10 +1,13 @@
 using IntelliTect.SyncUp.Data.Auth;
+using IntelliTect.SyncUp.Data.Models;
 using Microsoft.ApplicationInsights.AspNetCore;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using System.Web;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace IntelliTect.SyncUp.Web.Controllers;
 
@@ -18,13 +21,13 @@ public class HomeController() : Controller
     /// the links to compiled js/css that include hashes in the filenames.
     /// </remarks>
     [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
-    [Authorize]
+    [AllowAnonymous]
     public async Task<IActionResult> Index(
         [FromServices] JavaScriptSnippet appInsightsSnippet,
         [FromServices] IWebHostEnvironment hostingEnvironment
     )
     {
-        if (!User.HasTenant())
+        if (User.GetUserId() is not null && !User.HasTenant())
         {
             return RedirectToPage("/SelectTenant", new { ReturnUrl = Request.GetEncodedPathAndQuery() });
         }

@@ -1853,6 +1853,203 @@ export const SecurityService = domain.services.SecurityService = {
     },
   },
 }
+export const SignInService = domain.services.SignInService = {
+  name: "SignInService",
+  displayName: "Sign In Service",
+  type: "service",
+  controllerRoute: "SignInService",
+  methods: {
+    signIn: {
+      name: "signIn",
+      displayName: "Sign In",
+      transportType: "item",
+      httpMethod: "POST",
+      params: {
+        username: {
+          name: "username",
+          displayName: "Username",
+          type: "string",
+          role: "value",
+          rules: {
+            required: val => (val != null && val !== '') || "Username is required.",
+          }
+        },
+        password: {
+          name: "password",
+          displayName: "Password",
+          type: "string",
+          role: "value",
+          rules: {
+            required: val => (val != null && val !== '') || "Password is required.",
+          }
+        },
+      },
+      return: {
+        name: "$return",
+        displayName: "Result",
+        type: "void",
+        role: "value",
+      },
+    },
+    signOut: {
+      name: "signOut",
+      displayName: "Sign Out",
+      transportType: "item",
+      httpMethod: "POST",
+      params: {
+      },
+      return: {
+        name: "$return",
+        displayName: "Result",
+        type: "void",
+        role: "value",
+      },
+    },
+    resetPassword: {
+      name: "resetPassword",
+      displayName: "Reset Password",
+      transportType: "item",
+      httpMethod: "POST",
+      params: {
+        email: {
+          name: "email",
+          displayName: "Email",
+          type: "string",
+          role: "value",
+          rules: {
+            required: val => (val != null && val !== '') || "Email is required.",
+          }
+        },
+        password: {
+          name: "password",
+          displayName: "Password",
+          type: "string",
+          role: "value",
+          rules: {
+            required: val => (val != null && val !== '') || "Password is required.",
+          }
+        },
+        token: {
+          name: "token",
+          displayName: "Token",
+          type: "string",
+          role: "value",
+          rules: {
+            required: val => (val != null && val !== '') || "Token is required.",
+          }
+        },
+      },
+      return: {
+        name: "$return",
+        displayName: "Result",
+        type: "void",
+        role: "value",
+      },
+    },
+    forgotPassword: {
+      name: "forgotPassword",
+      displayName: "Forgot Password",
+      transportType: "item",
+      httpMethod: "POST",
+      params: {
+        username: {
+          name: "username",
+          displayName: "Username",
+          type: "string",
+          role: "value",
+          rules: {
+            required: val => (val != null && val !== '') || "Username is required.",
+          }
+        },
+      },
+      return: {
+        name: "$return",
+        displayName: "Result",
+        type: "void",
+        role: "value",
+      },
+    },
+    register: {
+      name: "register",
+      displayName: "Register",
+      transportType: "item",
+      httpMethod: "POST",
+      params: {
+        email: {
+          name: "email",
+          displayName: "Email",
+          type: "string",
+          role: "value",
+          rules: {
+            required: val => (val != null && val !== '') || "Email is required.",
+          }
+        },
+        password: {
+          name: "password",
+          displayName: "Password",
+          type: "string",
+          role: "value",
+          rules: {
+            required: val => (val != null && val !== '') || "Password is required.",
+          }
+        },
+      },
+      return: {
+        name: "$return",
+        displayName: "Result",
+        type: "void",
+        role: "value",
+      },
+    },
+    loadTenants: {
+      name: "loadTenants",
+      displayName: "Load Tenants",
+      transportType: "item",
+      httpMethod: "POST",
+      params: {
+      },
+      return: {
+        name: "$return",
+        displayName: "Result",
+        type: "collection",
+        itemType: {
+          name: "$collectionItem",
+          displayName: "",
+          role: "value",
+          type: "model",
+          get typeDef() { return (domain.types.Tenant as ModelType & { name: "Tenant" }) },
+        },
+        role: "value",
+      },
+    },
+    setTenant: {
+      name: "setTenant",
+      displayName: "Set Tenant",
+      transportType: "item",
+      httpMethod: "POST",
+      params: {
+        tenantId: {
+          name: "tenantId",
+          displayName: "Tenant Id",
+          type: "string",
+          role: "value",
+        },
+        tenantName: {
+          name: "tenantName",
+          displayName: "Tenant Name",
+          type: "string",
+          role: "value",
+        },
+      },
+      return: {
+        name: "$return",
+        displayName: "Result",
+        type: "void",
+        role: "value",
+      },
+    },
+  },
+}
 export const TenantsService = domain.services.TenantsService = {
   name: "TenantsService",
   displayName: "Tenants Service",
@@ -1929,6 +2126,7 @@ interface AppDomain extends Domain {
   services: {
     ImageService: typeof ImageService
     SecurityService: typeof SecurityService
+    SignInService: typeof SignInService
     TenantsService: typeof TenantsService
   }
 }

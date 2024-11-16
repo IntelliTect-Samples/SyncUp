@@ -575,6 +575,91 @@ export class SecurityServiceViewModel extends ServiceViewModel<typeof $metadata.
 }
 
 
+export class SignInServiceViewModel extends ServiceViewModel<typeof $metadata.SignInService, $apiClients.SignInServiceApiClient> {
+  
+  public get signIn() {
+    const signIn = this.$apiClient.$makeCaller(
+      this.$metadata.methods.signIn,
+      (c, username: string | null, password: string | null) => c.signIn(username, password),
+      () => ({username: null as string | null, password: null as string | null, }),
+      (c, args) => c.signIn(args.username, args.password))
+    
+    Object.defineProperty(this, 'signIn', {value: signIn});
+    return signIn
+  }
+  
+  public get signOut() {
+    const signOut = this.$apiClient.$makeCaller(
+      this.$metadata.methods.signOut,
+      (c) => c.signOut(),
+      () => ({}),
+      (c, args) => c.signOut())
+    
+    Object.defineProperty(this, 'signOut', {value: signOut});
+    return signOut
+  }
+  
+  public get resetPassword() {
+    const resetPassword = this.$apiClient.$makeCaller(
+      this.$metadata.methods.resetPassword,
+      (c, email: string | null, password: string | null, token: string | null) => c.resetPassword(email, password, token),
+      () => ({email: null as string | null, password: null as string | null, token: null as string | null, }),
+      (c, args) => c.resetPassword(args.email, args.password, args.token))
+    
+    Object.defineProperty(this, 'resetPassword', {value: resetPassword});
+    return resetPassword
+  }
+  
+  public get forgotPassword() {
+    const forgotPassword = this.$apiClient.$makeCaller(
+      this.$metadata.methods.forgotPassword,
+      (c, username: string | null) => c.forgotPassword(username),
+      () => ({username: null as string | null, }),
+      (c, args) => c.forgotPassword(args.username))
+    
+    Object.defineProperty(this, 'forgotPassword', {value: forgotPassword});
+    return forgotPassword
+  }
+  
+  public get register() {
+    const register = this.$apiClient.$makeCaller(
+      this.$metadata.methods.register,
+      (c, email: string | null, password: string | null) => c.register(email, password),
+      () => ({email: null as string | null, password: null as string | null, }),
+      (c, args) => c.register(args.email, args.password))
+    
+    Object.defineProperty(this, 'register', {value: register});
+    return register
+  }
+  
+  public get loadTenants() {
+    const loadTenants = this.$apiClient.$makeCaller(
+      this.$metadata.methods.loadTenants,
+      (c) => c.loadTenants(),
+      () => ({}),
+      (c, args) => c.loadTenants())
+    
+    Object.defineProperty(this, 'loadTenants', {value: loadTenants});
+    return loadTenants
+  }
+  
+  public get setTenant() {
+    const setTenant = this.$apiClient.$makeCaller(
+      this.$metadata.methods.setTenant,
+      (c, tenantId?: string | null, tenantName?: string | null) => c.setTenant(tenantId, tenantName),
+      () => ({tenantId: null as string | null, tenantName: null as string | null, }),
+      (c, args) => c.setTenant(args.tenantId, args.tenantName))
+    
+    Object.defineProperty(this, 'setTenant', {value: setTenant});
+    return setTenant
+  }
+  
+  constructor() {
+    super($metadata.SignInService, new $apiClients.SignInServiceApiClient())
+  }
+}
+
+
 export class TenantsServiceViewModel extends ServiceViewModel<typeof $metadata.TenantsService, $apiClients.TenantsServiceApiClient> {
   
   public get loadTenants() {
@@ -636,6 +721,7 @@ const listViewModelTypeLookup = ListViewModel.typeLookup = {
 const serviceViewModelTypeLookup = ServiceViewModel.typeLookup = {
   ImageService: ImageServiceViewModel,
   SecurityService: SecurityServiceViewModel,
+  SignInService: SignInServiceViewModel,
   TenantsService: TenantsServiceViewModel,
 }
 

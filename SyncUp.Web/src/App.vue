@@ -1,6 +1,11 @@
 <template>
   <v-app id="vue-app">
-    <v-app-bar color="primary" density="compact">
+    <v-app-bar
+      id="vue-appbar"
+      v-if="userInfo.id && userInfo.tenantId"
+      color="primary"
+      density="compact"
+    >
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-toolbar-title>
         <router-link to="/" style="color: inherit">
@@ -40,19 +45,26 @@
 
           <v-divider />
           <v-list-item
-            href="/SelectTenant"
+            to="/SelectTenant"
             prepend-icon="fa fa-building"
             title="Switch Organization"
           />
           <v-list-item
-            href="/SignOut"
+            v-if="!userInfo.id"
+            to="/SignIn"
+            prepend-icon="fa fa-sign-in"
+            title="Log In"
+          />
+          <v-list-item
+            v-else
             prepend-icon="fa fa-sign-out"
             title="Log Out"
+            @click="signOut"
           />
         </v-list>
       </v-menu>
     </v-app-bar>
-    <v-navigation-drawer v-model="drawer">
+    <v-navigation-drawer id="vue-navDrawer" v-if="userInfo.id" v-model="drawer">
       <v-list>
         <v-list-item to="/" prepend-icon="fa fa-users" title="All Tenants" />
 
@@ -140,7 +152,9 @@ import Forbidden from "./views/errors/Forbidden.vue";
 import { useLocalStorage, usePreferredDark } from "@vueuse/core";
 import { useTheme } from "vuetify";
 import { format } from "date-fns-tz";
+import { SignInServiceViewModel } from "@/viewmodels.g";
 
+const signInService = new SignInServiceViewModel();
 const drawer = ref<boolean | null>(null);
 
 const router = useRouter();
@@ -189,6 +203,11 @@ const buildDate = computed(() => {
   if (!BUILD_DATE) return "";
   return "build " + format(BUILD_DATE, "yyyy-MM-dd hh:mm a z");
 });
+
+async function signOut() {
+  await signInService.signOut();
+  router.push({ name: "/SignIn", params: { fromSignOut: "true" } });
+}
 </script>
 
 <style lang="scss">

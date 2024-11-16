@@ -190,6 +190,70 @@ export class SecurityServiceApiClient extends ServiceApiClient<typeof $metadata.
 }
 
 
+export class SignInServiceApiClient extends ServiceApiClient<typeof $metadata.SignInService> {
+  constructor() { super($metadata.SignInService) }
+  public signIn(username: string | null, password: string | null, $config?: AxiosRequestConfig): AxiosPromise<ItemResult<void>> {
+    const $method = this.$metadata.methods.signIn
+    const $params =  {
+      username,
+      password,
+    }
+    return this.$invoke($method, $params, $config)
+  }
+  
+  public signOut($config?: AxiosRequestConfig): AxiosPromise<ItemResult<void>> {
+    const $method = this.$metadata.methods.signOut
+    const $params =  {
+    }
+    return this.$invoke($method, $params, $config)
+  }
+  
+  public resetPassword(email: string | null, password: string | null, token: string | null, $config?: AxiosRequestConfig): AxiosPromise<ItemResult<void>> {
+    const $method = this.$metadata.methods.resetPassword
+    const $params =  {
+      email,
+      password,
+      token,
+    }
+    return this.$invoke($method, $params, $config)
+  }
+  
+  public forgotPassword(username: string | null, $config?: AxiosRequestConfig): AxiosPromise<ItemResult<void>> {
+    const $method = this.$metadata.methods.forgotPassword
+    const $params =  {
+      username,
+    }
+    return this.$invoke($method, $params, $config)
+  }
+  
+  public register(email: string | null, password: string | null, $config?: AxiosRequestConfig): AxiosPromise<ItemResult<void>> {
+    const $method = this.$metadata.methods.register
+    const $params =  {
+      email,
+      password,
+    }
+    return this.$invoke($method, $params, $config)
+  }
+  
+  public loadTenants($config?: AxiosRequestConfig): AxiosPromise<ItemResult<$models.Tenant[]>> {
+    const $method = this.$metadata.methods.loadTenants
+    const $params =  {
+    }
+    return this.$invoke($method, $params, $config)
+  }
+  
+  public setTenant(tenantId?: string | null, tenantName?: string | null, $config?: AxiosRequestConfig): AxiosPromise<ItemResult<void>> {
+    const $method = this.$metadata.methods.setTenant
+    const $params =  {
+      tenantId,
+      tenantName,
+    }
+    return this.$invoke($method, $params, $config)
+  }
+  
+}
+
+
 export class TenantsServiceApiClient extends ServiceApiClient<typeof $metadata.TenantsService> {
   constructor() { super($metadata.TenantsService) }
   public loadTenants($config?: AxiosRequestConfig): AxiosPromise<ItemResult<$models.Tenant[]>> {

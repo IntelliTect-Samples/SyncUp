@@ -4,6 +4,12 @@
     <DotnetCliToolTargetFramework>net9.0</DotnetCliToolTargetFramework>
     <UserSecretsId>315225b8-44ae-4855-abcb-da9a6e42f847</UserSecretsId>
   </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Pages\**" />
+    <Content Remove="Pages\**" />
+    <EmbeddedResource Remove="Pages\**" />
+    <None Remove="Pages\**" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\SyncUp.Data\SyncUp.Data.csproj" />

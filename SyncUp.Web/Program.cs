@@ -122,6 +122,8 @@ services.AddScoped<InvitationService>();
 services.AddScoped<ImageService>();
 services.AddScoped<TenantsService>();
 
+services.AddScoped<ISignInService, SignInService>();
+
 
 #endregion
 
@@ -170,7 +172,6 @@ app.Use(async (context, next) =>
 app.MapSwagger();
 app.MapScalarApiReference(c => c.OpenApiRoutePattern = "/swagger/{documentName}/swagger.json");
 
-app.MapRazorPages();
 app.MapDefaultControllerRoute();
 
 // API fallback to prevent serving SPA fallback to 404 hits on API endpoints.

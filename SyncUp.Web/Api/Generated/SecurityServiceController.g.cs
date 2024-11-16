@@ -37,7 +37,7 @@ namespace SyncUp.Web.Api
         /// Method: WhoAmI
         /// </summary>
         [HttpGet("WhoAmI")]
-        [Authorize]
+        [AllowAnonymous]
         public virtual ItemResult<UserInfoResponse> WhoAmI(
             [FromServices] IntelliTect.SyncUp.Data.AppDbContext db)
         {

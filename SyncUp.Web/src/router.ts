@@ -5,6 +5,7 @@ import {
   CAdminAuditLogPage,
 } from "coalesce-vue-vuetify3";
 import { Permission } from "./models.g";
+import { userInfo } from "@/user-service";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -68,6 +69,28 @@ const router = createRouter({
       meta: { permissions: [Permission.ViewAuditLogs] },
       props: { type: "AuditLog" },
     },
+
+    {
+      path: "/SignIn",
+      component: () => import("@/views/LoginFlow/SignIn.vue"),
+      props: true,
+    },
+    {
+      path: "/SelectTenant",
+      component: () => import("@/views/LoginFlow/SelectTenant.vue"),
+    },
+    {
+      path: "/ConfirmEmail",
+      component: () => import("@/views/LoginFlow/ConfirmEmail.vue"),
+    },
+    {
+      path: "/ForgotPassword",
+      component: () => import("@/views/LoginFlow/ForgotPassword.vue"),
+    },
+    {
+      path: "/SignUp",
+      component: () => import("@/views/LoginFlow/SignUp.vue"),
+    },
     {
       name: "error-404",
       path: "/:pathMatch(.*)*",
@@ -103,7 +126,7 @@ function titledAdminPage<
 
 // Azure Monitor Application Insights configuration
 let flushPageView: (() => void) | undefined;
-router.beforeEach((to, from) => {
+router.beforeEach((to, from, next) => {
   if (to.path != from.path) {
     // If there's a previous page view still unsent,
     // flush it now before the new page takes over and changes
@@ -111,6 +134,11 @@ router.beforeEach((to, from) => {
     // This only happens when a user is clicking through pages very fast.
     flushPageView?.();
   }
+
+  if (to.path != "/SignIn" && !userInfo.value.id) {
+    next("/SignIn");
+  }
+  next();
 });
 router.afterEach((to, from) => {
   if (to.path != from.path) {
