@@ -125,6 +125,38 @@ export class Group {
 }
 
 
+export interface Post extends Model<typeof metadata.Post> {
+  postId: number | null
+  title: string | null
+  body: string | null
+  modifiedBy: User | null
+  modifiedById: string | null
+  modifiedOn: Date | null
+  createdBy: User | null
+  createdById: string | null
+  createdOn: Date | null
+}
+export class Post {
+  
+  /** Mutates the input object and its descendents into a valid Post implementation. */
+  static convert(data?: Partial<Post>): Post {
+    return convertToModel(data || {}, metadata.Post) 
+  }
+  
+  /** Maps the input object and its descendents to a new, valid Post implementation. */
+  static map(data?: Partial<Post>): Post {
+    return mapToModel(data || {}, metadata.Post) 
+  }
+  
+  static [Symbol.hasInstance](x: any) { return x?.$metadata === metadata.Post; }
+  
+  /** Instantiate a new Post, optionally basing it on the given data. */
+  constructor(data?: Partial<Post> | {[k: string]: any}) {
+    Object.assign(this, Post.map(data || {}));
+  }
+}
+
+
 export interface Role extends Model<typeof metadata.Role> {
   name: string | null
   permissions: Permission[] | null
@@ -306,6 +338,7 @@ declare module "coalesce-vue/lib/model" {
     AuditLog: AuditLog
     AuditLogProperty: AuditLogProperty
     Group: Group
+    Post: Post
     Role: Role
     Tenant: Tenant
     User: User

@@ -340,6 +340,106 @@ export const Group = domain.types.Group = {
   dataSources: {
   },
 }
+export const Post = domain.types.Post = {
+  name: "Post" as const,
+  displayName: "Post",
+  get displayProp() { return this.props.postId }, 
+  type: "model",
+  controllerRoute: "Post",
+  get keyProp() { return this.props.postId }, 
+  behaviorFlags: 7 as BehaviorFlags,
+  props: {
+    postId: {
+      name: "postId",
+      displayName: "Post Id",
+      type: "number",
+      role: "primaryKey",
+      hidden: 3 as HiddenAreas,
+      createOnly: true,
+    },
+    title: {
+      name: "title",
+      displayName: "Title",
+      type: "string",
+      role: "value",
+      rules: {
+        required: val => (val != null && val !== '') || "Title is required.",
+        maxLength: val => !val || val.length <= 500 || "Title may not be more than 500 characters.",
+      }
+    },
+    body: {
+      name: "body",
+      displayName: "Body",
+      type: "string",
+      role: "value",
+      rules: {
+        required: val => (val != null && val !== '') || "Body is required.",
+      }
+    },
+    modifiedById: {
+      name: "modifiedById",
+      displayName: "Modified By Id",
+      type: "string",
+      role: "foreignKey",
+      get principalKey() { return (domain.types.User as ModelType & { name: "User" }).props.id as PrimaryKeyProperty },
+      get principalType() { return (domain.types.User as ModelType & { name: "User" }) },
+      get navigationProp() { return (domain.types.Post as ModelType & { name: "Post" }).props.modifiedBy as ModelReferenceNavigationProperty },
+      hidden: 3 as HiddenAreas,
+      dontSerialize: true,
+    },
+    createdById: {
+      name: "createdById",
+      displayName: "Created By Id",
+      type: "string",
+      role: "foreignKey",
+      get principalKey() { return (domain.types.User as ModelType & { name: "User" }).props.id as PrimaryKeyProperty },
+      get principalType() { return (domain.types.User as ModelType & { name: "User" }) },
+      get navigationProp() { return (domain.types.Post as ModelType & { name: "Post" }).props.createdBy as ModelReferenceNavigationProperty },
+      hidden: 3 as HiddenAreas,
+      dontSerialize: true,
+    },
+    createdBy: {
+      name: "createdBy",
+      displayName: "Created By",
+      type: "model",
+      get typeDef() { return (domain.types.User as ModelType & { name: "User" }) },
+      role: "referenceNavigation",
+      get foreignKey() { return (domain.types.Post as ModelType & { name: "Post" }).props.createdById as ForeignKeyProperty },
+      get principalKey() { return (domain.types.User as ModelType & { name: "User" }).props.id as PrimaryKeyProperty },
+      dontSerialize: true,
+    },
+    createdOn: {
+      name: "createdOn",
+      displayName: "Created On",
+      type: "date",
+      dateKind: "datetime",
+      role: "value",
+      dontSerialize: true,
+    },
+    modifiedBy: {
+      name: "modifiedBy",
+      displayName: "Modified By",
+      type: "model",
+      get typeDef() { return (domain.types.User as ModelType & { name: "User" }) },
+      role: "referenceNavigation",
+      get foreignKey() { return (domain.types.Post as ModelType & { name: "Post" }).props.modifiedById as ForeignKeyProperty },
+      get principalKey() { return (domain.types.User as ModelType & { name: "User" }).props.id as PrimaryKeyProperty },
+      dontSerialize: true,
+    },
+    modifiedOn: {
+      name: "modifiedOn",
+      displayName: "Modified On",
+      type: "date",
+      dateKind: "datetime",
+      role: "value",
+      dontSerialize: true,
+    },
+  },
+  methods: {
+  },
+  dataSources: {
+  },
+}
 export const Role = domain.types.Role = {
   name: "Role" as const,
   displayName: "Role",
@@ -947,6 +1047,7 @@ interface AppDomain extends Domain {
     AuditLog: typeof AuditLog
     AuditLogProperty: typeof AuditLogProperty
     Group: typeof Group
+    Post: typeof Post
     Role: typeof Role
     Tenant: typeof Tenant
     User: typeof User

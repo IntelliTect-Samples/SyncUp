@@ -18,6 +18,11 @@ export class GroupApiClient extends ModelApiClient<$models.Group> {
 }
 
 
+export class PostApiClient extends ModelApiClient<$models.Post> {
+  constructor() { super($metadata.Post) }
+}
+
+
 export class RoleApiClient extends ModelApiClient<$models.Role> {
   constructor() { super($metadata.Role) }
 }
