@@ -1,6 +1,4 @@
-﻿using Microsoft.IdentityModel.Tokens;
-
-namespace IntelliTect.SyncUp.Data.Models;
+﻿namespace IntelliTect.SyncUp.Data.Models;
 
 public class Group : TenantedBase
 {
@@ -13,4 +11,6 @@ public class Group : TenantedBase
     public required string SubTitle { get; set; }
 
     public ICollection<Post> Posts { get; set; }
+
+    public ICollection<Event> Events { get; set; }
 }

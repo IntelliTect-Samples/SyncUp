@@ -25,9 +25,9 @@ public class DatabaseSeeder(AppDbContext db)
         db.SaveChanges();
     }
 
-    public void SeedTenants()
+    public void SeedDemoTenant()
     {
-        if (!db.Tenants.Any())
+        if (!db.Tenants.Any(t => t.Name.Contains("Demo Tenant")))
         {
             db.Tenants.Add(new()
             {
@@ -95,12 +95,14 @@ public class DatabaseSeeder(AppDbContext db)
                     {
                         Title = "What is there to do in Spokane?",
                         Body = "Go check out IntelliTect! (And join their hackathon...)",
-                        Comments = [new(){
-                            Body = "What is a hackathon?"
-                        },
-                        new(){
-                            Body = "Check out the Looff Carousel. It's kinda cool."
-                        }]
+                        Comments = [
+                            new()
+                            {
+                                Body = "What is a hackathon?"
+                            },
+                            new(){
+                                Body = "Check out the Looff Carousel. It's kinda cool."
+                            }]
                     },
                     new()
                     {
@@ -112,11 +114,12 @@ public class DatabaseSeeder(AppDbContext db)
             {
                 Name = "Seattle",
                 SubTitle = "Generic group for the Seattle area",
-                Posts = [new()
-                {
-                    Title = "What is there to do in Seattle?",
-                    Body = "There is too much to do here. Go to Spokane instead!"
-                }]
+                Posts = [
+                    new()
+                    {
+                        Title = "What is there to do in Seattle?",
+                        Body = "There is too much to do here. Go to Spokane instead!"
+                    }]
             },
             new()
             {
@@ -138,12 +141,13 @@ public class DatabaseSeeder(AppDbContext db)
                     {
                         Title = "What should I do with this space?",
                         Body = "Help brainstorm ideas to makeover this room.",
-                        Comments = [new(){
-                            Body = "Make it blue!"
-                        },
-                        new(){
-                            Body = "Make it pink!"
-                        }]
+                        Comments = [
+                            new(){
+                                Body = "Make it blue!"
+                            },
+                            new(){
+                                Body = "Make it pink!"
+                            }]
                     }]
             });
 
@@ -153,6 +157,42 @@ public class DatabaseSeeder(AppDbContext db)
 
     public void SeedEvents()
     {
-        ///TODO: Mock events
+        var spokaneGroup = db.Groups.FirstOrDefault(g => g.Name == "Spokane");
+        if (spokaneGroup != null)
+        {
+            db.Events.AddRange([
+                new()
+                {
+                    Name = "Friendsgiving",
+                    Description = "Get together with your friends and celebrate before going home for the holidays.",
+                    Time = new DateTimeOffset(2024, 11, 25, 18, 0, 0, TimeSpan.Zero),
+                    Location = "123 ABC St Spokane, WA",
+                    Group = spokaneGroup
+                },
+                new ()
+                {
+                    Name = "Holiday Coffee Chat",
+                    Description = "Get together with your friends and celebrate before going home for the holidays.",
+                    Time = new DateTimeOffset(2024, 12, 1, 8, 30, 0, TimeSpan.Zero),
+                    Location = "123 ABC St Spokane, WA",
+                    Group = spokaneGroup,
+                }]);
+            db.SaveChanges();
+        }
+
+        var gymGroup = db.Groups.FirstOrDefault(g => g.Name == "Gym Girlies");
+        if (gymGroup != null)
+        {
+            db.Events.AddRange([
+                new()
+                {
+                    Name = "Riverside Run",
+                    Description = "Run away from your problems and burn some energy running with us down riverside!",
+                    Time = new DateTimeOffset(2024, 12, 1, 8, 30, 0, TimeSpan.Zero),
+                    Location = "789 Riverside Ln Spokane, WA",
+                    Group = gymGroup,
+            }]);
+            db.SaveChanges();   
+        }
     }
 }

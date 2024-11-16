@@ -337,6 +337,141 @@ export const Comment = domain.types.Comment = {
   dataSources: {
   },
 }
+export const Event = domain.types.Event = {
+  name: "Event" as const,
+  displayName: "Event",
+  get displayProp() { return this.props.name }, 
+  type: "model",
+  controllerRoute: "Event",
+  get keyProp() { return this.props.eventId }, 
+  behaviorFlags: 7 as BehaviorFlags,
+  props: {
+    eventId: {
+      name: "eventId",
+      displayName: "Event Id",
+      type: "number",
+      role: "primaryKey",
+      hidden: 3 as HiddenAreas,
+      createOnly: true,
+    },
+    name: {
+      name: "name",
+      displayName: "Name",
+      type: "string",
+      role: "value",
+      rules: {
+        required: val => (val != null && val !== '') || "Name is required.",
+        maxLength: val => !val || val.length <= 500 || "Name may not be more than 500 characters.",
+      }
+    },
+    description: {
+      name: "description",
+      displayName: "Description",
+      type: "string",
+      role: "value",
+    },
+    time: {
+      name: "time",
+      displayName: "Time",
+      type: "date",
+      dateKind: "datetime",
+      role: "value",
+    },
+    location: {
+      name: "location",
+      displayName: "Location",
+      type: "string",
+      role: "value",
+    },
+    groupId: {
+      name: "groupId",
+      displayName: "Group Id",
+      type: "number",
+      role: "foreignKey",
+      get principalKey() { return (domain.types.Group as ModelType & { name: "Group" }).props.groupId as PrimaryKeyProperty },
+      get principalType() { return (domain.types.Group as ModelType & { name: "Group" }) },
+      get navigationProp() { return (domain.types.Event as ModelType & { name: "Event" }).props.group as ModelReferenceNavigationProperty },
+      hidden: 3 as HiddenAreas,
+      createOnly: true,
+      rules: {
+        required: val => val != null || "Group is required.",
+      }
+    },
+    group: {
+      name: "group",
+      displayName: "Group",
+      type: "model",
+      get typeDef() { return (domain.types.Group as ModelType & { name: "Group" }) },
+      role: "referenceNavigation",
+      get foreignKey() { return (domain.types.Event as ModelType & { name: "Event" }).props.groupId as ForeignKeyProperty },
+      get principalKey() { return (domain.types.Group as ModelType & { name: "Group" }).props.groupId as PrimaryKeyProperty },
+      get inverseNavigation() { return (domain.types.Group as ModelType & { name: "Group" }).props.events as ModelCollectionNavigationProperty },
+      dontSerialize: true,
+    },
+    modifiedById: {
+      name: "modifiedById",
+      displayName: "Modified By Id",
+      type: "string",
+      role: "foreignKey",
+      get principalKey() { return (domain.types.User as ModelType & { name: "User" }).props.id as PrimaryKeyProperty },
+      get principalType() { return (domain.types.User as ModelType & { name: "User" }) },
+      get navigationProp() { return (domain.types.Event as ModelType & { name: "Event" }).props.modifiedBy as ModelReferenceNavigationProperty },
+      hidden: 3 as HiddenAreas,
+      dontSerialize: true,
+    },
+    createdById: {
+      name: "createdById",
+      displayName: "Created By Id",
+      type: "string",
+      role: "foreignKey",
+      get principalKey() { return (domain.types.User as ModelType & { name: "User" }).props.id as PrimaryKeyProperty },
+      get principalType() { return (domain.types.User as ModelType & { name: "User" }) },
+      get navigationProp() { return (domain.types.Event as ModelType & { name: "Event" }).props.createdBy as ModelReferenceNavigationProperty },
+      hidden: 3 as HiddenAreas,
+      dontSerialize: true,
+    },
+    createdBy: {
+      name: "createdBy",
+      displayName: "Created By",
+      type: "model",
+      get typeDef() { return (domain.types.User as ModelType & { name: "User" }) },
+      role: "referenceNavigation",
+      get foreignKey() { return (domain.types.Event as ModelType & { name: "Event" }).props.createdById as ForeignKeyProperty },
+      get principalKey() { return (domain.types.User as ModelType & { name: "User" }).props.id as PrimaryKeyProperty },
+      dontSerialize: true,
+    },
+    createdOn: {
+      name: "createdOn",
+      displayName: "Created On",
+      type: "date",
+      dateKind: "datetime",
+      role: "value",
+      dontSerialize: true,
+    },
+    modifiedBy: {
+      name: "modifiedBy",
+      displayName: "Modified By",
+      type: "model",
+      get typeDef() { return (domain.types.User as ModelType & { name: "User" }) },
+      role: "referenceNavigation",
+      get foreignKey() { return (domain.types.Event as ModelType & { name: "Event" }).props.modifiedById as ForeignKeyProperty },
+      get principalKey() { return (domain.types.User as ModelType & { name: "User" }).props.id as PrimaryKeyProperty },
+      dontSerialize: true,
+    },
+    modifiedOn: {
+      name: "modifiedOn",
+      displayName: "Modified On",
+      type: "date",
+      dateKind: "datetime",
+      role: "value",
+      dontSerialize: true,
+    },
+  },
+  methods: {
+  },
+  dataSources: {
+  },
+}
 export const Group = domain.types.Group = {
   name: "Group" as const,
   displayName: "Group",
@@ -386,6 +521,22 @@ export const Group = domain.types.Group = {
         get typeDef() { return (domain.types.Post as ModelType & { name: "Post" }) },
       },
       role: "value",
+      dontSerialize: true,
+    },
+    events: {
+      name: "events",
+      displayName: "Events",
+      type: "collection",
+      itemType: {
+        name: "$collectionItem",
+        displayName: "",
+        role: "value",
+        type: "model",
+        get typeDef() { return (domain.types.Event as ModelType & { name: "Event" }) },
+      },
+      role: "collectionNavigation",
+      get foreignKey() { return (domain.types.Event as ModelType & { name: "Event" }).props.groupId as ForeignKeyProperty },
+      get inverseNavigation() { return (domain.types.Event as ModelType & { name: "Event" }).props.group as ModelReferenceNavigationProperty },
       dontSerialize: true,
     },
     modifiedById: {
@@ -1181,6 +1332,7 @@ interface AppDomain extends Domain {
     AuditLog: typeof AuditLog
     AuditLogProperty: typeof AuditLogProperty
     Comment: typeof Comment
+    Event: typeof Event
     Group: typeof Group
     Post: typeof Post
     Role: typeof Role

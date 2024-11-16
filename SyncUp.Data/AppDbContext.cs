@@ -1,4 +1,3 @@
-using IntelliTect.SyncUp.Data.Coalesce;
 using IntelliTect.Coalesce.AuditLogging;
 using Microsoft.AspNetCore.DataProtection.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
@@ -66,6 +65,7 @@ public class AppDbContext
 
     public DbSet<Group> Groups => Set<Group>();
     public DbSet<Post> Posts => Set<Post>();
+    public DbSet<Event> Events => Set<Event>();
     public DbSet<Comment> Comments => Set<Comment>();
 
     public DbSet<AuditLog> AuditLogs => Set<AuditLog>();
@@ -233,7 +233,7 @@ public class AppDbContext
     {
         var seeder = new DatabaseSeeder(this);
 
-        seeder.SeedTenants();
+        seeder.SeedDemoTenant();
 
         // Only seed the demo tenant. Don't just grab Tenants.First(), nor fall back to it,
         // because this could grab a real production tenant.
@@ -250,6 +250,11 @@ public class AppDbContext
         if (!Groups.Any())
         {
             seeder.SeedGroups();
+        }
+
+        if (!Events.Any())
+        {
+            seeder.SeedEvents();
         }
 
         //Give any existing users access to the demo tenant
