@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-card title="User Profile">
+    <v-card>
       <c-loader-status
         :loaders="{
           '': [user.$bulkSave, user.evict],

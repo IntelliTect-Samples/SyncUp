@@ -7,7 +7,7 @@
     >
       <v-row>
         <v-col cols="12" md="6" lg="4" class="mt-4">
-          <v-card title="All Users">
+          <v-card>
             <v-card-text>
               <v-list lines="two">
                 <v-list-item
@@ -15,6 +15,7 @@
                   :key="user.id!"
                   color="primary"
                   append-icon="fas fa-chevron-right"
+                  :active="user.id === selectedUser?.id"
                   @click="selectedUser = user"
                 >
                   <template #prepend>
