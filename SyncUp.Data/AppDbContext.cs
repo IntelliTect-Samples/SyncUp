@@ -239,7 +239,7 @@ public class AppDbContext
     {
         var seeder = new DatabaseSeeder(this);
 
-        await seeder.SeedDemoTenant();
+        await seeder.SeedDemoTenant(imageService);
 
         // Only seed the demo tenant. Don't just grab Tenants.First(), nor fall back to it,
         // because this could grab a real production tenant.
@@ -247,6 +247,9 @@ public class AppDbContext
         if (demoTenant is null) return;
 
         this.TenantId = demoTenant.TenantId;
+        demoTenant.BannerImage = imageService == null ? null : await imageService.AddImage("https://wallpapers.com/images/featured/widescreen-3ao0esn9qknhdudj.jpg");
+        await SaveChangesAsync();
+
 
         if (!Roles.Any())
         {

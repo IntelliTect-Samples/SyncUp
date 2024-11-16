@@ -9,7 +9,12 @@
         @click="router.push(`/group/${group.groupId}`)"
       >
         <v-col cols="auto">
-          <v-avatar size="60" color="primary" class="mt-1 ml-1" />
+          <v-avatar
+            size="60"
+            color="primary"
+            class="mt-1 ml-1"
+            :image="group.avatarImage?.imageUrl!"
+          />
         </v-col>
         <v-col cols="auto">
           <v-card-title>

@@ -140,6 +140,9 @@ export interface GroupViewModel extends $models.Group {
   bannerImageId: string | null;
   get bannerImage(): ImageViewModel | null;
   set bannerImage(value: ImageViewModel | $models.Image | null);
+  avatarImageId: string | null;
+  get avatarImage(): ImageViewModel | null;
+  set avatarImage(value: ImageViewModel | $models.Image | null);
   description: string | null;
   get posts(): ViewModelCollection<PostViewModel, $models.Post>;
   set posts(value: (PostViewModel | $models.Post)[] | null);
