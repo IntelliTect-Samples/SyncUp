@@ -64,6 +64,10 @@ public class AppDbContext
 
     public AppDbContext(DbContextOptions options) : base(options) { }
 
+    public DbSet<Group> Groups => Set<Group>();
+    public DbSet<Post> Posts => Set<Post>();
+    public DbSet<Comment> Comments => Set<Comment>();
+
     public DbSet<AuditLog> AuditLogs => Set<AuditLog>();
     public DbSet<AuditLogProperty> AuditLogProperties => Set<AuditLogProperty>();
 

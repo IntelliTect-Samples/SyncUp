@@ -93,6 +93,105 @@ export class AuditLogProperty {
 }
 
 
+export interface Comment extends Model<typeof metadata.Comment> {
+  commentId: number | null
+  body: string | null
+  post: Post | null
+  modifiedBy: User | null
+  modifiedById: string | null
+  modifiedOn: Date | null
+  createdBy: User | null
+  createdById: string | null
+  createdOn: Date | null
+}
+export class Comment {
+  
+  /** Mutates the input object and its descendents into a valid Comment implementation. */
+  static convert(data?: Partial<Comment>): Comment {
+    return convertToModel(data || {}, metadata.Comment) 
+  }
+  
+  /** Maps the input object and its descendents to a new, valid Comment implementation. */
+  static map(data?: Partial<Comment>): Comment {
+    return mapToModel(data || {}, metadata.Comment) 
+  }
+  
+  static [Symbol.hasInstance](x: any) { return x?.$metadata === metadata.Comment; }
+  
+  /** Instantiate a new Comment, optionally basing it on the given data. */
+  constructor(data?: Partial<Comment> | {[k: string]: any}) {
+    Object.assign(this, Comment.map(data || {}));
+  }
+}
+
+
+export interface Group extends Model<typeof metadata.Group> {
+  groupId: number | null
+  name: string | null
+  subTitle: string | null
+  posts: Post[] | null
+  modifiedBy: User | null
+  modifiedById: string | null
+  modifiedOn: Date | null
+  createdBy: User | null
+  createdById: string | null
+  createdOn: Date | null
+}
+export class Group {
+  
+  /** Mutates the input object and its descendents into a valid Group implementation. */
+  static convert(data?: Partial<Group>): Group {
+    return convertToModel(data || {}, metadata.Group) 
+  }
+  
+  /** Maps the input object and its descendents to a new, valid Group implementation. */
+  static map(data?: Partial<Group>): Group {
+    return mapToModel(data || {}, metadata.Group) 
+  }
+  
+  static [Symbol.hasInstance](x: any) { return x?.$metadata === metadata.Group; }
+  
+  /** Instantiate a new Group, optionally basing it on the given data. */
+  constructor(data?: Partial<Group> | {[k: string]: any}) {
+    Object.assign(this, Group.map(data || {}));
+  }
+}
+
+
+export interface Post extends Model<typeof metadata.Post> {
+  postId: number | null
+  title: string | null
+  body: string | null
+  group: Group | null
+  comments: Comment[] | null
+  modifiedBy: User | null
+  modifiedById: string | null
+  modifiedOn: Date | null
+  createdBy: User | null
+  createdById: string | null
+  createdOn: Date | null
+}
+export class Post {
+  
+  /** Mutates the input object and its descendents into a valid Post implementation. */
+  static convert(data?: Partial<Post>): Post {
+    return convertToModel(data || {}, metadata.Post) 
+  }
+  
+  /** Maps the input object and its descendents to a new, valid Post implementation. */
+  static map(data?: Partial<Post>): Post {
+    return mapToModel(data || {}, metadata.Post) 
+  }
+  
+  static [Symbol.hasInstance](x: any) { return x?.$metadata === metadata.Post; }
+  
+  /** Instantiate a new Post, optionally basing it on the given data. */
+  constructor(data?: Partial<Post> | {[k: string]: any}) {
+    Object.assign(this, Post.map(data || {}));
+  }
+}
+
+
 export interface Role extends Model<typeof metadata.Role> {
   name: string | null
   permissions: Permission[] | null
@@ -273,6 +372,9 @@ declare module "coalesce-vue/lib/model" {
   interface ModelTypeLookup {
     AuditLog: AuditLog
     AuditLogProperty: AuditLogProperty
+    Comment: Comment
+    Group: Group
+    Post: Post
     Role: Role
     Tenant: Tenant
     User: User

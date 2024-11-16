@@ -4,6 +4,7 @@ using IntelliTect.SyncUp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IntelliTect.SyncUp.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241116001331_AddPosts")]
+    partial class AddPosts
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -113,50 +116,6 @@ namespace IntelliTect.SyncUp.Data.Migrations
                     b.ToTable("AuditLogs");
                 });
 
-            modelBuilder.Entity("IntelliTect.SyncUp.Data.Models.Comment", b =>
-                {
-                    b.Property<string>("TenantId")
-                        .HasMaxLength(36)
-                        .HasColumnType("nvarchar(36)");
-
-                    b.Property<long>("CommentId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("CommentId"));
-
-                    b.Property<string>("Body")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CreatedById")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTimeOffset>("CreatedOn")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("ModifiedById")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTimeOffset>("ModifiedOn")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<long>("PostId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("TenantId", "CommentId");
-
-                    b.HasAlternateKey("CommentId");
-
-                    b.HasIndex("CreatedById");
-
-                    b.HasIndex("ModifiedById");
-
-                    b.HasIndex("TenantId", "PostId");
-
-                    b.ToTable("Comments");
-                });
-
             modelBuilder.Entity("IntelliTect.SyncUp.Data.Models.Group", b =>
                 {
                     b.Property<string>("TenantId")
@@ -224,9 +183,6 @@ namespace IntelliTect.SyncUp.Data.Migrations
                     b.Property<DateTimeOffset>("CreatedOn")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<long>("GroupId")
-                        .HasColumnType("bigint");
-
                     b.Property<string>("ModifiedById")
                         .HasColumnType("nvarchar(450)");
 
@@ -245,8 +201,6 @@ namespace IntelliTect.SyncUp.Data.Migrations
                     b.HasIndex("CreatedById");
 
                     b.HasIndex("ModifiedById");
-
-                    b.HasIndex("TenantId", "GroupId");
 
                     b.ToTable("Posts");
                 });
@@ -618,39 +572,6 @@ namespace IntelliTect.SyncUp.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("IntelliTect.SyncUp.Data.Models.Comment", b =>
-                {
-                    b.HasOne("IntelliTect.SyncUp.Data.Models.User", "CreatedBy")
-                        .WithMany()
-                        .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("IntelliTect.SyncUp.Data.Models.User", "ModifiedBy")
-                        .WithMany()
-                        .HasForeignKey("ModifiedById")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("IntelliTect.SyncUp.Data.Models.Tenant", "Tenant")
-                        .WithMany()
-                        .HasForeignKey("TenantId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("IntelliTect.SyncUp.Data.Models.Post", "Post")
-                        .WithMany("Comments")
-                        .HasForeignKey("TenantId", "PostId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("CreatedBy");
-
-                    b.Navigation("ModifiedBy");
-
-                    b.Navigation("Post");
-
-                    b.Navigation("Tenant");
-                });
-
             modelBuilder.Entity("IntelliTect.SyncUp.Data.Models.Group", b =>
                 {
                     b.HasOne("IntelliTect.SyncUp.Data.Models.User", "CreatedBy")
@@ -694,15 +615,7 @@ namespace IntelliTect.SyncUp.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("IntelliTect.SyncUp.Data.Models.Group", "Group")
-                        .WithMany("Posts")
-                        .HasForeignKey("TenantId", "GroupId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.Navigation("CreatedBy");
-
-                    b.Navigation("Group");
 
                     b.Navigation("ModifiedBy");
 
@@ -854,16 +767,6 @@ namespace IntelliTect.SyncUp.Data.Migrations
             modelBuilder.Entity("IntelliTect.SyncUp.Data.Models.AuditLog", b =>
                 {
                     b.Navigation("Properties");
-                });
-
-            modelBuilder.Entity("IntelliTect.SyncUp.Data.Models.Group", b =>
-                {
-                    b.Navigation("Posts");
-                });
-
-            modelBuilder.Entity("IntelliTect.SyncUp.Data.Models.Post", b =>
-                {
-                    b.Navigation("Comments");
                 });
 
             modelBuilder.Entity("IntelliTect.SyncUp.Data.Models.User", b =>
