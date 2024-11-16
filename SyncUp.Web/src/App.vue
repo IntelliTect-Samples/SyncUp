@@ -139,10 +139,13 @@ const drawer = ref<boolean | null>(null);
 const router = useRouter();
 const { userInfo } = useUser();
 const vuetifyTheme = useTheme();
-const showOverlay = ref(true);
+const showOverlay = ref<boolean>(
+  sessionStorage.getItem("showOverlay") !== "false",
+);
 
 setTimeout(() => {
   showOverlay.value = false;
+  sessionStorage.setItem("showOverlay", "false");
 }, 1000);
 
 const theme = useLocalStorage(
