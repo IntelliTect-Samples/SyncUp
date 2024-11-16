@@ -21,8 +21,11 @@
           <v-chip v-if="badge1Text" class="mr-1" size="small" color="primary">
             {{ badge1Text }}
           </v-chip>
-          <v-chip v-if="badge2Text" size="small" color="primary">
+          <v-chip v-if="badge2Text" class="mr-1" size="small" color="primary">
             {{ badge2Text }}
+          </v-chip>
+          <v-chip v-if="badge3Text" size="small" color="primary">
+            {{ badge3Text }}
           </v-chip>
         </v-col>
         <v-col align="right">
@@ -46,11 +49,13 @@ const props = withDefaults(
     isMember: boolean;
     badge1Text?: string | null;
     badge2Text?: string | null;
+    badge3Text?: string | null;
     minHeight?: string;
   }>(),
   {
     badge1Text: null,
     badge2Text: null,
+    badge3Text: null,
     minHeight: "300",
   },
 );
