@@ -39,5 +39,10 @@ public class Post : TenantedBase
 
             return base.GetQuery(parameters).Where(x => x.GroupId == GroupId);
         }
+
+        public override IQueryable<Post> ApplyListDefaultSorting(IQueryable<Post> query)
+        {
+            return base.ApplyListDefaultSorting(query).OrderByDescending(x => x.CreatedOn);
+        }
     }
 }
