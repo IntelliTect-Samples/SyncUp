@@ -853,6 +853,12 @@ export const Tenant = domain.types.Tenant = {
         required: val => (val != null && val !== '') || "Name is required.",
       }
     },
+    isPublic: {
+      name: "isPublic",
+      displayName: "Is Public",
+      type: "boolean",
+      role: "value",
+    },
   },
   methods: {
     create: {
@@ -879,6 +885,54 @@ export const Tenant = domain.types.Tenant = {
           role: "value",
           rules: {
             required: val => (val != null && val !== '') || "Admin Email is required.",
+          }
+        },
+      },
+      return: {
+        name: "$return",
+        displayName: "Result",
+        type: "void",
+        role: "value",
+      },
+    },
+    isMemberOf: {
+      name: "isMemberOf",
+      displayName: "Is Member Of",
+      transportType: "item",
+      httpMethod: "POST",
+      isStatic: true,
+      params: {
+        tenantId: {
+          name: "tenantId",
+          displayName: "Tenant Id",
+          type: "string",
+          role: "value",
+          rules: {
+            required: val => (val != null && val !== '') || "Tenant Id is required.",
+          }
+        },
+      },
+      return: {
+        name: "$return",
+        displayName: "Result",
+        type: "boolean",
+        role: "value",
+      },
+    },
+    toggleMembership: {
+      name: "toggleMembership",
+      displayName: "Toggle Membership",
+      transportType: "item",
+      httpMethod: "POST",
+      isStatic: true,
+      params: {
+        tenantId: {
+          name: "tenantId",
+          displayName: "Tenant Id",
+          type: "string",
+          role: "value",
+          rules: {
+            required: val => (val != null && val !== '') || "Tenant Id is required.",
           }
         },
       },

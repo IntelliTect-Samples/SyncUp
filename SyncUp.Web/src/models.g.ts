@@ -275,6 +275,7 @@ export class Role {
 export interface Tenant extends Model<typeof metadata.Tenant> {
   tenantId: string | null
   name: string | null
+  isPublic: boolean | null
 }
 export class Tenant {
   

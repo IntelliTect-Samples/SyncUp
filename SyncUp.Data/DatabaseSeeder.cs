@@ -12,6 +12,7 @@ public class DatabaseSeeder(AppDbContext db)
     {
         var tenantId = tenant.TenantId;
         db.TenantId = tenantId;
+        tenant.IsPublic = false;
 
         SeedRoles();
 
@@ -32,6 +33,7 @@ public class DatabaseSeeder(AppDbContext db)
             db.Tenants.Add(new()
             {
                 Name = "Demo Tenant - Gals Need Pals",
+                IsPublic = true,
             });
             db.SaveChanges();
         }

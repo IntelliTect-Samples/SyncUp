@@ -45,6 +45,8 @@
 </template>
 
 <script setup lang="ts">
+import { TenantListViewModel } from "@/viewmodels.g";
+import { onMounted } from "vue";
 const props = withDefaults(
   defineProps<{
     title?: string | null;
@@ -53,6 +55,7 @@ const props = withDefaults(
     badge1Text?: string | null;
     badge2Text?: string | null;
     minHeight?: string;
+    refreshFlag?: number | null;
   }>(),
   {
     badge1Text: null,
@@ -63,10 +66,28 @@ const props = withDefaults(
 );
 
 const emits = defineEmits(["toggleMembership"]);
-const isMember = ref(false); // TODO: We need to look this up
+const isMember = ref(false);
+
+const { userInfo } = useUser();
+
+async function lookupMembership() {
+  const tenantListViewModel = new TenantListViewModel();
+  await tenantListViewModel.isMemberOf(userInfo.value.tenantId);
+  isMember.value = tenantListViewModel.isMemberOf.result ?? false;
+}
 
 function toggleMembership() {
-  isMember.value = !isMember.value;
   emits("toggleMembership");
 }
+
+onMounted(async () => {
+  await lookupMembership();
+});
+
+watch(
+  () => props.refreshFlag,
+  async () => {
+    await lookupMembership();
+  },
+);
 </script>

@@ -1,4 +1,4 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 
 namespace IntelliTect.SyncUp.Data.Models;
 
@@ -13,6 +13,8 @@ public class Tenant
     public string TenantId { get; set; } = Guid.NewGuid().ToString();
 
     public required string Name { get; set; }
+
+    public bool IsPublic { get; set; }
 
 
     [DefaultDataSource]
@@ -55,5 +57,64 @@ public class Tenant
         new DatabaseSeeder(db).SeedNewTenant(tenant);
 
         return await invitationService.CreateAndSendInvitation(adminEmail, db.Roles.ToArray());
+    }
+
+    [Coalesce]
+    public static async Task<ItemResult<bool>> IsMemberOf(
+        AppDbContext db,
+        ClaimsPrincipal user,
+        string tenantId
+    )
+    {
+        var currentTenantId = user.GetTenantId();
+        var tenant = db.Tenants.FirstOrDefault(t => t.TenantId == tenantId);
+        if (tenant == null)
+        {
+            return "Organization not found.";
+        }
+
+        db.ForceSetTenant(tenant.TenantId);
+
+        var isMember = db.TenantMemberships.Any(tm => tm.UserId == user.GetUserId());
+        db.ForceSetTenant(currentTenantId);
+
+        return new ItemResult<bool>(isMember, null);
+    }
+
+    [Coalesce]
+    public static async Task<ItemResult> ToggleMembership(
+        AppDbContext db,
+        ClaimsPrincipal user, 
+        string tenantId
+    )
+    {
+        var tenant = db.Tenants.FirstOrDefault(t => t.TenantId == tenantId);
+        if (tenant == null)
+        {
+            return "Organization not found.";
+        }
+
+        db.ForceSetTenant(tenant.TenantId);
+        var isMember = db.TenantMemberships.Any(tm => tm.UserId == user.GetUserId());
+
+        if (!isMember)
+        {
+            if (!tenant.IsPublic)
+            {
+                return "An invitation is required to join this organization.";
+            }
+
+            db.TenantMemberships.Add(new()
+            {
+                UserId = user.GetUserId()
+            });
+        }
+        else
+        {
+            db.RemoveRange(db.TenantMemberships.Where(tm => tm.UserId == user.GetUserId()).ToList());
+        }
+        db.SaveChanges();
+
+        return true;
     }
 }

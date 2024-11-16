@@ -153,5 +153,129 @@ namespace SyncUp.Web.Api
             var _result = new ItemResult(_methodResult);
             return _result;
         }
+
+        /// <summary>
+        /// Method: IsMemberOf
+        /// </summary>
+        [HttpPost("IsMemberOf")]
+        [Authorize]
+        [Consumes("application/x-www-form-urlencoded", "multipart/form-data")]
+        public virtual async Task<ItemResult<bool>> IsMemberOf(
+            [FromForm(Name = "tenantId")] string tenantId)
+        {
+            var _params = new
+            {
+                TenantId = tenantId
+            };
+
+            if (Context.Options.ValidateAttributesForMethods)
+            {
+                var _validationResult = ItemResult.FromParameterValidation(
+                    GeneratedForClassViewModel!.MethodByName("IsMemberOf"), _params, HttpContext.RequestServices);
+                if (!_validationResult.WasSuccessful) return new ItemResult<bool>(_validationResult);
+            }
+
+            var _methodResult = await IntelliTect.SyncUp.Data.Models.Tenant.IsMemberOf(
+                Db,
+                User,
+                _params.TenantId
+            );
+            var _result = new ItemResult<bool>(_methodResult);
+            _result.Object = _methodResult.Object;
+            return _result;
+        }
+
+        public class IsMemberOfParameters
+        {
+            public string TenantId { get; set; }
+        }
+
+        /// <summary>
+        /// Method: IsMemberOf
+        /// </summary>
+        [HttpPost("IsMemberOf")]
+        [Authorize]
+        [Consumes("application/json")]
+        public virtual async Task<ItemResult<bool>> IsMemberOf(
+            [FromBody] IsMemberOfParameters _params
+        )
+        {
+            if (Context.Options.ValidateAttributesForMethods)
+            {
+                var _validationResult = ItemResult.FromParameterValidation(
+                    GeneratedForClassViewModel!.MethodByName("IsMemberOf"), _params, HttpContext.RequestServices);
+                if (!_validationResult.WasSuccessful) return new ItemResult<bool>(_validationResult);
+            }
+
+            var _methodResult = await IntelliTect.SyncUp.Data.Models.Tenant.IsMemberOf(
+                Db,
+                User,
+                _params.TenantId
+            );
+            var _result = new ItemResult<bool>(_methodResult);
+            _result.Object = _methodResult.Object;
+            return _result;
+        }
+
+        /// <summary>
+        /// Method: ToggleMembership
+        /// </summary>
+        [HttpPost("ToggleMembership")]
+        [Authorize]
+        [Consumes("application/x-www-form-urlencoded", "multipart/form-data")]
+        public virtual async Task<ItemResult> ToggleMembership(
+            [FromForm(Name = "tenantId")] string tenantId)
+        {
+            var _params = new
+            {
+                TenantId = tenantId
+            };
+
+            if (Context.Options.ValidateAttributesForMethods)
+            {
+                var _validationResult = ItemResult.FromParameterValidation(
+                    GeneratedForClassViewModel!.MethodByName("ToggleMembership"), _params, HttpContext.RequestServices);
+                if (!_validationResult.WasSuccessful) return _validationResult;
+            }
+
+            var _methodResult = await IntelliTect.SyncUp.Data.Models.Tenant.ToggleMembership(
+                Db,
+                User,
+                _params.TenantId
+            );
+            var _result = new ItemResult(_methodResult);
+            return _result;
+        }
+
+        public class ToggleMembershipParameters
+        {
+            public string TenantId { get; set; }
+        }
+
+        /// <summary>
+        /// Method: ToggleMembership
+        /// </summary>
+        [HttpPost("ToggleMembership")]
+        [Authorize]
+        [Consumes("application/json")]
+        public virtual async Task<ItemResult> ToggleMembership(
+            [FromBody] ToggleMembershipParameters _params
+        )
+        {
+            if (Context.Options.ValidateAttributesForMethods)
+            {
+                var _validationResult = ItemResult.FromParameterValidation(
+                    GeneratedForClassViewModel!.MethodByName("ToggleMembership"), _params, HttpContext.RequestServices);
+                if (!_validationResult.WasSuccessful) return _validationResult;
+            }
+
+            var _methodResult = await IntelliTect.SyncUp.Data.Models.Tenant.ToggleMembership(
+                Db,
+                User,
+                _params.TenantId
+            );
+            var _result = new ItemResult(_methodResult);
+            return _result;
+        }
     }
 }

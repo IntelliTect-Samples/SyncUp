@@ -241,6 +241,7 @@ export class RoleListViewModel extends ListViewModel<$models.Role, $apiClients.R
 export interface TenantViewModel extends $models.Tenant {
   tenantId: string | null;
   name: string | null;
+  isPublic: boolean | null;
 }
 export class TenantViewModel extends ViewModel<$models.Tenant, $apiClients.TenantApiClient, string> implements $models.Tenant  {
   static DataSources = $models.Tenant.DataSources;
@@ -263,6 +264,28 @@ export class TenantListViewModel extends ListViewModel<$models.Tenant, $apiClien
     
     Object.defineProperty(this, 'create', {value: create});
     return create
+  }
+  
+  public get isMemberOf() {
+    const isMemberOf = this.$apiClient.$makeCaller(
+      this.$metadata.methods.isMemberOf,
+      (c, tenantId: string | null) => c.isMemberOf(tenantId),
+      () => ({tenantId: null as string | null, }),
+      (c, args) => c.isMemberOf(args.tenantId))
+    
+    Object.defineProperty(this, 'isMemberOf', {value: isMemberOf});
+    return isMemberOf
+  }
+  
+  public get toggleMembership() {
+    const toggleMembership = this.$apiClient.$makeCaller(
+      this.$metadata.methods.toggleMembership,
+      (c, tenantId: string | null) => c.toggleMembership(tenantId),
+      () => ({tenantId: null as string | null, }),
+      (c, args) => c.toggleMembership(args.tenantId))
+    
+    Object.defineProperty(this, 'toggleMembership', {value: toggleMembership});
+    return toggleMembership
   }
   
   constructor() {
