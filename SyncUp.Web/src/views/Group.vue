@@ -10,8 +10,10 @@
         :is-member="groupService.isMember.value"
         @toggle-membership="groupService.toggleMembership()"
       />
+    </c-loader-status>
 
-      <!-- Posts List -->
+    <!-- Posts List -->
+    <c-loader-status :loaders="[groupService.posts.$load]">
       <v-card
         v-for="post in groupService.posts.$items"
         :key="post.$stableId"
@@ -39,14 +41,14 @@ const props = defineProps<{
 // Load group
 const groupService = new GroupService(new GroupViewModel());
 
-groupService.group
-  .$load(props.groupId)
-  .then(async () => groupService.lookupMembership());
+groupService.group.$load(props.groupId).then(async () => {
+  groupService.lookupMembership();
 
-groupService.posts.$load();
-groupService.posts.$count();
+  groupService.posts.$load();
+  groupService.posts.$count();
 
-groupService.groupUser.$count();
+  groupService.groupUser.$count();
+});
 
 watch(groupService.isMember, () => {
   groupService.groupUser.$count();
