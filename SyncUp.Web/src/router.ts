@@ -18,10 +18,10 @@ const router = createRouter({
       component: () => import("./views/Admin.vue"),
     },
     {
-      path: "/user/:id",
-      alias: "/admin/User/edit/:id", // Override coalesce admin page
+      path: "/group",
+      alias: "/group", // Override coalesce admin page
       props: true,
-      component: () => import("./views/UserProfile.vue"),
+      component: () => import("./views/Group.vue"),
     },
     {
       path: "/openapi",
