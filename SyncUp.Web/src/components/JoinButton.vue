@@ -1,6 +1,7 @@
 <template>
   <v-btn
     size="small"
+    width="100px"
     :color="isMember ? 'grey' : 'success'"
     variant="flat"
     @click="toggleMembership"

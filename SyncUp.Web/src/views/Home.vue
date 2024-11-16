@@ -60,7 +60,6 @@ groups.$load();
 groups.$count();
 
 const newGroup = new GroupViewModel();
-newGroup.$stopAutoSave();
 
 const { userInfo } = useUser();
 
