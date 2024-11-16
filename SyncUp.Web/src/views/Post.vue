@@ -3,6 +3,12 @@
     <v-card>
       <v-card-title>
         {{ post.title }}
+        <v-btn @click="showEditPostDialog = true"> Edit </v-btn>
+        <EditOrAddPostDialog
+          v-model="showEditPostDialog"
+          :post-id="post.postId"
+          @saved="post.$load"
+        />
       </v-card-title>
       <v-card-text>
         {{ post.body }}
@@ -46,6 +52,8 @@ useTitle("Post");
 const props = defineProps<{
   postId: number;
 }>();
+
+const showEditPostDialog = ref(false);
 
 const post = new PostViewModel();
 post.$load(props.postId);

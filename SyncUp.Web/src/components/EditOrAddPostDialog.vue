@@ -25,7 +25,7 @@ import { PostViewModel } from "@/viewmodels.g";
 
 const props = defineProps<{
   postId?: number | null;
-  groupId: number; // Required for new posts
+  groupId?: number; // Required for new posts
 }>();
 
 const modelValue = defineModel<boolean>({ default: false });
@@ -37,12 +37,18 @@ const isNew = computed(() => {
 });
 
 const post = new PostViewModel();
-if (!isNew.value) {
-  // Load post
-  post.$load(props.postId!);
-} else {
-  post.groupId = props.groupId;
-}
+
+watch(modelValue, (value) => {
+  if (value) {
+    if (!isNew.value) {
+      // Load post
+      console.log("Loading post", props.postId);
+      post.$load(props.postId!);
+    } else {
+      post.groupId = props.groupId!;
+    }
+  }
+});
 
 async function save() {
   await post.$save();
