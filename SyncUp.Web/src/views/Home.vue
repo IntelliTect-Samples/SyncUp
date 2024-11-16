@@ -10,28 +10,57 @@
       :is-member="isMember"
       @toggle-membership="toggleMembership"
     />
-    <v-row class="mt-1">
-      <v-col
-        v-for="group in groups.$items"
-        :key="group.groupId!"
-        cols="12"
-        md="6"
-        lg="4"
-      >
-        <GroupCard :group="group" />
-      </v-col>
-    </v-row>
+
+    <c-loader-status :loaders="[groups.$load]">
+      <v-row align="center">
+        <v-col>
+          <v-text-field
+            v-model="groups.$params.search"
+            label="Search groups"
+            prepend-inner-icon="fa fa-search"
+            hide-details
+            clearable
+          />
+        </v-col>
+        <v-col cols="auto" align="right">
+          <AddGroupButton :group="newGroup" @new-group-created="groups.$load" />
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col>
+          <v-row>
+            <v-col
+              v-for="group in groups.$items"
+              :key="group.groupId!"
+              cols="12"
+              md="6"
+              lg="4"
+            >
+              <GroupCard :group="group" />
+            </v-col>
+          </v-row>
+        </v-col>
+      </v-row>
+    </c-loader-status>
   </v-container>
 </template>
 
 <script setup lang="ts">
-import { GroupListViewModel, TenantListViewModel } from "@/viewmodels.g";
+import {
+  GroupListViewModel,
+  GroupViewModel,
+  TenantListViewModel,
+} from "@/viewmodels.g";
 
 useTitle("Home");
+
 const groups = new GroupListViewModel();
 groups.$useAutoLoad();
 groups.$load();
 groups.$count();
+
+const newGroup = new GroupViewModel();
+
 const { userInfo } = useUser();
 
 const tenantListViewModel = new TenantListViewModel();
