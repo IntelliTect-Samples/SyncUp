@@ -18,6 +18,11 @@ export class CommentApiClient extends ModelApiClient<$models.Comment> {
 }
 
 
+export class EventApiClient extends ModelApiClient<$models.Event> {
+  constructor() { super($metadata.Event) }
+}
+
+
 export class GroupApiClient extends ModelApiClient<$models.Group> {
   constructor() { super($metadata.Group) }
 }

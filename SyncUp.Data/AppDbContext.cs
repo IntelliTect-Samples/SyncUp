@@ -1,4 +1,3 @@
-using IntelliTect.SyncUp.Data.Coalesce;
 using IntelliTect.Coalesce.AuditLogging;
 using Microsoft.AspNetCore.DataProtection.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
@@ -66,6 +65,7 @@ public class AppDbContext
 
     public DbSet<Group> Groups => Set<Group>();
     public DbSet<Post> Posts => Set<Post>();
+    public DbSet<Event> Events => Set<Event>();
     public DbSet<Comment> Comments => Set<Comment>();
 
     public DbSet<AuditLog> AuditLogs => Set<AuditLog>();

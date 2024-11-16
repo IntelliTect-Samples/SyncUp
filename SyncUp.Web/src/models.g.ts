@@ -125,11 +125,48 @@ export class Comment {
 }
 
 
+export interface Event extends Model<typeof metadata.Event> {
+  eventId: number | null
+  name: string | null
+  description: string | null
+  time: Date | null
+  location: string | null
+  groupId: number | null
+  group: Group | null
+  modifiedBy: User | null
+  modifiedById: string | null
+  modifiedOn: Date | null
+  createdBy: User | null
+  createdById: string | null
+  createdOn: Date | null
+}
+export class Event {
+  
+  /** Mutates the input object and its descendents into a valid Event implementation. */
+  static convert(data?: Partial<Event>): Event {
+    return convertToModel(data || {}, metadata.Event) 
+  }
+  
+  /** Maps the input object and its descendents to a new, valid Event implementation. */
+  static map(data?: Partial<Event>): Event {
+    return mapToModel(data || {}, metadata.Event) 
+  }
+  
+  static [Symbol.hasInstance](x: any) { return x?.$metadata === metadata.Event; }
+  
+  /** Instantiate a new Event, optionally basing it on the given data. */
+  constructor(data?: Partial<Event> | {[k: string]: any}) {
+    Object.assign(this, Event.map(data || {}));
+  }
+}
+
+
 export interface Group extends Model<typeof metadata.Group> {
   groupId: number | null
   name: string | null
   subTitle: string | null
   posts: Post[] | null
+  events: Event[] | null
   modifiedBy: User | null
   modifiedById: string | null
   modifiedOn: Date | null
@@ -373,6 +410,7 @@ declare module "coalesce-vue/lib/model" {
     AuditLog: AuditLog
     AuditLogProperty: AuditLogProperty
     Comment: Comment
+    Event: Event
     Group: Group
     Post: Post
     Role: Role
