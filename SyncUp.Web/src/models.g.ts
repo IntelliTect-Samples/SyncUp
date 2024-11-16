@@ -98,6 +98,7 @@ export interface Comment extends Model<typeof metadata.Comment> {
   body: string | null
   postId: number | null
   post: Post | null
+  commentLikeCount: number | null
   modifiedBy: User | null
   modifiedById: string | null
   modifiedOn: Date | null
@@ -122,6 +123,20 @@ export class Comment {
   /** Instantiate a new Comment, optionally basing it on the given data. */
   constructor(data?: Partial<Comment> | {[k: string]: any}) {
     Object.assign(this, Comment.map(data || {}));
+  }
+}
+export namespace Comment {
+  export namespace DataSources {
+    
+    export class CommentsForPost implements DataSource<typeof metadata.Comment.dataSources.commentsForPost> {
+      readonly $metadata = metadata.Comment.dataSources.commentsForPost
+      postId: number | null = null
+      
+      constructor(params?: Omit<Partial<CommentsForPost>, '$metadata'>) {
+        if (params) Object.assign(this, params);
+        return reactiveDataSource(this);
+      }
+    }
   }
 }
 
@@ -302,6 +317,7 @@ export interface Post extends Model<typeof metadata.Post> {
   body: string | null
   groupId: number | null
   group: Group | null
+  postLikeCount: number | null
   comments: Comment[] | null
   modifiedBy: User | null
   modifiedById: string | null
