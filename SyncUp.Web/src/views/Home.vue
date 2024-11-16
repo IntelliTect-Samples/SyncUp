@@ -7,8 +7,8 @@
       badge1-text="23 members"
       badge2-text="2047 posts"
       description="This is a fake description that needs love"
+      :refresh-flag="refreshFlag"
       @toggle-membership="toggleMembership"
-      :refreshFlag="refreshFlag"
     />
     <v-row class="mt-1">
       <v-col
