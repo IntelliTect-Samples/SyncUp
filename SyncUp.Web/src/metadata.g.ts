@@ -515,14 +515,21 @@ export const Group = domain.types.Group = {
         maxLength: val => !val || val.length <= 500 || "Name may not be more than 500 characters.",
       }
     },
-    imageUrl: {
-      name: "imageUrl",
-      displayName: "Image Url",
+    bannerImageId: {
+      name: "bannerImageId",
+      displayName: "Banner Image Id",
       type: "string",
       role: "value",
-      rules: {
-        required: val => (val != null && val !== '') || "Image Url is required.",
-      }
+    },
+    bannerImage: {
+      name: "bannerImage",
+      displayName: "Banner Image",
+      type: "model",
+      get typeDef() { return (domain.types.Image as ModelType & { name: "Image" }) },
+      role: "referenceNavigation",
+      get foreignKey() { return (domain.types.Group as ModelType & { name: "Group" }).props.bannerImageId as ForeignKeyProperty },
+      get principalKey() { return (domain.types.Image as ModelType & { name: "Image" }).props.imageId as PrimaryKeyProperty },
+      dontSerialize: true,
     },
     description: {
       name: "description",
@@ -612,6 +619,100 @@ export const Group = domain.types.Group = {
       get typeDef() { return (domain.types.User as ModelType & { name: "User" }) },
       role: "referenceNavigation",
       get foreignKey() { return (domain.types.Group as ModelType & { name: "Group" }).props.modifiedById as ForeignKeyProperty },
+      get principalKey() { return (domain.types.User as ModelType & { name: "User" }).props.id as PrimaryKeyProperty },
+      dontSerialize: true,
+    },
+    modifiedOn: {
+      name: "modifiedOn",
+      displayName: "Modified On",
+      type: "date",
+      dateKind: "datetime",
+      role: "value",
+      dontSerialize: true,
+    },
+  },
+  methods: {
+  },
+  dataSources: {
+  },
+}
+export const Image = domain.types.Image = {
+  name: "Image" as const,
+  displayName: "Image",
+  get displayProp() { return this.props.imageId }, 
+  type: "model",
+  controllerRoute: "Image",
+  get keyProp() { return this.props.imageId }, 
+  behaviorFlags: 7 as BehaviorFlags,
+  props: {
+    imageId: {
+      name: "imageId",
+      displayName: "Image Id",
+      type: "string",
+      role: "primaryKey",
+      hidden: 3 as HiddenAreas,
+    },
+    color: {
+      name: "color",
+      displayName: "Color",
+      type: "string",
+      role: "value",
+      dontSerialize: true,
+    },
+    imageUrl: {
+      name: "imageUrl",
+      displayName: "Image Url",
+      type: "string",
+      role: "value",
+      dontSerialize: true,
+    },
+    modifiedById: {
+      name: "modifiedById",
+      displayName: "Modified By Id",
+      type: "string",
+      role: "foreignKey",
+      get principalKey() { return (domain.types.User as ModelType & { name: "User" }).props.id as PrimaryKeyProperty },
+      get principalType() { return (domain.types.User as ModelType & { name: "User" }) },
+      get navigationProp() { return (domain.types.Image as ModelType & { name: "Image" }).props.modifiedBy as ModelReferenceNavigationProperty },
+      hidden: 3 as HiddenAreas,
+      dontSerialize: true,
+    },
+    createdById: {
+      name: "createdById",
+      displayName: "Created By Id",
+      type: "string",
+      role: "foreignKey",
+      get principalKey() { return (domain.types.User as ModelType & { name: "User" }).props.id as PrimaryKeyProperty },
+      get principalType() { return (domain.types.User as ModelType & { name: "User" }) },
+      get navigationProp() { return (domain.types.Image as ModelType & { name: "Image" }).props.createdBy as ModelReferenceNavigationProperty },
+      hidden: 3 as HiddenAreas,
+      dontSerialize: true,
+    },
+    createdBy: {
+      name: "createdBy",
+      displayName: "Created By",
+      type: "model",
+      get typeDef() { return (domain.types.User as ModelType & { name: "User" }) },
+      role: "referenceNavigation",
+      get foreignKey() { return (domain.types.Image as ModelType & { name: "Image" }).props.createdById as ForeignKeyProperty },
+      get principalKey() { return (domain.types.User as ModelType & { name: "User" }).props.id as PrimaryKeyProperty },
+      dontSerialize: true,
+    },
+    createdOn: {
+      name: "createdOn",
+      displayName: "Created On",
+      type: "date",
+      dateKind: "datetime",
+      role: "value",
+      dontSerialize: true,
+    },
+    modifiedBy: {
+      name: "modifiedBy",
+      displayName: "Modified By",
+      type: "model",
+      get typeDef() { return (domain.types.User as ModelType & { name: "User" }) },
+      role: "referenceNavigation",
+      get foreignKey() { return (domain.types.Image as ModelType & { name: "Image" }).props.modifiedById as ForeignKeyProperty },
       get principalKey() { return (domain.types.User as ModelType & { name: "User" }).props.id as PrimaryKeyProperty },
       dontSerialize: true,
     },
@@ -858,6 +959,22 @@ export const Tenant = domain.types.Tenant = {
       displayName: "Is Public",
       type: "boolean",
       role: "value",
+    },
+    bannerImageId: {
+      name: "bannerImageId",
+      displayName: "Banner Image Id",
+      type: "string",
+      role: "value",
+    },
+    bannerImage: {
+      name: "bannerImage",
+      displayName: "Banner Image",
+      type: "model",
+      get typeDef() { return (domain.types.Image as ModelType & { name: "Image" }) },
+      role: "referenceNavigation",
+      get foreignKey() { return (domain.types.Tenant as ModelType & { name: "Tenant" }).props.bannerImageId as ForeignKeyProperty },
+      get principalKey() { return (domain.types.Image as ModelType & { name: "Image" }).props.imageId as PrimaryKeyProperty },
+      dontSerialize: true,
     },
   },
   methods: {
@@ -1411,6 +1528,62 @@ export const UserInfo = domain.types.UserInfo = {
     },
   },
 }
+export const ImageService = domain.services.ImageService = {
+  name: "ImageService",
+  displayName: "Image Service",
+  type: "service",
+  controllerRoute: "ImageService",
+  methods: {
+    upload: {
+      name: "upload",
+      displayName: "Upload",
+      transportType: "item",
+      httpMethod: "POST",
+      params: {
+        content: {
+          name: "content",
+          displayName: "Content",
+          type: "binary",
+          role: "value",
+          rules: {
+            required: val => val != null || "Content is required.",
+          }
+        },
+      },
+      return: {
+        name: "$return",
+        displayName: "Result",
+        type: "model",
+        get typeDef() { return (domain.types.Image as ModelType & { name: "Image" }) },
+        role: "value",
+      },
+    },
+    uploadFromUrl: {
+      name: "uploadFromUrl",
+      displayName: "Upload From Url",
+      transportType: "item",
+      httpMethod: "POST",
+      params: {
+        url: {
+          name: "url",
+          displayName: "Url",
+          type: "string",
+          role: "value",
+          rules: {
+            required: val => (val != null && val !== '') || "Url is required.",
+          }
+        },
+      },
+      return: {
+        name: "$return",
+        displayName: "Result",
+        type: "model",
+        get typeDef() { return (domain.types.Image as ModelType & { name: "Image" }) },
+        role: "value",
+      },
+    },
+  },
+}
 export const SecurityService = domain.services.SecurityService = {
   name: "SecurityService",
   displayName: "Security Service",
@@ -1446,6 +1619,7 @@ interface AppDomain extends Domain {
     Comment: typeof Comment
     Event: typeof Event
     Group: typeof Group
+    Image: typeof Image
     Post: typeof Post
     Role: typeof Role
     Tenant: typeof Tenant
@@ -1454,6 +1628,7 @@ interface AppDomain extends Domain {
     UserRole: typeof UserRole
   }
   services: {
+    ImageService: typeof ImageService
     SecurityService: typeof SecurityService
   }
 }

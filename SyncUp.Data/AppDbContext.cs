@@ -1,10 +1,12 @@
 using IntelliTect.Coalesce.AuditLogging;
+using IntelliTect.SyncUp.Data.Services;
 using Microsoft.AspNetCore.DataProtection.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.ValueGeneration;
+using SyncUp.Data.Models;
 using System.Linq.Expressions;
 using System.Security.Cryptography;
 
@@ -75,6 +77,8 @@ public class AppDbContext
     public DbSet<TenantMembership> TenantMemberships => Set<TenantMembership>();
 
     public DbSet<UserPhoto> UserPhotos => Set<UserPhoto>();
+
+    public DbSet<Image> Images => Set<Image>();
 
 
     [InternalUse]
@@ -229,11 +233,11 @@ public class AppDbContext
         }
     }
 
-    public async Task SeedAsync(UserManager<User> userManager)
+    public async Task SeedAsync(UserManager<User> userManager, ImageService imageService)
     {
         var seeder = new DatabaseSeeder(this);
 
-        seeder.SeedDemoTenant();
+        await seeder.SeedDemoTenant();
 
         // Only seed the demo tenant. Don't just grab Tenants.First(), nor fall back to it,
         // because this could grab a real production tenant.
@@ -244,12 +248,12 @@ public class AppDbContext
 
         if (!Roles.Any())
         {
-            seeder.SeedRoles();
+            await seeder.SeedRoles();
         }
 
         if (!Groups.Any())
         {
-            seeder.SeedGroups();
+            await seeder.SeedGroups(imageService);
         }
 
         if (!Events.Any())
@@ -258,7 +262,7 @@ public class AppDbContext
         }
 
         //Give any existing users access to the demo tenant
-        seeder.SeedExistingUsersWithDemoTenantAccess();
+        await seeder.SeedExistingUsersWithDemoTenantAccess();
     }
 
     class TenantIdValueGenerator : ValueGenerator<string>

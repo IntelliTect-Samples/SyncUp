@@ -28,6 +28,11 @@ export class GroupApiClient extends ModelApiClient<$models.Group> {
 }
 
 
+export class ImageApiClient extends ModelApiClient<$models.Image> {
+  constructor() { super($metadata.Image) }
+}
+
+
 export class PostApiClient extends ModelApiClient<$models.Post> {
   constructor() { super($metadata.Post) }
 }
@@ -128,6 +133,27 @@ export class UserApiClient extends ModelApiClient<$models.User> {
 
 export class UserRoleApiClient extends ModelApiClient<$models.UserRole> {
   constructor() { super($metadata.UserRole) }
+}
+
+
+export class ImageServiceApiClient extends ServiceApiClient<typeof $metadata.ImageService> {
+  constructor() { super($metadata.ImageService) }
+  public upload(content: string | Uint8Array | null, $config?: AxiosRequestConfig): AxiosPromise<ItemResult<$models.Image>> {
+    const $method = this.$metadata.methods.upload
+    const $params =  {
+      content,
+    }
+    return this.$invoke($method, $params, $config)
+  }
+  
+  public uploadFromUrl(url: string | null, $config?: AxiosRequestConfig): AxiosPromise<ItemResult<$models.Image>> {
+    const $method = this.$metadata.methods.uploadFromUrl
+    const $params =  {
+      url,
+    }
+    return this.$invoke($method, $params, $config)
+  }
+  
 }
 
 

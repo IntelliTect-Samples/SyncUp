@@ -1,4 +1,6 @@
-﻿using System.Data;
+﻿using IntelliTect.SyncUp.Data.Services;
+using System.Data;
+using System.Runtime.CompilerServices;
 
 namespace IntelliTect.SyncUp.Data;
 
@@ -8,13 +10,13 @@ public class DatabaseSeeder(AppDbContext db)
     {
     }
 
-    public void SeedNewTenant(Tenant tenant, string? userId = null)
+    public async Task SeedNewTenant(Tenant tenant, ImageService? imageService, string? userId = null)
     {
         var tenantId = tenant.TenantId;
         db.TenantId = tenantId;
         tenant.IsPublic = false;
 
-        SeedRoles();
+        await SeedRoles();
 
         if (userId is not null)
         {
@@ -23,10 +25,10 @@ public class DatabaseSeeder(AppDbContext db)
             db.Add(new TenantMembership { UserId = userId });
         }
 
-        db.SaveChanges();
+        await db.SaveChangesAsync();
     }
 
-    public void SeedDemoTenant()
+    public async Task SeedDemoTenant()
     {
         if (!db.Tenants.Any(t => t.Name.Contains("Demo Tenant")))
         {
@@ -35,11 +37,11 @@ public class DatabaseSeeder(AppDbContext db)
                 Name = "Demo Tenant - Gals Need Pals",
                 IsPublic = true,
             });
-            db.SaveChanges();
+            await db.SaveChangesAsync();
         }
     }
 
-    public void SeedRoles()
+    public async Task SeedRoles()
     {
         if (!db.Roles.Any())
         {
@@ -54,7 +56,7 @@ public class DatabaseSeeder(AppDbContext db)
             // additional roles can freely be created by administrators.
             // You don't have to seed every possible role.
 
-            db.SaveChanges();
+            await db.SaveChangesAsync();
         }
     }
 
@@ -69,11 +71,11 @@ public class DatabaseSeeder(AppDbContext db)
         user.IsGlobalAdmin = true;
     }
 
-    public void SeedExistingUsersWithDemoTenantAccess()
+    public async Task SeedExistingUsersWithDemoTenantAccess()
     {
         foreach (var user in db.Users)
         {
-            if (!db.TenantMemberships.Any(tm => tm.UserId == user.Id))
+            if (!await db.TenantMemberships.AnyAsync(tm => tm.UserId == user.Id))
             {
                 db.TenantMemberships.Add(new()
                 {
@@ -81,18 +83,18 @@ public class DatabaseSeeder(AppDbContext db)
                 });
             }
         }
-        db.SaveChanges();
+        await db.SaveChangesAsync();
     }
 
-    public void SeedGroups()
+    public async Task SeedGroups(ImageService? imageService)
     {
-        if (!db.Groups.Any())
+        if (!await db.Groups.AnyAsync())
         {
             db.Groups.AddRange(new()
             {
                 Name = "Spokane",
                 Description = "Generic group for the Spokane area",
-                ImageUrl = "https://wallpapers.com/images/hd/scenic-view-of-spokane-city-at-dusk-dqhl672fwbv622gt.jpg",
+                BannerImage = imageService == null ? null : await imageService.AddImage("https://wallpapers.com/images/hd/scenic-view-of-spokane-city-at-dusk-dqhl672fwbv622gt.jpg"),
                 Posts = [
                     new()
                     {
@@ -117,7 +119,7 @@ public class DatabaseSeeder(AppDbContext db)
             {
                 Name = "Seattle",
                 Description = "Generic group for the Seattle area",
-                ImageUrl = "https://i.pinimg.com/736x/5d/d2/38/5dd238ea8ac9ee41002b8037417ee5de.jpg",
+                BannerImage = imageService == null ? null : await imageService.AddImage("https://i.pinimg.com/736x/5d/d2/38/5dd238ea8ac9ee41002b8037417ee5de.jpg"),
                 Posts = [
                     new()
                     {
@@ -128,20 +130,20 @@ public class DatabaseSeeder(AppDbContext db)
             new()
             {
                 Name = "Gym Girlies",
-                ImageUrl = "https://www.foundationalconcepts.com/wp-content/uploads/2016/09/meditation.jpg",
+                BannerImage = imageService == null ? null : await imageService.AddImage("https://www.foundationalconcepts.com/wp-content/uploads/2016/09/meditation.jpg"),
                 Description = "Everything fitness and gym related!",
 
             },
             new()
             {
                 Name = "Soccer Moms",
-                ImageUrl = "https://rare-gallery.com/uploads/posts/521319-soccer.jpg",
+                BannerImage = imageService == null ? null : await imageService.AddImage("https://rare-gallery.com/uploads/posts/521319-soccer.jpg"),
                 Description = "Made for the busy mom life"
             },
             new()
             {
                 Name = "DIY Divas",
-                ImageUrl = "https://wallpapersmug.com/download/1600x900/128b37/wolf-disco-jockey-art.jpg",
+                BannerImage = imageService == null ? null : await imageService.AddImage("https://wallpapersmug.com/download/1600x900/128b37/wolf-disco-jockey-art.jpg"),
                 Description = "Share DIY tips and find new inspiration",
                 Posts = [
                     new()
@@ -199,7 +201,7 @@ public class DatabaseSeeder(AppDbContext db)
                     Location = "789 Riverside Ln Spokane, WA",
                     Group = gymGroup,
             }]);
-            db.SaveChanges();   
+            db.SaveChanges();
         }
     }
 }

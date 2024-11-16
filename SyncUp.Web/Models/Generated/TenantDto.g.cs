@@ -15,6 +15,7 @@ namespace SyncUp.Web.Models
         private string _TenantId;
         private string _Name;
         private bool? _IsPublic;
+        private string _BannerImageId;
 
         public string TenantId
         {
@@ -31,6 +32,11 @@ namespace SyncUp.Web.Models
             get => _IsPublic;
             set { _IsPublic = value; Changed(nameof(IsPublic)); }
         }
+        public string BannerImageId
+        {
+            get => _BannerImageId;
+            set { _BannerImageId = value; Changed(nameof(BannerImageId)); }
+        }
 
         /// <summary>
         /// Map from the current DTO instance to the domain object.
@@ -44,6 +50,7 @@ namespace SyncUp.Web.Models
             if (ShouldMapTo(nameof(TenantId))) entity.TenantId = TenantId;
             if (ShouldMapTo(nameof(Name))) entity.Name = Name;
             if (ShouldMapTo(nameof(IsPublic))) entity.IsPublic = (IsPublic ?? entity.IsPublic);
+            if (ShouldMapTo(nameof(BannerImageId))) entity.BannerImageId = BannerImageId;
         }
 
         /// <summary>
@@ -61,6 +68,7 @@ namespace SyncUp.Web.Models
             if (OnUpdate(entity, context)) return entity;
             if (ShouldMapTo(nameof(TenantId))) entity.TenantId = TenantId;
             if (ShouldMapTo(nameof(IsPublic))) entity.IsPublic = (IsPublic ?? entity.IsPublic);
+            if (ShouldMapTo(nameof(BannerImageId))) entity.BannerImageId = BannerImageId;
 
             return entity;
         }
@@ -73,6 +81,8 @@ namespace SyncUp.Web.Models
         public string TenantId { get; set; }
         public string Name { get; set; }
         public bool? IsPublic { get; set; }
+        public string BannerImageId { get; set; }
+        public SyncUp.Web.Models.ImageResponse BannerImage { get; set; }
 
         /// <summary>
         /// Map from the domain object to the properties of the current DTO instance.
@@ -85,6 +95,10 @@ namespace SyncUp.Web.Models
             this.TenantId = obj.TenantId;
             this.Name = obj.Name;
             this.IsPublic = obj.IsPublic;
+            this.BannerImageId = obj.BannerImageId;
+            if (tree == null || tree[nameof(this.BannerImage)] != null)
+                this.BannerImage = obj.BannerImage.MapToDto<SyncUp.Data.Models.Image, ImageResponse>(context, tree?[nameof(this.BannerImage)]);
+
         }
     }
 }

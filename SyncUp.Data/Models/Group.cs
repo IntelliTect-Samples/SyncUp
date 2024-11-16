@@ -1,3 +1,5 @@
+using SyncUp.Data.Models;
+
 namespace IntelliTect.SyncUp.Data.Models;
 
 public class Group : TenantedBase
@@ -9,9 +11,9 @@ public class Group : TenantedBase
     [Required]
     public required string Name { get; set; }
 
-    // TODO: Allow uploading images
-    [Required]
-    public required string ImageUrl { get; set; }
+    [ForeignKey(nameof(BannerImageId))]
+    public string? BannerImageId { get; set; }
+    public Image? BannerImage { get; set; }
 
     [Required]
     public required string Description { get; set; }

@@ -165,7 +165,8 @@ export class Event {
 export interface Group extends Model<typeof metadata.Group> {
   groupId: number | null
   name: string | null
-  imageUrl: string | null
+  bannerImageId: string | null
+  bannerImage: Image | null
   description: string | null
   posts: Post[] | null
   events: Event[] | null
@@ -193,6 +194,38 @@ export class Group {
   /** Instantiate a new Group, optionally basing it on the given data. */
   constructor(data?: Partial<Group> | {[k: string]: any}) {
     Object.assign(this, Group.map(data || {}));
+  }
+}
+
+
+export interface Image extends Model<typeof metadata.Image> {
+  imageId: string | null
+  color: string | null
+  imageUrl: string | null
+  modifiedBy: User | null
+  modifiedById: string | null
+  modifiedOn: Date | null
+  createdBy: User | null
+  createdById: string | null
+  createdOn: Date | null
+}
+export class Image {
+  
+  /** Mutates the input object and its descendents into a valid Image implementation. */
+  static convert(data?: Partial<Image>): Image {
+    return convertToModel(data || {}, metadata.Image) 
+  }
+  
+  /** Maps the input object and its descendents to a new, valid Image implementation. */
+  static map(data?: Partial<Image>): Image {
+    return mapToModel(data || {}, metadata.Image) 
+  }
+  
+  static [Symbol.hasInstance](x: any) { return x?.$metadata === metadata.Image; }
+  
+  /** Instantiate a new Image, optionally basing it on the given data. */
+  constructor(data?: Partial<Image> | {[k: string]: any}) {
+    Object.assign(this, Image.map(data || {}));
   }
 }
 
@@ -276,6 +309,8 @@ export interface Tenant extends Model<typeof metadata.Tenant> {
   tenantId: string | null
   name: string | null
   isPublic: boolean | null
+  bannerImageId: string | null
+  bannerImage: Image | null
 }
 export class Tenant {
   
@@ -430,6 +465,7 @@ declare module "coalesce-vue/lib/model" {
     Comment: Comment
     Event: Event
     Group: Group
+    Image: Image
     Post: Post
     Role: Role
     Tenant: Tenant

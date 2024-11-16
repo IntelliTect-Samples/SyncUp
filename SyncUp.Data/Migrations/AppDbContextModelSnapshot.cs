@@ -54,7 +54,7 @@ namespace IntelliTect.SyncUp.Data.Migrations
 
                     b.HasIndex("ParentId");
 
-                    b.ToTable("AuditLogProperties");
+                    b.ToTable("AuditLogProperties", (string)null);
                 });
 
             modelBuilder.Entity("IntelliTect.SyncUp.Data.Models.AuditLog", b =>
@@ -110,7 +110,7 @@ namespace IntelliTect.SyncUp.Data.Migrations
 
                     b.HasIndex("Type", "KeyValue");
 
-                    b.ToTable("AuditLogs");
+                    b.ToTable("AuditLogs", (string)null);
                 });
 
             modelBuilder.Entity("IntelliTect.SyncUp.Data.Models.Comment", b =>
@@ -154,7 +154,7 @@ namespace IntelliTect.SyncUp.Data.Migrations
 
                     b.HasIndex("TenantId", "PostId");
 
-                    b.ToTable("Comments");
+                    b.ToTable("Comments", (string)null);
                 });
 
             modelBuilder.Entity("IntelliTect.SyncUp.Data.Models.Event", b =>
@@ -208,7 +208,7 @@ namespace IntelliTect.SyncUp.Data.Migrations
 
                     b.HasIndex("TenantId", "GroupId");
 
-                    b.ToTable("Events");
+                    b.ToTable("Events", (string)null);
                 });
 
             modelBuilder.Entity("IntelliTect.SyncUp.Data.Models.Group", b =>
@@ -256,7 +256,7 @@ namespace IntelliTect.SyncUp.Data.Migrations
 
                     b.HasIndex("ModifiedById");
 
-                    b.ToTable("Groups");
+                    b.ToTable("Groups", (string)null);
                 });
 
             modelBuilder.Entity("IntelliTect.SyncUp.Data.Models.Post", b =>
@@ -305,7 +305,7 @@ namespace IntelliTect.SyncUp.Data.Migrations
 
                     b.HasIndex("TenantId", "GroupId");
 
-                    b.ToTable("Posts");
+                    b.ToTable("Posts", (string)null);
                 });
 
             modelBuilder.Entity("IntelliTect.SyncUp.Data.Models.Role", b =>
@@ -390,7 +390,7 @@ namespace IntelliTect.SyncUp.Data.Migrations
 
                     b.HasKey("TenantId");
 
-                    b.ToTable("Tenants");
+                    b.ToTable("Tenants", (string)null);
                 });
 
             modelBuilder.Entity("IntelliTect.SyncUp.Data.Models.TenantMembership", b =>
@@ -430,7 +430,7 @@ namespace IntelliTect.SyncUp.Data.Migrations
                     b.HasIndex("UserId", "TenantId")
                         .IsUnique();
 
-                    b.ToTable("TenantMemberships");
+                    b.ToTable("TenantMemberships", (string)null);
                 });
 
             modelBuilder.Entity("IntelliTect.SyncUp.Data.Models.User", b =>
@@ -544,7 +544,7 @@ namespace IntelliTect.SyncUp.Data.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("UserPhotos");
+                    b.ToTable("UserPhotos", (string)null);
                 });
 
             modelBuilder.Entity("IntelliTect.SyncUp.Data.Models.UserRole", b =>
@@ -583,7 +583,7 @@ namespace IntelliTect.SyncUp.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("DataProtectionKeys");
+                    b.ToTable("DataProtectionKeys", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
