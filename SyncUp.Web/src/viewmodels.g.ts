@@ -200,12 +200,6 @@ export class GroupListViewModel extends ListViewModel<$models.Group, $apiClients
 }
 
 
-<<<<<<< HEAD
-export interface ImageViewModel extends $models.Image {
-  imageId: string | null;
-  color: string | null;
-  imageUrl: string | null;
-=======
 export interface GroupUserViewModel extends $models.GroupUser {
   groupUserId: number | null;
   isOwner: boolean | null;
@@ -215,7 +209,6 @@ export interface GroupUserViewModel extends $models.GroupUser {
   groupId: number | null;
   get group(): GroupViewModel | null;
   set group(value: GroupViewModel | $models.Group | null);
->>>>>>> 2293f738c154107e53dbf206bd945c772d5e50b5
   get modifiedBy(): UserViewModel | null;
   set modifiedBy(value: UserViewModel | $models.User | null);
   modifiedById: string | null;
@@ -225,20 +218,6 @@ export interface GroupUserViewModel extends $models.GroupUser {
   createdById: string | null;
   createdOn: Date | null;
 }
-<<<<<<< HEAD
-export class ImageViewModel extends ViewModel<$models.Image, $apiClients.ImageApiClient, string> implements $models.Image  {
-  
-  constructor(initialData?: DeepPartial<$models.Image> | null) {
-    super($metadata.Image, new $apiClients.ImageApiClient(), initialData)
-  }
-}
-defineProps(ImageViewModel, $metadata.Image)
-
-export class ImageListViewModel extends ListViewModel<$models.Image, $apiClients.ImageApiClient, ImageViewModel> {
-  
-  constructor() {
-    super($metadata.Image, new $apiClients.ImageApiClient())
-=======
 export class GroupUserViewModel extends ViewModel<$models.GroupUser, $apiClients.GroupUserApiClient, number> implements $models.GroupUser  {
   static DataSources = $models.GroupUser.DataSources;
   
@@ -253,7 +232,35 @@ export class GroupUserListViewModel extends ListViewModel<$models.GroupUser, $ap
   
   constructor() {
     super($metadata.GroupUser, new $apiClients.GroupUserApiClient())
->>>>>>> 2293f738c154107e53dbf206bd945c772d5e50b5
+  }
+}
+
+
+export interface ImageViewModel extends $models.Image {
+  imageId: string | null;
+  color: string | null;
+  imageUrl: string | null;
+  get modifiedBy(): UserViewModel | null;
+  set modifiedBy(value: UserViewModel | $models.User | null);
+  modifiedById: string | null;
+  modifiedOn: Date | null;
+  get createdBy(): UserViewModel | null;
+  set createdBy(value: UserViewModel | $models.User | null);
+  createdById: string | null;
+  createdOn: Date | null;
+}
+export class ImageViewModel extends ViewModel<$models.Image, $apiClients.ImageApiClient, string> implements $models.Image  {
+  
+  constructor(initialData?: DeepPartial<$models.Image> | null) {
+    super($metadata.Image, new $apiClients.ImageApiClient(), initialData)
+  }
+}
+defineProps(ImageViewModel, $metadata.Image)
+
+export class ImageListViewModel extends ListViewModel<$models.Image, $apiClients.ImageApiClient, ImageViewModel> {
+  
+  constructor() {
+    super($metadata.Image, new $apiClients.ImageApiClient())
   }
 }
 
@@ -568,11 +575,8 @@ const viewModelTypeLookup = ViewModel.typeLookup = {
   Comment: CommentViewModel,
   Event: EventViewModel,
   Group: GroupViewModel,
-<<<<<<< HEAD
-  Image: ImageViewModel,
-=======
   GroupUser: GroupUserViewModel,
->>>>>>> 2293f738c154107e53dbf206bd945c772d5e50b5
+  Image: ImageViewModel,
   Post: PostViewModel,
   Role: RoleViewModel,
   Tenant: TenantViewModel,
@@ -585,11 +589,8 @@ const listViewModelTypeLookup = ListViewModel.typeLookup = {
   Comment: CommentListViewModel,
   Event: EventListViewModel,
   Group: GroupListViewModel,
-<<<<<<< HEAD
-  Image: ImageListViewModel,
-=======
   GroupUser: GroupUserListViewModel,
->>>>>>> 2293f738c154107e53dbf206bd945c772d5e50b5
+  Image: ImageListViewModel,
   Post: PostListViewModel,
   Role: RoleListViewModel,
   Tenant: TenantListViewModel,

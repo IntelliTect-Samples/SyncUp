@@ -198,12 +198,6 @@ export class Group {
 }
 
 
-<<<<<<< HEAD
-export interface Image extends Model<typeof metadata.Image> {
-  imageId: string | null
-  color: string | null
-  imageUrl: string | null
-=======
 export interface GroupUser extends Model<typeof metadata.GroupUser> {
   groupUserId: number | null
   isOwner: boolean | null
@@ -211,7 +205,6 @@ export interface GroupUser extends Model<typeof metadata.GroupUser> {
   user: User | null
   groupId: number | null
   group: Group | null
->>>>>>> 2293f738c154107e53dbf206bd945c772d5e50b5
   modifiedBy: User | null
   modifiedById: string | null
   modifiedOn: Date | null
@@ -219,25 +212,6 @@ export interface GroupUser extends Model<typeof metadata.GroupUser> {
   createdById: string | null
   createdOn: Date | null
 }
-<<<<<<< HEAD
-export class Image {
-  
-  /** Mutates the input object and its descendents into a valid Image implementation. */
-  static convert(data?: Partial<Image>): Image {
-    return convertToModel(data || {}, metadata.Image) 
-  }
-  
-  /** Maps the input object and its descendents to a new, valid Image implementation. */
-  static map(data?: Partial<Image>): Image {
-    return mapToModel(data || {}, metadata.Image) 
-  }
-  
-  static [Symbol.hasInstance](x: any) { return x?.$metadata === metadata.Image; }
-  
-  /** Instantiate a new Image, optionally basing it on the given data. */
-  constructor(data?: Partial<Image> | {[k: string]: any}) {
-    Object.assign(this, Image.map(data || {}));
-=======
 export class GroupUser {
   
   /** Mutates the input object and its descendents into a valid GroupUser implementation. */
@@ -269,7 +243,38 @@ export namespace GroupUser {
         return reactiveDataSource(this);
       }
     }
->>>>>>> 2293f738c154107e53dbf206bd945c772d5e50b5
+  }
+}
+
+
+export interface Image extends Model<typeof metadata.Image> {
+  imageId: string | null
+  color: string | null
+  imageUrl: string | null
+  modifiedBy: User | null
+  modifiedById: string | null
+  modifiedOn: Date | null
+  createdBy: User | null
+  createdById: string | null
+  createdOn: Date | null
+}
+export class Image {
+  
+  /** Mutates the input object and its descendents into a valid Image implementation. */
+  static convert(data?: Partial<Image>): Image {
+    return convertToModel(data || {}, metadata.Image) 
+  }
+  
+  /** Maps the input object and its descendents to a new, valid Image implementation. */
+  static map(data?: Partial<Image>): Image {
+    return mapToModel(data || {}, metadata.Image) 
+  }
+  
+  static [Symbol.hasInstance](x: any) { return x?.$metadata === metadata.Image; }
+  
+  /** Instantiate a new Image, optionally basing it on the given data. */
+  constructor(data?: Partial<Image> | {[k: string]: any}) {
+    Object.assign(this, Image.map(data || {}));
   }
 }
 
@@ -509,11 +514,8 @@ declare module "coalesce-vue/lib/model" {
     Comment: Comment
     Event: Event
     Group: Group
-<<<<<<< HEAD
-    Image: Image
-=======
     GroupUser: GroupUser
->>>>>>> 2293f738c154107e53dbf206bd945c772d5e50b5
+    Image: Image
     Post: Post
     Role: Role
     Tenant: Tenant

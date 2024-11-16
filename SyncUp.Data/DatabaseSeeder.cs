@@ -137,7 +137,7 @@ public class DatabaseSeeder(AppDbContext db)
             new()
             {
                 Name = "Soccer Moms",
-                BannerImage = imageService == null ? null : await imageService.AddImage("https://rare-gallery.com/uploads/posts/521319-soccer.jpg"),
+                BannerImage = imageService == null ? null : await imageService.AddImage("https://st3.depositphotos.com/3971595/16719/i/450/depositphotos_167194490-stock-photo-image-of-family-mother-and.jpg"),
                 Description = "Made for the busy mom life"
             },
             new()
