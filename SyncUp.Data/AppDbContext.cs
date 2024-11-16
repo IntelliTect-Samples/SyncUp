@@ -233,7 +233,7 @@ public class AppDbContext
     {
         var seeder = new DatabaseSeeder(this);
 
-        seeder.SeedTenants();
+        seeder.SeedDemoTenant();
 
         // Only seed the demo tenant. Don't just grab Tenants.First(), nor fall back to it,
         // because this could grab a real production tenant.
@@ -250,6 +250,11 @@ public class AppDbContext
         if (!Groups.Any())
         {
             seeder.SeedGroups();
+        }
+
+        if (!Events.Any())
+        {
+            seeder.SeedEvents();
         }
 
         //Give any existing users access to the demo tenant
