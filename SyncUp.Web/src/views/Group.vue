@@ -14,6 +14,14 @@
 
     <!-- Posts List -->
     <c-loader-status :loaders="[groupService.posts.$load]">
+      <v-text-field
+        v-model="groupService.posts.$params.search"
+        label="Search Posts"
+        prepend-inner-icon="fa fa-search"
+        hide-details
+        clearable
+      />
+
       <v-card
         v-for="post in groupService.posts.$items"
         :key="post.$stableId"
@@ -49,6 +57,8 @@ groupService.group.$load(props.groupId).then(async () => {
 
   groupService.groupUser.$count();
 });
+
+groupService.posts.$useAutoLoad({ wait: 100 });
 
 watch(groupService.isMember, () => {
   groupService.groupUser.$count();
