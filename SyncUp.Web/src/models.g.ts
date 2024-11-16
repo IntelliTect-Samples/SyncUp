@@ -198,10 +198,20 @@ export class Group {
 }
 
 
+<<<<<<< HEAD
 export interface Image extends Model<typeof metadata.Image> {
   imageId: string | null
   color: string | null
   imageUrl: string | null
+=======
+export interface GroupUser extends Model<typeof metadata.GroupUser> {
+  groupUserId: number | null
+  isOwner: boolean | null
+  userId: string | null
+  user: User | null
+  groupId: number | null
+  group: Group | null
+>>>>>>> 2293f738c154107e53dbf206bd945c772d5e50b5
   modifiedBy: User | null
   modifiedById: string | null
   modifiedOn: Date | null
@@ -209,6 +219,7 @@ export interface Image extends Model<typeof metadata.Image> {
   createdById: string | null
   createdOn: Date | null
 }
+<<<<<<< HEAD
 export class Image {
   
   /** Mutates the input object and its descendents into a valid Image implementation. */
@@ -226,6 +237,39 @@ export class Image {
   /** Instantiate a new Image, optionally basing it on the given data. */
   constructor(data?: Partial<Image> | {[k: string]: any}) {
     Object.assign(this, Image.map(data || {}));
+=======
+export class GroupUser {
+  
+  /** Mutates the input object and its descendents into a valid GroupUser implementation. */
+  static convert(data?: Partial<GroupUser>): GroupUser {
+    return convertToModel(data || {}, metadata.GroupUser) 
+  }
+  
+  /** Maps the input object and its descendents to a new, valid GroupUser implementation. */
+  static map(data?: Partial<GroupUser>): GroupUser {
+    return mapToModel(data || {}, metadata.GroupUser) 
+  }
+  
+  static [Symbol.hasInstance](x: any) { return x?.$metadata === metadata.GroupUser; }
+  
+  /** Instantiate a new GroupUser, optionally basing it on the given data. */
+  constructor(data?: Partial<GroupUser> | {[k: string]: any}) {
+    Object.assign(this, GroupUser.map(data || {}));
+  }
+}
+export namespace GroupUser {
+  export namespace DataSources {
+    
+    export class UsersForGroup implements DataSource<typeof metadata.GroupUser.dataSources.usersForGroup> {
+      readonly $metadata = metadata.GroupUser.dataSources.usersForGroup
+      groupId: number | null = null
+      
+      constructor(params?: Omit<Partial<UsersForGroup>, '$metadata'>) {
+        if (params) Object.assign(this, params);
+        return reactiveDataSource(this);
+      }
+    }
+>>>>>>> 2293f738c154107e53dbf206bd945c772d5e50b5
   }
 }
 
@@ -465,7 +509,11 @@ declare module "coalesce-vue/lib/model" {
     Comment: Comment
     Event: Event
     Group: Group
+<<<<<<< HEAD
     Image: Image
+=======
+    GroupUser: GroupUser
+>>>>>>> 2293f738c154107e53dbf206bd945c772d5e50b5
     Post: Post
     Role: Role
     Tenant: Tenant

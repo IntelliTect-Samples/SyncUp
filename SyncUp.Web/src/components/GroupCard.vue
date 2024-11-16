@@ -21,10 +21,10 @@
             {{ group.name }}
           </v-card-title>
           <v-chip size="x-small" color="primary" class="ml-3 mt-n4">
-            {{ groupPosts }}
+            {{ groupService.numberOfPosts }}
           </v-chip>
           <v-chip size="x-small" color="primary" class="ml-1 mt-n4">
-            {{ groupUsers }}
+            {{ groupService.numberOfUsers }}
           </v-chip>
         </v-col>
       </v-row>
@@ -39,27 +39,34 @@
     <!-- Bottom content (second divider and v-card-actions) -->
     <v-divider class="mt-2" />
     <v-card-actions class="d-flex justify-end">
-      <!-- TODO: Implement this -->
-      <join-button :is-member="false" />
+      <join-button
+        :is-member="groupService.isMember.value"
+        :disabled="groupService.group.checkMembership.isLoading"
+        @toggle-membership="toggleMembership"
+      />
     </v-card-actions>
   </v-card>
 </template>
 
 <script setup lang="ts">
 import router from "@/router";
+import GroupService from "@/services/GroupService";
 import { GroupViewModel } from "@/viewmodels.g";
 
 const props = defineProps<{
   group: GroupViewModel;
 }>();
 
-const groupPosts = computed(() => {
-  return props.group.posts.length + " posts";
-});
+const groupService = new GroupService(props.group);
+groupService.lookupMembership();
 
-const groupUsers = computed(() => {
-  return "2 users"; // TODO: Implement this
-});
+groupService.posts.$count();
+groupService.groupUser.$count();
+
+async function toggleMembership() {
+  await groupService.toggleMembership();
+  groupService.groupUser.$count();
+}
 
 const groupDescription = computed(() => {
   const characterLimit = 200;

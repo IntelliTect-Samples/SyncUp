@@ -70,6 +70,8 @@ public class AppDbContext
     public DbSet<Event> Events => Set<Event>();
     public DbSet<Comment> Comments => Set<Comment>();
 
+    public DbSet<GroupUser> GroupUsers => Set<GroupUser>();
+
     public DbSet<AuditLog> AuditLogs => Set<AuditLog>();
     public DbSet<AuditLogProperty> AuditLogProperties => Set<AuditLogProperty>();
 

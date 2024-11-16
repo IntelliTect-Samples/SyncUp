@@ -9,9 +9,11 @@ public class Post : TenantedBase
     [MaxLength(500)]
     [Required]
     [ListText]
+    [Search(SearchMethod = SearchMethods.Contains)]
     public required string Title { get; set; }
 
     [Required]
+    [Search(SearchMethod = SearchMethods.Contains)]
     public required string Body { get; set; }
 
     [Required]

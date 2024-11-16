@@ -632,10 +632,59 @@ export const Group = domain.types.Group = {
     },
   },
   methods: {
+    checkMembership: {
+      name: "checkMembership",
+      displayName: "Check Membership",
+      transportType: "item",
+      httpMethod: "POST",
+      params: {
+        id: {
+          name: "id",
+          displayName: "Primary Key",
+          type: "number",
+          role: "value",
+          get source() { return (domain.types.Group as ModelType & { name: "Group" }).props.groupId },
+          rules: {
+            required: val => val != null || "Primary Key is required.",
+          }
+        },
+      },
+      return: {
+        name: "$return",
+        displayName: "Result",
+        type: "boolean",
+        role: "value",
+      },
+    },
+    toggleMembership: {
+      name: "toggleMembership",
+      displayName: "Toggle Membership",
+      transportType: "item",
+      httpMethod: "POST",
+      params: {
+        id: {
+          name: "id",
+          displayName: "Primary Key",
+          type: "number",
+          role: "value",
+          get source() { return (domain.types.Group as ModelType & { name: "Group" }).props.groupId },
+          rules: {
+            required: val => val != null || "Primary Key is required.",
+          }
+        },
+      },
+      return: {
+        name: "$return",
+        displayName: "Result",
+        type: "void",
+        role: "value",
+      },
+    },
   },
   dataSources: {
   },
 }
+<<<<<<< HEAD
 export const Image = domain.types.Image = {
   name: "Image" as const,
   displayName: "Image",
@@ -664,6 +713,74 @@ export const Image = domain.types.Image = {
       displayName: "Image Url",
       type: "string",
       role: "value",
+=======
+export const GroupUser = domain.types.GroupUser = {
+  name: "GroupUser" as const,
+  displayName: "Group User",
+  get displayProp() { return this.props.groupUserId }, 
+  type: "model",
+  controllerRoute: "GroupUser",
+  get keyProp() { return this.props.groupUserId }, 
+  behaviorFlags: 7 as BehaviorFlags,
+  props: {
+    groupUserId: {
+      name: "groupUserId",
+      displayName: "Group User Id",
+      type: "number",
+      role: "primaryKey",
+      hidden: 3 as HiddenAreas,
+    },
+    isOwner: {
+      name: "isOwner",
+      displayName: "Is Owner",
+      type: "boolean",
+      role: "value",
+    },
+    userId: {
+      name: "userId",
+      displayName: "User Id",
+      type: "string",
+      role: "foreignKey",
+      get principalKey() { return (domain.types.User as ModelType & { name: "User" }).props.id as PrimaryKeyProperty },
+      get principalType() { return (domain.types.User as ModelType & { name: "User" }) },
+      get navigationProp() { return (domain.types.GroupUser as ModelType & { name: "GroupUser" }).props.user as ModelReferenceNavigationProperty },
+      hidden: 3 as HiddenAreas,
+      rules: {
+        required: val => (val != null && val !== '') || "User is required.",
+      }
+    },
+    user: {
+      name: "user",
+      displayName: "User",
+      type: "model",
+      get typeDef() { return (domain.types.User as ModelType & { name: "User" }) },
+      role: "referenceNavigation",
+      get foreignKey() { return (domain.types.GroupUser as ModelType & { name: "GroupUser" }).props.userId as ForeignKeyProperty },
+      get principalKey() { return (domain.types.User as ModelType & { name: "User" }).props.id as PrimaryKeyProperty },
+      dontSerialize: true,
+    },
+    groupId: {
+      name: "groupId",
+      displayName: "Group Id",
+      type: "number",
+      role: "foreignKey",
+      get principalKey() { return (domain.types.Group as ModelType & { name: "Group" }).props.groupId as PrimaryKeyProperty },
+      get principalType() { return (domain.types.Group as ModelType & { name: "Group" }) },
+      get navigationProp() { return (domain.types.GroupUser as ModelType & { name: "GroupUser" }).props.group as ModelReferenceNavigationProperty },
+      hidden: 3 as HiddenAreas,
+      rules: {
+        required: val => val != null || "Group is required.",
+      }
+    },
+    group: {
+      name: "group",
+      displayName: "Group",
+      type: "model",
+      get typeDef() { return (domain.types.Group as ModelType & { name: "Group" }) },
+      role: "referenceNavigation",
+      get foreignKey() { return (domain.types.GroupUser as ModelType & { name: "GroupUser" }).props.groupId as ForeignKeyProperty },
+      get principalKey() { return (domain.types.Group as ModelType & { name: "Group" }).props.groupId as PrimaryKeyProperty },
+>>>>>>> 2293f738c154107e53dbf206bd945c772d5e50b5
       dontSerialize: true,
     },
     modifiedById: {
@@ -673,7 +790,11 @@ export const Image = domain.types.Image = {
       role: "foreignKey",
       get principalKey() { return (domain.types.User as ModelType & { name: "User" }).props.id as PrimaryKeyProperty },
       get principalType() { return (domain.types.User as ModelType & { name: "User" }) },
+<<<<<<< HEAD
       get navigationProp() { return (domain.types.Image as ModelType & { name: "Image" }).props.modifiedBy as ModelReferenceNavigationProperty },
+=======
+      get navigationProp() { return (domain.types.GroupUser as ModelType & { name: "GroupUser" }).props.modifiedBy as ModelReferenceNavigationProperty },
+>>>>>>> 2293f738c154107e53dbf206bd945c772d5e50b5
       hidden: 3 as HiddenAreas,
       dontSerialize: true,
     },
@@ -684,7 +805,11 @@ export const Image = domain.types.Image = {
       role: "foreignKey",
       get principalKey() { return (domain.types.User as ModelType & { name: "User" }).props.id as PrimaryKeyProperty },
       get principalType() { return (domain.types.User as ModelType & { name: "User" }) },
+<<<<<<< HEAD
       get navigationProp() { return (domain.types.Image as ModelType & { name: "Image" }).props.createdBy as ModelReferenceNavigationProperty },
+=======
+      get navigationProp() { return (domain.types.GroupUser as ModelType & { name: "GroupUser" }).props.createdBy as ModelReferenceNavigationProperty },
+>>>>>>> 2293f738c154107e53dbf206bd945c772d5e50b5
       hidden: 3 as HiddenAreas,
       dontSerialize: true,
     },
@@ -694,7 +819,11 @@ export const Image = domain.types.Image = {
       type: "model",
       get typeDef() { return (domain.types.User as ModelType & { name: "User" }) },
       role: "referenceNavigation",
+<<<<<<< HEAD
       get foreignKey() { return (domain.types.Image as ModelType & { name: "Image" }).props.createdById as ForeignKeyProperty },
+=======
+      get foreignKey() { return (domain.types.GroupUser as ModelType & { name: "GroupUser" }).props.createdById as ForeignKeyProperty },
+>>>>>>> 2293f738c154107e53dbf206bd945c772d5e50b5
       get principalKey() { return (domain.types.User as ModelType & { name: "User" }).props.id as PrimaryKeyProperty },
       dontSerialize: true,
     },
@@ -712,7 +841,11 @@ export const Image = domain.types.Image = {
       type: "model",
       get typeDef() { return (domain.types.User as ModelType & { name: "User" }) },
       role: "referenceNavigation",
+<<<<<<< HEAD
       get foreignKey() { return (domain.types.Image as ModelType & { name: "Image" }).props.modifiedById as ForeignKeyProperty },
+=======
+      get foreignKey() { return (domain.types.GroupUser as ModelType & { name: "GroupUser" }).props.modifiedById as ForeignKeyProperty },
+>>>>>>> 2293f738c154107e53dbf206bd945c772d5e50b5
       get principalKey() { return (domain.types.User as ModelType & { name: "User" }).props.id as PrimaryKeyProperty },
       dontSerialize: true,
     },
@@ -728,6 +861,22 @@ export const Image = domain.types.Image = {
   methods: {
   },
   dataSources: {
+<<<<<<< HEAD
+=======
+    usersForGroup: {
+      type: "dataSource",
+      name: "UsersForGroup" as const,
+      displayName: "Users For Group",
+      props: {
+        groupId: {
+          name: "groupId",
+          displayName: "Group Id",
+          type: "number",
+          role: "value",
+        },
+      },
+    },
+>>>>>>> 2293f738c154107e53dbf206bd945c772d5e50b5
   },
 }
 export const Post = domain.types.Post = {
@@ -1619,7 +1768,11 @@ interface AppDomain extends Domain {
     Comment: typeof Comment
     Event: typeof Event
     Group: typeof Group
+<<<<<<< HEAD
     Image: typeof Image
+=======
+    GroupUser: typeof GroupUser
+>>>>>>> 2293f738c154107e53dbf206bd945c772d5e50b5
     Post: typeof Post
     Role: typeof Role
     Tenant: typeof Tenant

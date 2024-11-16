@@ -91,5 +91,131 @@ namespace SyncUp.Web.Api
             IBehaviors<IntelliTect.SyncUp.Data.Models.Group> behaviors,
             IDataSource<IntelliTect.SyncUp.Data.Models.Group> dataSource)
             => DeleteImplementation(id, new DataSourceParameters(), dataSource, behaviors);
+
+        // Methods from data class exposed through API Controller.
+
+        /// <summary>
+        /// Method: CheckMembership
+        /// </summary>
+        [HttpPost("CheckMembership")]
+        [Authorize]
+        [Consumes("application/x-www-form-urlencoded", "multipart/form-data")]
+        public virtual async Task<ItemResult<bool>> CheckMembership(
+            [FromServices] IDataSourceFactory dataSourceFactory,
+            [FromForm(Name = "id")] long id)
+        {
+            var _params = new
+            {
+                Id = id
+            };
+
+            var dataSource = dataSourceFactory.GetDataSource<IntelliTect.SyncUp.Data.Models.Group, IntelliTect.SyncUp.Data.Models.Group>("Default");
+            var itemResult = await dataSource.GetItemAsync(_params.Id, new DataSourceParameters());
+            if (!itemResult.WasSuccessful)
+            {
+                return new ItemResult<bool>(itemResult);
+            }
+            var item = itemResult.Object;
+            var _methodResult = item.CheckMembership(
+                Db,
+                User
+            );
+            var _result = new ItemResult<bool>(_methodResult);
+            _result.Object = _methodResult.Object;
+            return _result;
+        }
+
+        public class CheckMembershipParameters
+        {
+            public long Id { get; set; }
+        }
+
+        /// <summary>
+        /// Method: CheckMembership
+        /// </summary>
+        [HttpPost("CheckMembership")]
+        [Authorize]
+        [Consumes("application/json")]
+        public virtual async Task<ItemResult<bool>> CheckMembership(
+            [FromServices] IDataSourceFactory dataSourceFactory,
+            [FromBody] CheckMembershipParameters _params
+        )
+        {
+            var dataSource = dataSourceFactory.GetDataSource<IntelliTect.SyncUp.Data.Models.Group, IntelliTect.SyncUp.Data.Models.Group>("Default");
+            var itemResult = await dataSource.GetItemAsync(_params.Id, new DataSourceParameters());
+            if (!itemResult.WasSuccessful)
+            {
+                return new ItemResult<bool>(itemResult);
+            }
+            var item = itemResult.Object;
+            var _methodResult = item.CheckMembership(
+                Db,
+                User
+            );
+            var _result = new ItemResult<bool>(_methodResult);
+            _result.Object = _methodResult.Object;
+            return _result;
+        }
+
+        /// <summary>
+        /// Method: ToggleMembership
+        /// </summary>
+        [HttpPost("ToggleMembership")]
+        [Authorize]
+        [Consumes("application/x-www-form-urlencoded", "multipart/form-data")]
+        public virtual async Task<ItemResult> ToggleMembership(
+            [FromServices] IDataSourceFactory dataSourceFactory,
+            [FromForm(Name = "id")] long id)
+        {
+            var _params = new
+            {
+                Id = id
+            };
+
+            var dataSource = dataSourceFactory.GetDataSource<IntelliTect.SyncUp.Data.Models.Group, IntelliTect.SyncUp.Data.Models.Group>("Default");
+            var itemResult = await dataSource.GetItemAsync(_params.Id, new DataSourceParameters());
+            if (!itemResult.WasSuccessful)
+            {
+                return new ItemResult(itemResult);
+            }
+            var item = itemResult.Object;
+            var _methodResult = await item.ToggleMembership(
+                Db,
+                User
+            );
+            var _result = new ItemResult(_methodResult);
+            return _result;
+        }
+
+        public class GroupToggleMembershipParameters
+        {
+            public long Id { get; set; }
+        }
+
+        /// <summary>
+        /// Method: ToggleMembership
+        /// </summary>
+        [HttpPost("ToggleMembership")]
+        [Authorize]
+        [Consumes("application/json")]
+        public virtual async Task<ItemResult> ToggleMembership(
+            [FromServices] IDataSourceFactory dataSourceFactory,
+            [FromBody] GroupToggleMembershipParameters _params
+        )
+        {
+            var dataSource = dataSourceFactory.GetDataSource<IntelliTect.SyncUp.Data.Models.Group, IntelliTect.SyncUp.Data.Models.Group>("Default");
+            var itemResult = await dataSource.GetItemAsync(_params.Id, new DataSourceParameters());
+            if (!itemResult.WasSuccessful)
+            {
+                return new ItemResult(itemResult);
+            }
+            var item = itemResult.Object;
+            var _methodResult = await item.ToggleMembership(
+                Db,
+                User
+            );
+            var _result = new ItemResult(_methodResult);
+            return _result;
+        }
     }
 }

@@ -4,6 +4,7 @@ using IntelliTect.SyncUp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IntelliTect.SyncUp.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241116173322_GroupUser")]
+    partial class GroupUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -54,7 +57,7 @@ namespace IntelliTect.SyncUp.Data.Migrations
 
                     b.HasIndex("ParentId");
 
-                    b.ToTable("AuditLogProperties", (string)null);
+                    b.ToTable("AuditLogProperties");
                 });
 
             modelBuilder.Entity("IntelliTect.SyncUp.Data.Models.AuditLog", b =>
@@ -110,7 +113,7 @@ namespace IntelliTect.SyncUp.Data.Migrations
 
                     b.HasIndex("Type", "KeyValue");
 
-                    b.ToTable("AuditLogs", (string)null);
+                    b.ToTable("AuditLogs");
                 });
 
             modelBuilder.Entity("IntelliTect.SyncUp.Data.Models.Comment", b =>
@@ -154,7 +157,7 @@ namespace IntelliTect.SyncUp.Data.Migrations
 
                     b.HasIndex("TenantId", "PostId");
 
-                    b.ToTable("Comments", (string)null);
+                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("IntelliTect.SyncUp.Data.Models.Event", b =>
@@ -208,7 +211,7 @@ namespace IntelliTect.SyncUp.Data.Migrations
 
                     b.HasIndex("TenantId", "GroupId");
 
-                    b.ToTable("Events", (string)null);
+                    b.ToTable("Events");
                 });
 
             modelBuilder.Entity("IntelliTect.SyncUp.Data.Models.Group", b =>
@@ -256,7 +259,7 @@ namespace IntelliTect.SyncUp.Data.Migrations
 
                     b.HasIndex("ModifiedById");
 
-                    b.ToTable("Groups", (string)null);
+                    b.ToTable("Groups");
                 });
 
             modelBuilder.Entity("IntelliTect.SyncUp.Data.Models.Post", b =>
@@ -305,7 +308,7 @@ namespace IntelliTect.SyncUp.Data.Migrations
 
                     b.HasIndex("TenantId", "GroupId");
 
-                    b.ToTable("Posts", (string)null);
+                    b.ToTable("Posts");
                 });
 
             modelBuilder.Entity("IntelliTect.SyncUp.Data.Models.Role", b =>
@@ -390,7 +393,7 @@ namespace IntelliTect.SyncUp.Data.Migrations
 
                     b.HasKey("TenantId");
 
-                    b.ToTable("Tenants", (string)null);
+                    b.ToTable("Tenants");
                 });
 
             modelBuilder.Entity("IntelliTect.SyncUp.Data.Models.TenantMembership", b =>
@@ -430,7 +433,7 @@ namespace IntelliTect.SyncUp.Data.Migrations
                     b.HasIndex("UserId", "TenantId")
                         .IsUnique();
 
-                    b.ToTable("TenantMemberships", (string)null);
+                    b.ToTable("TenantMemberships");
                 });
 
             modelBuilder.Entity("IntelliTect.SyncUp.Data.Models.User", b =>
@@ -544,7 +547,7 @@ namespace IntelliTect.SyncUp.Data.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("UserPhotos", (string)null);
+                    b.ToTable("UserPhotos");
                 });
 
             modelBuilder.Entity("IntelliTect.SyncUp.Data.Models.UserRole", b =>
@@ -583,7 +586,7 @@ namespace IntelliTect.SyncUp.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("DataProtectionKeys", (string)null);
+                    b.ToTable("DataProtectionKeys");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
