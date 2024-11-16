@@ -11,4 +11,6 @@ public class Group : TenantedBase
 
     [MaxLength(500)]
     public required string SubTitle { get; set; }
+
+    public ICollection<Post> Posts { get; }
 }

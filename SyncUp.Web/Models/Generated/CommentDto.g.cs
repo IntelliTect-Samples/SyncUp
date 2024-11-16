@@ -8,23 +8,17 @@ using System.Security.Claims;
 
 namespace SyncUp.Web.Models
 {
-    public partial class PostParameter : GeneratedParameterDto<IntelliTect.SyncUp.Data.Models.Post>
+    public partial class CommentParameter : GeneratedParameterDto<IntelliTect.SyncUp.Data.Models.Comment>
     {
-        public PostParameter() { }
+        public CommentParameter() { }
 
-        private long? _PostId;
-        private string _Title;
+        private long? _CommentId;
         private string _Body;
 
-        public long? PostId
+        public long? CommentId
         {
-            get => _PostId;
-            set { _PostId = value; Changed(nameof(PostId)); }
-        }
-        public string Title
-        {
-            get => _Title;
-            set { _Title = value; Changed(nameof(Title)); }
+            get => _CommentId;
+            set { _CommentId = value; Changed(nameof(CommentId)); }
         }
         public string Body
         {
@@ -35,27 +29,25 @@ namespace SyncUp.Web.Models
         /// <summary>
         /// Map from the current DTO instance to the domain object.
         /// </summary>
-        public override void MapTo(IntelliTect.SyncUp.Data.Models.Post entity, IMappingContext context)
+        public override void MapTo(IntelliTect.SyncUp.Data.Models.Comment entity, IMappingContext context)
         {
             var includes = context.Includes;
 
             if (OnUpdate(entity, context)) return;
 
-            if (ShouldMapTo(nameof(Title))) entity.Title = Title;
             if (ShouldMapTo(nameof(Body))) entity.Body = Body;
         }
 
         /// <summary>
         /// Map from the current DTO instance to a new instance of the domain object.
         /// </summary>
-        public override IntelliTect.SyncUp.Data.Models.Post MapToNew(IMappingContext context)
+        public override IntelliTect.SyncUp.Data.Models.Comment MapToNew(IMappingContext context)
         {
             var includes = context.Includes;
 
-            var entity = new IntelliTect.SyncUp.Data.Models.Post()
+            var entity = new IntelliTect.SyncUp.Data.Models.Comment()
             {
-                PostId = (PostId ?? default),
-                Title = Title,
+                CommentId = (CommentId ?? default),
                 Body = Body,
             };
 
@@ -65,51 +57,36 @@ namespace SyncUp.Web.Models
         }
     }
 
-    public partial class PostResponse : GeneratedResponseDto<IntelliTect.SyncUp.Data.Models.Post>
+    public partial class CommentResponse : GeneratedResponseDto<IntelliTect.SyncUp.Data.Models.Comment>
     {
-        public PostResponse() { }
+        public CommentResponse() { }
 
-        public long? PostId { get; set; }
-        public string Title { get; set; }
+        public long? CommentId { get; set; }
         public string Body { get; set; }
         public string ModifiedById { get; set; }
         public System.DateTimeOffset? ModifiedOn { get; set; }
         public string CreatedById { get; set; }
         public System.DateTimeOffset? CreatedOn { get; set; }
-        public SyncUp.Web.Models.GroupResponse Group { get; set; }
-        public System.Collections.Generic.ICollection<SyncUp.Web.Models.CommentResponse> Comments { get; set; }
+        public SyncUp.Web.Models.PostResponse Post { get; set; }
         public SyncUp.Web.Models.UserResponse ModifiedBy { get; set; }
         public SyncUp.Web.Models.UserResponse CreatedBy { get; set; }
 
         /// <summary>
         /// Map from the domain object to the properties of the current DTO instance.
         /// </summary>
-        public override void MapFrom(IntelliTect.SyncUp.Data.Models.Post obj, IMappingContext context, IncludeTree tree = null)
+        public override void MapFrom(IntelliTect.SyncUp.Data.Models.Comment obj, IMappingContext context, IncludeTree tree = null)
         {
             if (obj == null) return;
             var includes = context.Includes;
 
-            this.PostId = obj.PostId;
-            this.Title = obj.Title;
+            this.CommentId = obj.CommentId;
             this.Body = obj.Body;
             this.ModifiedById = obj.ModifiedById;
             this.ModifiedOn = obj.ModifiedOn;
             this.CreatedById = obj.CreatedById;
             this.CreatedOn = obj.CreatedOn;
-            if (tree == null || tree[nameof(this.Group)] != null)
-                this.Group = obj.Group.MapToDto<IntelliTect.SyncUp.Data.Models.Group, GroupResponse>(context, tree?[nameof(this.Group)]);
-
-            var propValComments = obj.Comments;
-            if (propValComments != null && (tree == null || tree[nameof(this.Comments)] != null))
-            {
-                this.Comments = propValComments
-                    .OrderBy(f => f.CommentId)
-                    .Select(f => f.MapToDto<IntelliTect.SyncUp.Data.Models.Comment, CommentResponse>(context, tree?[nameof(this.Comments)])).ToList();
-            }
-            else if (propValComments == null && tree?[nameof(this.Comments)] != null)
-            {
-                this.Comments = new CommentResponse[0];
-            }
+            if (tree == null || tree[nameof(this.Post)] != null)
+                this.Post = obj.Post.MapToDto<IntelliTect.SyncUp.Data.Models.Post, PostResponse>(context, tree?[nameof(this.Post)]);
 
             if (tree == null || tree[nameof(this.ModifiedBy)] != null)
                 this.ModifiedBy = obj.ModifiedBy.MapToDto<IntelliTect.SyncUp.Data.Models.User, UserResponse>(context, tree?[nameof(this.ModifiedBy)]);

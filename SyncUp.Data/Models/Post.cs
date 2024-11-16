@@ -9,5 +9,7 @@ public class Post : TenantedBase
 
     public required string Body { get; set; }
 
+    public Group Group { get; set; }
 
+    public ICollection<Comment> Comments { get; }
 }

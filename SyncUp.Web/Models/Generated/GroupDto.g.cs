@@ -76,6 +76,7 @@ namespace SyncUp.Web.Models
         public System.DateTimeOffset? ModifiedOn { get; set; }
         public string CreatedById { get; set; }
         public System.DateTimeOffset? CreatedOn { get; set; }
+        public System.Collections.Generic.ICollection<SyncUp.Web.Models.PostResponse> Posts { get; set; }
         public SyncUp.Web.Models.UserResponse ModifiedBy { get; set; }
         public SyncUp.Web.Models.UserResponse CreatedBy { get; set; }
 
@@ -94,6 +95,18 @@ namespace SyncUp.Web.Models
             this.ModifiedOn = obj.ModifiedOn;
             this.CreatedById = obj.CreatedById;
             this.CreatedOn = obj.CreatedOn;
+            var propValPosts = obj.Posts;
+            if (propValPosts != null && (tree == null || tree[nameof(this.Posts)] != null))
+            {
+                this.Posts = propValPosts
+                    .OrderBy(f => f.PostId)
+                    .Select(f => f.MapToDto<IntelliTect.SyncUp.Data.Models.Post, PostResponse>(context, tree?[nameof(this.Posts)])).ToList();
+            }
+            else if (propValPosts == null && tree?[nameof(this.Posts)] != null)
+            {
+                this.Posts = new PostResponse[0];
+            }
+
             if (tree == null || tree[nameof(this.ModifiedBy)] != null)
                 this.ModifiedBy = obj.ModifiedBy.MapToDto<IntelliTect.SyncUp.Data.Models.User, UserResponse>(context, tree?[nameof(this.ModifiedBy)]);
 

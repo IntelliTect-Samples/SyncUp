@@ -239,6 +239,104 @@ export const AuditLogProperty = domain.types.AuditLogProperty = {
   dataSources: {
   },
 }
+export const Comment = domain.types.Comment = {
+  name: "Comment" as const,
+  displayName: "Comment",
+  get displayProp() { return this.props.commentId }, 
+  type: "model",
+  controllerRoute: "Comment",
+  get keyProp() { return this.props.commentId }, 
+  behaviorFlags: 7 as BehaviorFlags,
+  props: {
+    commentId: {
+      name: "commentId",
+      displayName: "Comment Id",
+      type: "number",
+      role: "primaryKey",
+      hidden: 3 as HiddenAreas,
+      createOnly: true,
+    },
+    body: {
+      name: "body",
+      displayName: "Body",
+      type: "string",
+      role: "value",
+      rules: {
+        required: val => (val != null && val !== '') || "Body is required.",
+      }
+    },
+    post: {
+      name: "post",
+      displayName: "Post",
+      type: "model",
+      get typeDef() { return (domain.types.Post as ModelType & { name: "Post" }) },
+      role: "value",
+      dontSerialize: true,
+    },
+    modifiedById: {
+      name: "modifiedById",
+      displayName: "Modified By Id",
+      type: "string",
+      role: "foreignKey",
+      get principalKey() { return (domain.types.User as ModelType & { name: "User" }).props.id as PrimaryKeyProperty },
+      get principalType() { return (domain.types.User as ModelType & { name: "User" }) },
+      get navigationProp() { return (domain.types.Comment as ModelType & { name: "Comment" }).props.modifiedBy as ModelReferenceNavigationProperty },
+      hidden: 3 as HiddenAreas,
+      dontSerialize: true,
+    },
+    createdById: {
+      name: "createdById",
+      displayName: "Created By Id",
+      type: "string",
+      role: "foreignKey",
+      get principalKey() { return (domain.types.User as ModelType & { name: "User" }).props.id as PrimaryKeyProperty },
+      get principalType() { return (domain.types.User as ModelType & { name: "User" }) },
+      get navigationProp() { return (domain.types.Comment as ModelType & { name: "Comment" }).props.createdBy as ModelReferenceNavigationProperty },
+      hidden: 3 as HiddenAreas,
+      dontSerialize: true,
+    },
+    createdBy: {
+      name: "createdBy",
+      displayName: "Created By",
+      type: "model",
+      get typeDef() { return (domain.types.User as ModelType & { name: "User" }) },
+      role: "referenceNavigation",
+      get foreignKey() { return (domain.types.Comment as ModelType & { name: "Comment" }).props.createdById as ForeignKeyProperty },
+      get principalKey() { return (domain.types.User as ModelType & { name: "User" }).props.id as PrimaryKeyProperty },
+      dontSerialize: true,
+    },
+    createdOn: {
+      name: "createdOn",
+      displayName: "Created On",
+      type: "date",
+      dateKind: "datetime",
+      role: "value",
+      dontSerialize: true,
+    },
+    modifiedBy: {
+      name: "modifiedBy",
+      displayName: "Modified By",
+      type: "model",
+      get typeDef() { return (domain.types.User as ModelType & { name: "User" }) },
+      role: "referenceNavigation",
+      get foreignKey() { return (domain.types.Comment as ModelType & { name: "Comment" }).props.modifiedById as ForeignKeyProperty },
+      get principalKey() { return (domain.types.User as ModelType & { name: "User" }).props.id as PrimaryKeyProperty },
+      dontSerialize: true,
+    },
+    modifiedOn: {
+      name: "modifiedOn",
+      displayName: "Modified On",
+      type: "date",
+      dateKind: "datetime",
+      role: "value",
+      dontSerialize: true,
+    },
+  },
+  methods: {
+  },
+  dataSources: {
+  },
+}
 export const Group = domain.types.Group = {
   name: "Group" as const,
   displayName: "Group",
@@ -275,6 +373,20 @@ export const Group = domain.types.Group = {
         required: val => (val != null && val !== '') || "Sub Title is required.",
         maxLength: val => !val || val.length <= 500 || "Sub Title may not be more than 500 characters.",
       }
+    },
+    posts: {
+      name: "posts",
+      displayName: "Posts",
+      type: "collection",
+      itemType: {
+        name: "$collectionItem",
+        displayName: "",
+        role: "value",
+        type: "model",
+        get typeDef() { return (domain.types.Post as ModelType & { name: "Post" }) },
+      },
+      role: "value",
+      dontSerialize: true,
     },
     modifiedById: {
       name: "modifiedById",
@@ -375,6 +487,28 @@ export const Post = domain.types.Post = {
       rules: {
         required: val => (val != null && val !== '') || "Body is required.",
       }
+    },
+    group: {
+      name: "group",
+      displayName: "Group",
+      type: "model",
+      get typeDef() { return (domain.types.Group as ModelType & { name: "Group" }) },
+      role: "value",
+      dontSerialize: true,
+    },
+    comments: {
+      name: "comments",
+      displayName: "Comments",
+      type: "collection",
+      itemType: {
+        name: "$collectionItem",
+        displayName: "",
+        role: "value",
+        type: "model",
+        get typeDef() { return (domain.types.Comment as ModelType & { name: "Comment" }) },
+      },
+      role: "value",
+      dontSerialize: true,
     },
     modifiedById: {
       name: "modifiedById",
@@ -1046,6 +1180,7 @@ interface AppDomain extends Domain {
   types: {
     AuditLog: typeof AuditLog
     AuditLogProperty: typeof AuditLogProperty
+    Comment: typeof Comment
     Group: typeof Group
     Post: typeof Post
     Role: typeof Role

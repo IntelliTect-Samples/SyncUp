@@ -93,10 +93,43 @@ export class AuditLogProperty {
 }
 
 
+export interface Comment extends Model<typeof metadata.Comment> {
+  commentId: number | null
+  body: string | null
+  post: Post | null
+  modifiedBy: User | null
+  modifiedById: string | null
+  modifiedOn: Date | null
+  createdBy: User | null
+  createdById: string | null
+  createdOn: Date | null
+}
+export class Comment {
+  
+  /** Mutates the input object and its descendents into a valid Comment implementation. */
+  static convert(data?: Partial<Comment>): Comment {
+    return convertToModel(data || {}, metadata.Comment) 
+  }
+  
+  /** Maps the input object and its descendents to a new, valid Comment implementation. */
+  static map(data?: Partial<Comment>): Comment {
+    return mapToModel(data || {}, metadata.Comment) 
+  }
+  
+  static [Symbol.hasInstance](x: any) { return x?.$metadata === metadata.Comment; }
+  
+  /** Instantiate a new Comment, optionally basing it on the given data. */
+  constructor(data?: Partial<Comment> | {[k: string]: any}) {
+    Object.assign(this, Comment.map(data || {}));
+  }
+}
+
+
 export interface Group extends Model<typeof metadata.Group> {
   groupId: number | null
   name: string | null
   subTitle: string | null
+  posts: Post[] | null
   modifiedBy: User | null
   modifiedById: string | null
   modifiedOn: Date | null
@@ -129,6 +162,8 @@ export interface Post extends Model<typeof metadata.Post> {
   postId: number | null
   title: string | null
   body: string | null
+  group: Group | null
+  comments: Comment[] | null
   modifiedBy: User | null
   modifiedById: string | null
   modifiedOn: Date | null
@@ -337,6 +372,7 @@ declare module "coalesce-vue/lib/model" {
   interface ModelTypeLookup {
     AuditLog: AuditLog
     AuditLogProperty: AuditLogProperty
+    Comment: Comment
     Group: Group
     Post: Post
     Role: Role

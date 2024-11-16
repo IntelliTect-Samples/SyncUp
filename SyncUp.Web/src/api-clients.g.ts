@@ -13,6 +13,11 @@ export class AuditLogPropertyApiClient extends ModelApiClient<$models.AuditLogPr
 }
 
 
+export class CommentApiClient extends ModelApiClient<$models.Comment> {
+  constructor() { super($metadata.Comment) }
+}
+
+
 export class GroupApiClient extends ModelApiClient<$models.Group> {
   constructor() { super($metadata.Group) }
 }
