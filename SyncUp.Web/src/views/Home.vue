@@ -1,9 +1,14 @@
 <template>
   <v-container>
-    <v-row>
-      <v-col cols="12">
-        <OrganizationCard />
-      </v-col>
+    <PageImageBanner
+      :title="userInfo.tenantName"
+      image-url="https://wallpapers.com/images/featured/widescreen-3ao0esn9qknhdudj.jpg"
+      badge1-text="23 members"
+      badge2-text="2047 posts"
+      description="This is a fake description that needs love"
+      @toggle-membership="console.log('membership toggled')"
+    />
+    <v-row class="ma-1">
       <v-col cols="12" md="6" lg="8">
         <v-row>
           <v-col
@@ -28,4 +33,5 @@ useTitle("Home");
 const groups = new GroupListViewModel();
 groups.$useAutoLoad();
 groups.$load();
+const { userInfo } = useUser();
 </script>
