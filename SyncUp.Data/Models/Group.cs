@@ -13,7 +13,7 @@ public class Group : TenantedBase
     [MaxLength(500)]
     public required string SubTitle { get; set; }
 
-    public ICollection<Post> Posts { get; }
+    public ICollection<Post> Posts { get; set; }
 
-    public ICollection<Event> Events { get; } = [];
+    public ICollection<Event> Events { get; set; }
 }

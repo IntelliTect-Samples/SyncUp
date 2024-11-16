@@ -231,6 +231,33 @@ public class AppDbContext
         }
     }
 
+    public async Task SeedAsync(UserManager<User> userManager)
+    {
+        var seeder = new DatabaseSeeder(this);
+
+        seeder.SeedTenants();
+
+        // Only seed the demo tenant. Don't just grab Tenants.First(), nor fall back to it,
+        // because this could grab a real production tenant.
+        var demoTenant = Tenants.FirstOrDefault(t => t.Name.Contains("Demo Tenant"));
+        if (demoTenant is null) return;
+
+        this.TenantId = demoTenant.TenantId;
+
+        if (!Roles.Any())
+        {
+            seeder.SeedRoles();
+        }
+
+        if (!Groups.Any())
+        {
+            seeder.SeedGroups();
+        }
+
+        //Give any existing users access to the demo tenant
+        seeder.SeedExistingUsersWithDemoTenantAccess();
+    }
+
     class TenantIdValueGenerator : ValueGenerator<string>
     {
         public override bool GeneratesTemporaryValues => false;

@@ -23,6 +23,8 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Azure.Core;
 using Azure.Identity;
 using IntelliTect.SyncUp.Utilities;
+using Microsoft.AspNetCore.Identity;
+using IntelliTect.SyncUp.Data.Models;
 
 var builder = WebApplication.CreateBuilder(new WebApplicationOptions
 {
@@ -184,6 +186,9 @@ using (var scope = app.Services.CreateScope())
     db.Database.SetCommandTimeout(TimeSpan.FromMinutes(10));
 	db.Database.Migrate();
     ActivatorUtilities.GetServiceOrCreateInstance<DatabaseSeeder>(serviceScope).Seed();
+
+    var userManager = serviceScope.GetRequiredService<UserManager<User>>();
+    await db.SeedAsync(userManager);
 }
 
 app.Run();
