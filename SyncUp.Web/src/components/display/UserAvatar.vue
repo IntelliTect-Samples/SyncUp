@@ -1,5 +1,5 @@
 <template>
-  <v-avatar color="white">
+  <v-avatar :color="color">
     <span v-if="!imageLoaded && initials" class="initials">
       {{ initials }}
     </span>
@@ -23,9 +23,13 @@
 import { User, UserInfo } from "@/models.g";
 import { UserViewModel } from "@/viewmodels.g";
 
-const props = defineProps<{
-  user: User | UserInfo;
-}>();
+const props = withDefaults(
+  defineProps<{
+    user: User | UserInfo;
+    color?: string;
+  }>(),
+  { color: "white" },
+);
 
 const initials = computed(() => {
   const fullName = props.user.fullName;

@@ -160,6 +160,21 @@ export class Event {
     Object.assign(this, Event.map(data || {}));
   }
 }
+export namespace Event {
+  export namespace DataSources {
+    
+    export class EventsByDate implements DataSource<typeof metadata.Event.dataSources.eventsByDate> {
+      readonly $metadata = metadata.Event.dataSources.eventsByDate
+      showPastEvents: boolean | null = null
+      userId: string | null = null
+      
+      constructor(params?: Omit<Partial<EventsByDate>, '$metadata'>) {
+        if (params) Object.assign(this, params);
+        return reactiveDataSource(this);
+      }
+    }
+  }
+}
 
 
 export interface Group extends Model<typeof metadata.Group> {

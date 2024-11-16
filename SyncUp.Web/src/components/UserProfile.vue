@@ -1,10 +1,8 @@
 <template>
-  <v-container max-width="1000px">
+  <v-container>
     <v-card>
-      <v-card-title>User Profile</v-card-title>
       <c-loader-status
         :loaders="{
-          'no-initial-content no-error-content': [user.$load],
           '': [user.$bulkSave, user.evict],
         }"
       >
@@ -166,60 +164,45 @@
           </v-card-text>
         </template>
 
-        <template v-if="isUserAdmin">
-          <v-card-title> Roles & permissions </v-card-title>
-          <v-card-text>
-            <v-row>
-              <v-col>
-                <c-input :model="user" for="userRoles"></c-input>
-              </v-col>
-              <v-col>
-                <h3>Effective Permissions:</h3>
-                <div style="max-height: 300px; overflow-y: auto">
-                  <div
-                    v-for="permission in PermissionMeta.values.map((p) => ({
-                      meta: p,
-                      roles: user.roles.filter((r) =>
-                        r.permissions?.includes(p.value),
-                      ),
-                    }))"
-                    :key="permission.meta.strValue"
-                  >
-                    <span v-if="permission.roles.length">
-                      <v-icon icon="fa fa-check text-success"></v-icon>
-                      {{ permission.meta.displayName }}
-                      <span class="text-caption text-grey pl-1">
-                        (via
-                        {{ permission.roles.map((r) => r.name).join(",") }})
-                      </span>
+        <v-card-title> Roles & permissions </v-card-title>
+        <v-card-text>
+          <v-row>
+            <v-col>
+              <c-input :model="user" for="userRoles"></c-input>
+            </v-col>
+            <v-col>
+              <h3>Effective Permissions:</h3>
+              <div style="max-height: 300px; overflow-y: auto">
+                <div
+                  v-for="permission in PermissionMeta.values.map((p) => ({
+                    meta: p,
+                    roles: user.roles.filter((r) =>
+                      r.permissions?.includes(p.value),
+                    ),
+                  }))"
+                  :key="permission.meta.strValue"
+                >
+                  <span v-if="permission.roles.length">
+                    <v-icon icon="fa fa-check text-success"></v-icon>
+                    {{ permission.meta.displayName }}
+                    <span class="text-caption text-grey pl-1">
+                      (via
+                      {{ permission.roles.map((r) => r.name).join(",") }})
                     </span>
-                    <span v-else>
-                      <v-icon icon="fa fa-times text-error"></v-icon>
-                      {{ permission.meta.displayName }}
-                    </span>
-                  </div>
+                  </span>
+                  <span v-else>
+                    <v-icon icon="fa fa-times text-error"></v-icon>
+                    {{ permission.meta.displayName }}
+                  </span>
                 </div>
-              </v-col>
-            </v-row>
-
-            <template v-if="isGlobalAdmin">
-              <c-input
-                :model="user"
-                for="isGlobalAdmin"
-                :readonly="id == $userInfo.id"
-              ></c-input>
-            </template>
-          </v-card-text>
-        </template>
+              </div>
+            </v-col>
+          </v-row>
+        </v-card-text>
 
         <v-card-actions>
           <!-- Admins can kick users (but not themselves) out of the tenant. -->
-          <v-btn
-            v-if="isUserAdmin && id !== $userInfo.id"
-            color="error"
-            large
-            @click="removeFromTenant"
-          >
+          <v-btn v-if="!isMe" color="error" large @click="removeFromTenant">
             Remove User from Tenant
           </v-btn>
           <v-spacer></v-spacer>
@@ -227,9 +210,8 @@
             color="success"
             prepend-icon="fa fa-save"
             :loading="user.$bulkSave.isLoading"
-            :disabled="!user.$bulkSavePreview().isDirty"
-            :variant="!user.$bulkSavePreview().isDirty ? 'text' : 'elevated'"
-            @click="user.$bulkSave()"
+            variant="elevated"
+            @click="saveUser()"
           >
             Save
           </v-btn>
@@ -241,35 +223,27 @@
 
 <script setup lang="ts">
 import { UserViewModel } from "@/viewmodels.g";
-import { Permission } from "@/models.g";
 import { Permission as PermissionMeta } from "@/metadata.g";
 
+const props = defineProps<{
+  user: UserViewModel;
+}>();
+
 const router = useRouter();
-const { can, userInfo } = useUser();
-
-const props = defineProps<{ id: string }>();
-const user = new UserViewModel();
-
-const isUserAdmin = computed(() => can(Permission.UserAdmin));
-
-const isGlobalAdmin = computed(() =>
-  userInfo.value.roles?.includes("GlobalAdmin"),
-);
+const { userInfo } = useUser();
+const isMe = computed(() => props.user.id == userInfo.value.id);
 
 async function removeFromTenant() {
-  await user.evict.confirmInvoke(
+  await props.user.evict.confirmInvoke(
     `Really remove the user from the ${userInfo.value.tenantName} organization?`,
   );
-  user.$load.wasSuccessful = null;
+  await props.user.$load();
   router.back();
 }
 
-const isMe = computed(() => props.id == userInfo.value.id);
-
-if (!isUserAdmin.value && !isMe.value) {
-  // Non-admins can only view themselves
-  router.replace({ name: "error-404" });
-} else {
-  user.$load(props.id);
+async function saveUser() {
+  if (!props.user.$bulkSavePreview().isDirty) {
+    await props.user.$bulkSave();
+  }
 }
 </script>
