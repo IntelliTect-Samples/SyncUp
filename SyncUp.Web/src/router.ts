@@ -19,10 +19,16 @@ const router = createRouter({
     },
     {
       path: "/group/:groupId",
-      alias: "/group", // Override coalesce admin page
       component: () => import("./views/Group.vue"),
       props: (r) => ({
         groupId: +r.params.groupId,
+      }),
+    },
+    {
+      path: "/post/:postId",
+      component: () => import("./views/Post.vue"),
+      props: (r) => ({
+        postId: +r.params.postId,
       }),
     },
     {
