@@ -1,13 +1,17 @@
 <template>
-  <v-card>
+  <v-card :to="`/group/${group.groupId}`">
     <v-card-item>
-      <div class="d-flex">
-        <v-avatar icon="fas fa-user" size="60" color="primary"></v-avatar>
-        <div class="ms-4">
-          <v-card-title>{{ group.name }}</v-card-title>
-          <v-card-subtitle>{{ group.subTitle }}</v-card-subtitle>
-        </div>
-      </div>
+      <v-row dense align="center">
+        <v-col cols="auto">
+          <v-avatar icon="fas fa-user" size="60" color="primary"></v-avatar>
+        </v-col>
+        <v-col>
+          <v-card-title>
+            {{ group.name }}
+          </v-card-title>
+        </v-col>
+      </v-row>
+      <v-card-subtitle>{{ group.description }}</v-card-subtitle>
     </v-card-item>
     <v-card-actions class="d-flex justify-end">
       <v-chip>
