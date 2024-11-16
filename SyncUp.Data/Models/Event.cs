@@ -1,6 +1,4 @@
-﻿using IntelliTect.SyncUp.Data;
-
-namespace SyncUp.Data.Models;
+﻿namespace IntelliTect.SyncUp.Data.Models;
 public class Event : TenantedBase
 {
     public long EventId { get; init; }
