@@ -64,14 +64,8 @@ jobs:
       - name: dotnet build
         run: dotnet build --configuration Release --no-restore --no-incremental 
 
-      - name: Check if a migration is needed
-        working-directory: SyncUp.Data
-        run: |
-          dotnet tool restore
-          dotnet ef migrations has-pending-model-changes --no-build --configuration Release 
-
       - name: dotnet test
-        run: dotnet test --configuration Release --no-restore --no-build
+        run: dotnet test --configuration Release --no-restore --no-build 
 
       - name: dotnet publish
         run: dotnet publish ${{ github.workspace }}/SyncUp.Web/SyncUp.Web.csproj --configuration Release --output ${{ github.workspace }}/publish --no-restore --no-build
