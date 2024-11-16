@@ -4,6 +4,7 @@ import { createCoalesceVuetify } from "coalesce-vue-vuetify3";
 import { aliases, fa } from "vuetify/iconsets/fa";
 import { AxiosClient as CoalesceAxiosClient } from "coalesce-vue";
 import { isAxiosError } from "axios";
+import "./registerServiceWorker";
 
 import App from "./App.vue";
 import router from "./router";
