@@ -233,8 +233,6 @@ const router = useRouter();
 const { userInfo } = useUser();
 const isMe = computed(() => props.user.id == userInfo.value.id);
 
-debugger;
-
 async function removeFromTenant() {
   await props.user.evict.confirmInvoke(
     `Really remove the user from the ${userInfo.value.tenantName} organization?`,
