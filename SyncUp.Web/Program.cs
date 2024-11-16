@@ -2,11 +2,13 @@ using IntelliTect.Coalesce;
 using IntelliTect.SyncUp.Data;
 using IntelliTect.SyncUp.Data.Auth;
 using IntelliTect.SyncUp.Data.Communication;
+using IntelliTect.SyncUp.Data.Models;
 using IntelliTect.SyncUp.Utilities;
 using IntelliTect.SyncUp.Web;
 using Microsoft.ApplicationInsights.DependencyCollector;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
@@ -180,6 +182,9 @@ using (var scope = app.Services.CreateScope())
     db.Database.SetCommandTimeout(TimeSpan.FromMinutes(10));
     db.Database.Migrate();
     ActivatorUtilities.GetServiceOrCreateInstance<DatabaseSeeder>(serviceScope).Seed();
+
+    var userManager = serviceScope.GetRequiredService<UserManager<User>>();
+    await db.SeedAsync(userManager);
 }
 
 app.Run();
