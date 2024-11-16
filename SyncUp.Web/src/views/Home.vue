@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <c-loader-status :loaders="[tenantListViewModel.toggleMembership]" />
     <PageImageBanner
       :title="userInfo.tenantName"
       image-url="https://wallpapers.com/images/featured/widescreen-3ao0esn9qknhdudj.jpg"
