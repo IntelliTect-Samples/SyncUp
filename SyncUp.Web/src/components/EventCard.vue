@@ -14,11 +14,14 @@
               {{ event.name }}
 
               <v-spacer />
+              <v-chip label>
+                {{ event.group?.name }}
+              </v-chip>
               <v-chip
                 v-if="isPast"
-                size="small"
-                class="pa-3 mr-n2"
+                class="pa-3 mr-n2 ml-2"
                 prepend-icon="fa fa-clock-rotate-left"
+                color="warning"
               >
                 Ended
               </v-chip>
