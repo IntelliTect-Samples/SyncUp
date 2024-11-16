@@ -25,7 +25,7 @@ securityService.whoAmI.onFulfilled(() => {
 
 /** Properties about the currently authenticated user */
 export const userInfo = computed(() => {
-  return securityService.whoAmI.result ?? new UserInfo();
+  return (securityService.whoAmI.result ?? new UserInfo()) as UserInfo;
 });
 
 /** Returns true if the user has any of the specified permissions */
