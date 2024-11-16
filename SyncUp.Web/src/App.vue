@@ -18,7 +18,7 @@
           <v-list-item
             :title="$userInfo.fullName!"
             :subtitle="$userInfo.userName!"
-            :to="`/user/${$userInfo.id}`"
+            to="/profile"
           >
             <template #prepend>
               <UserAvatar :user="$userInfo" class="mr-2 ml-n1" />
@@ -56,6 +56,12 @@
       <v-list>
         <v-list-item to="/" prepend-icon="fa fa-home" title="Home" />
         <v-divider></v-divider>
+        <v-list-item
+          v-if="$can(Permission.UserAdmin)"
+          to="/users"
+          prepend-icon="fa fa-users"
+          title="My Users"
+        />
         <v-list-item
           v-if="$can(Permission.UserAdmin)"
           to="/admin/User"

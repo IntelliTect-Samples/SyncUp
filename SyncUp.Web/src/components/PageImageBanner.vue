@@ -3,7 +3,6 @@
     <v-card
       class="d-flex align-end"
       :style="{
-        backgroundImage: `url('${imageUrl}')`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
       }"
@@ -28,6 +27,7 @@
         </v-col>
         <v-col align="right">
           <JoinButton
+            class="mr-2"
             :is-member="isMember"
             @toggle-membership="$emit('toggleMembership')"
           />
@@ -42,7 +42,6 @@
 const props = withDefaults(
   defineProps<{
     title: string | null;
-    imageUrl: string | null;
     description: string | null;
     isMember: boolean;
     badge1Text?: string | null;
