@@ -19,7 +19,7 @@ export default class GroupService {
 
   public groupUser = new GroupUserListViewModel();
   private groupUserDataSource = new GroupUser.DataSources.UsersForGroup();
-  
+
   constructor(group: GroupViewModel) {
     this.group = group;
 
