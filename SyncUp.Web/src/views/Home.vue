@@ -1,9 +1,11 @@
 <template>
-  <div class="home">
-    <!-- Component is auto-imported by `unplugin-vue-components`
-    (either kebab-case or PascalCase works.) -->
-    <HelloWorld msg="Welcome to your new Vue.js Coalesce application!" />
-  </div>
+  <v-container>
+    <v-row>
+      <v-col cols="12" md="6" lg="4">
+        <OrganizationCard />
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script setup lang="ts">
