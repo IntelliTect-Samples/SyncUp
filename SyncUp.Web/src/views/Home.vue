@@ -41,6 +41,11 @@
           </v-row>
         </v-col>
       </v-row>
+      <v-row>
+        <v-col>
+          <UploadImage v-model="tenant.bannerImage" />
+        </v-col>
+      </v-row>
     </c-loader-status>
   </v-container>
 </template>
@@ -48,6 +53,7 @@
 <script setup lang="ts">
 import {
   GroupListViewModel,
+  GroupViewModel,
   TenantListViewModel,
   TenantViewModel,
 } from "@/viewmodels.g";
