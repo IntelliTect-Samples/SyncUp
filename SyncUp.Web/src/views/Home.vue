@@ -5,9 +5,9 @@
       :title="userInfo.tenantName"
       image-url="https://wallpapers.com/images/featured/widescreen-3ao0esn9qknhdudj.jpg"
       badge1-text="23 members"
-      badge2-text="2047 posts"
+      :badge2-text="numberOfGroups"
       description="This is a fake description that needs love"
-      :refresh-flag="refreshFlag"
+      :is-member="isMember"
       @toggle-membership="toggleMembership"
     />
     <v-row class="mt-1">
@@ -31,13 +31,29 @@ useTitle("Home");
 const groups = new GroupListViewModel();
 groups.$useAutoLoad();
 groups.$load();
+groups.$count();
 const { userInfo } = useUser();
-const refreshFlag = ref(0);
 
 const tenantListViewModel = new TenantListViewModel();
 
 async function toggleMembership() {
   await tenantListViewModel.toggleMembership(userInfo.value.tenantId);
-  refreshFlag.value += 1;
+  await lookupMembership();
 }
+
+const isMember = ref(false);
+
+async function lookupMembership() {
+  const tenantListViewModel = new TenantListViewModel();
+  await tenantListViewModel.isMemberOf(userInfo.value.tenantId);
+  isMember.value = tenantListViewModel.isMemberOf.result ?? false;
+}
+
+onMounted(async () => {
+  await lookupMembership();
+});
+
+const numberOfGroups = computed(() => {
+  return groups.$count.result + " groups";
+});
 </script>

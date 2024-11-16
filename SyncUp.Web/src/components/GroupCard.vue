@@ -1,34 +1,73 @@
 <template>
-  <v-card :to="`/group/${group.groupId}`">
-    <v-card-item>
-      <v-row dense align="center">
+  <v-card height="100%" class="d-flex flex-column">
+    <!-- Top content (v-row, first divider, and v-card-text) -->
+    <div>
+      <v-row
+        no-gutters
+        align="center"
+        class="linked-title"
+        @click="router.push(`/group/${group.groupId}`)"
+      >
         <v-col cols="auto">
-          <v-avatar icon="fas fa-user" size="60" color="primary"></v-avatar>
+          <v-avatar
+            size="60"
+            color="primary"
+            class="mt-1 ml-1"
+            :image="group.imageUrl!"
+          />
         </v-col>
-        <v-col>
+        <v-col cols="auto">
           <v-card-title>
             {{ group.name }}
           </v-card-title>
+          <v-chip size="x-small" color="primary" class="ml-3 mt-n4">
+            {{ groupPosts }}
+          </v-chip>
+          <v-chip size="x-small" color="primary" class="ml-1 mt-n4">
+            {{ groupUsers }}
+          </v-chip>
         </v-col>
       </v-row>
-      <v-card-subtitle>{{ group.description }}</v-card-subtitle>
-    </v-card-item>
+
+      <v-divider class="my-2" />
+      <v-card-text>{{ groupDescription }}</v-card-text>
+    </div>
+
+    <!-- Spacer to push content down -->
+    <div class="flex-grow-1"></div>
+
+    <!-- Bottom content (second divider and v-card-actions) -->
+    <v-divider class="mt-2" />
     <v-card-actions class="d-flex justify-end">
-      <v-chip>
-        {{ group.posts?.length ?? 0 }}
-      </v-chip>
-      <v-btn color="primary" variant="flat">
-        <v-icon icon="fas fa-check"></v-icon>
-        Join
-      </v-btn>
+      <!-- TODO: Implement this -->
+      <join-button :is-member="false" />
     </v-card-actions>
   </v-card>
 </template>
 
 <script setup lang="ts">
+import router from "@/router";
 import { GroupViewModel } from "@/viewmodels.g";
 
 const props = defineProps<{
   group: GroupViewModel;
 }>();
+
+const groupPosts = computed(() => {
+  return props.group.posts.length + " posts";
+});
+
+const groupUsers = computed(() => {
+  return "2 users"; // TODO: Implement this
+});
+
+const groupDescription = computed(() => {
+  const characterLimit = 200;
+
+  if ((props.group.description?.length ?? 0) > characterLimit) {
+    return props.group.description?.slice(0, characterLimit) + "..."; // Truncate to 100 characters and append "..."
+  }
+  // Return the full description if it's 100 characters or less
+  return props.group.description;
+});
 </script>

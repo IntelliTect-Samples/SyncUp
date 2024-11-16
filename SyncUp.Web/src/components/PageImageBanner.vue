@@ -27,16 +27,10 @@
           </v-chip>
         </v-col>
         <v-col align="right">
-          <v-btn
-            size="small"
-            :color="isMember ? 'grey' : 'success'"
-            @click="toggleMembership"
-          >
-            <v-icon class="mr-2">
-              {{ isMember ? "fa-solid fa-check" : "fa-solid fa-plus" }}
-            </v-icon>
-            Join{{ isMember ? "ed" : "" }}
-          </v-btn>
+          <JoinButton
+            :is-member="isMember"
+            @toggle-membership="$emit('toggleMembership')"
+          />
         </v-col>
       </v-row>
       <v-card-text> {{ description }} </v-card-text>
@@ -45,49 +39,22 @@
 </template>
 
 <script setup lang="ts">
-import { TenantListViewModel } from "@/viewmodels.g";
-import { onMounted } from "vue";
 const props = withDefaults(
   defineProps<{
-    title?: string | null;
-    imageUrl: string;
-    description: string;
+    title: string | null;
+    imageUrl: string | null;
+    description: string | null;
+    isMember: boolean;
     badge1Text?: string | null;
     badge2Text?: string | null;
     minHeight?: string;
-    refreshFlag?: number | null;
   }>(),
   {
     badge1Text: null,
     badge2Text: null,
     minHeight: "300",
-    title: "No title",
   },
 );
 
-const emits = defineEmits(["toggleMembership"]);
-const isMember = ref(false);
-
-const { userInfo } = useUser();
-
-async function lookupMembership() {
-  const tenantListViewModel = new TenantListViewModel();
-  await tenantListViewModel.isMemberOf(userInfo.value.tenantId);
-  isMember.value = tenantListViewModel.isMemberOf.result ?? false;
-}
-
-function toggleMembership() {
-  emits("toggleMembership");
-}
-
-onMounted(async () => {
-  await lookupMembership();
-});
-
-watch(
-  () => props.refreshFlag,
-  async () => {
-    await lookupMembership();
-  },
-);
+defineEmits(["toggleMembership"]);
 </script>

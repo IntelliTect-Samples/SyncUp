@@ -6,8 +6,10 @@
       :description="group.description!"
       badge1-text="23 members"
       badge2-text="2047 posts"
-      @toggle-membership="console.log('membership toggled')"
+      :is-member="false"
+      @toggle-membership="console.log('toggle membership')"
     />
+    <!-- TODO: Implement is-member -->
 
     <!-- Posts List -->
     <v-card

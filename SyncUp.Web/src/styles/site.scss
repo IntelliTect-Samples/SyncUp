@@ -24,6 +24,18 @@ a {
   --fa-display: inline-flex;
 }
 
+.linked-title {
+  color: rgba(
+    var(--v-theme-on-surface),
+    var(--v-high-emphasis-opacity)
+  ) !important;
+  cursor: pointer;
+}
+
+.linked-title:hover {
+  opacity: 75%;
+}
+
 // Visually distinguish readonly inputs
 .v-input--readonly {
   .v-switch__track,
