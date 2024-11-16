@@ -70,6 +70,7 @@ export class AuditLogPropertyListViewModel extends ListViewModel<$models.AuditLo
 export interface CommentViewModel extends $models.Comment {
   commentId: number | null;
   body: string | null;
+  postId: number | null;
   get post(): PostViewModel | null;
   set post(value: PostViewModel | $models.Post | null);
   get modifiedBy(): UserViewModel | null;
@@ -134,7 +135,8 @@ export class EventListViewModel extends ListViewModel<$models.Event, $apiClients
 export interface GroupViewModel extends $models.Group {
   groupId: number | null;
   name: string | null;
-  subTitle: string | null;
+  imageUrl: string | null;
+  description: string | null;
   get posts(): ViewModelCollection<PostViewModel, $models.Post>;
   set posts(value: (PostViewModel | $models.Post)[] | null);
   get events(): ViewModelCollection<EventViewModel, $models.Event>;
@@ -149,6 +151,11 @@ export interface GroupViewModel extends $models.Group {
   createdOn: Date | null;
 }
 export class GroupViewModel extends ViewModel<$models.Group, $apiClients.GroupApiClient, number> implements $models.Group  {
+  
+  
+  public addToPosts(initialData?: DeepPartial<$models.Post> | null) {
+    return this.$addChild('posts', initialData) as PostViewModel
+  }
   
   
   public addToEvents(initialData?: DeepPartial<$models.Event> | null) {
@@ -173,6 +180,7 @@ export interface PostViewModel extends $models.Post {
   postId: number | null;
   title: string | null;
   body: string | null;
+  groupId: number | null;
   get group(): GroupViewModel | null;
   set group(value: GroupViewModel | $models.Group | null);
   get comments(): ViewModelCollection<CommentViewModel, $models.Comment>;
@@ -187,6 +195,12 @@ export interface PostViewModel extends $models.Post {
   createdOn: Date | null;
 }
 export class PostViewModel extends ViewModel<$models.Post, $apiClients.PostApiClient, number> implements $models.Post  {
+  static DataSources = $models.Post.DataSources;
+  
+  
+  public addToComments(initialData?: DeepPartial<$models.Comment> | null) {
+    return this.$addChild('comments', initialData) as CommentViewModel
+  }
   
   constructor(initialData?: DeepPartial<$models.Post> | null) {
     super($metadata.Post, new $apiClients.PostApiClient(), initialData)
@@ -195,6 +209,7 @@ export class PostViewModel extends ViewModel<$models.Post, $apiClients.PostApiCl
 defineProps(PostViewModel, $metadata.Post)
 
 export class PostListViewModel extends ListViewModel<$models.Post, $apiClients.PostApiClient, PostViewModel> {
+  static DataSources = $models.Post.DataSources;
   
   constructor() {
     super($metadata.Post, new $apiClients.PostApiClient())

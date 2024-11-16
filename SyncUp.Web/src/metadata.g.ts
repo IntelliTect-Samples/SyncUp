@@ -242,7 +242,7 @@ export const AuditLogProperty = domain.types.AuditLogProperty = {
 export const Comment = domain.types.Comment = {
   name: "Comment" as const,
   displayName: "Comment",
-  get displayProp() { return this.props.commentId }, 
+  get displayProp() { return this.props.body }, 
   type: "model",
   controllerRoute: "Comment",
   get keyProp() { return this.props.commentId }, 
@@ -265,12 +265,28 @@ export const Comment = domain.types.Comment = {
         required: val => (val != null && val !== '') || "Body is required.",
       }
     },
+    postId: {
+      name: "postId",
+      displayName: "Post Id",
+      type: "number",
+      role: "foreignKey",
+      get principalKey() { return (domain.types.Post as ModelType & { name: "Post" }).props.postId as PrimaryKeyProperty },
+      get principalType() { return (domain.types.Post as ModelType & { name: "Post" }) },
+      get navigationProp() { return (domain.types.Comment as ModelType & { name: "Comment" }).props.post as ModelReferenceNavigationProperty },
+      hidden: 3 as HiddenAreas,
+      rules: {
+        required: val => val != null || "Post is required.",
+      }
+    },
     post: {
       name: "post",
       displayName: "Post",
       type: "model",
       get typeDef() { return (domain.types.Post as ModelType & { name: "Post" }) },
-      role: "value",
+      role: "referenceNavigation",
+      get foreignKey() { return (domain.types.Comment as ModelType & { name: "Comment" }).props.postId as ForeignKeyProperty },
+      get principalKey() { return (domain.types.Post as ModelType & { name: "Post" }).props.postId as PrimaryKeyProperty },
+      get inverseNavigation() { return (domain.types.Post as ModelType & { name: "Post" }).props.comments as ModelCollectionNavigationProperty },
       dontSerialize: true,
     },
     modifiedById: {
@@ -499,14 +515,22 @@ export const Group = domain.types.Group = {
         maxLength: val => !val || val.length <= 500 || "Name may not be more than 500 characters.",
       }
     },
-    subTitle: {
-      name: "subTitle",
-      displayName: "Sub Title",
+    imageUrl: {
+      name: "imageUrl",
+      displayName: "Image Url",
       type: "string",
       role: "value",
       rules: {
-        required: val => (val != null && val !== '') || "Sub Title is required.",
-        maxLength: val => !val || val.length <= 500 || "Sub Title may not be more than 500 characters.",
+        required: val => (val != null && val !== '') || "Image Url is required.",
+      }
+    },
+    description: {
+      name: "description",
+      displayName: "Description",
+      type: "string",
+      role: "value",
+      rules: {
+        required: val => (val != null && val !== '') || "Description is required.",
       }
     },
     posts: {
@@ -520,7 +544,9 @@ export const Group = domain.types.Group = {
         type: "model",
         get typeDef() { return (domain.types.Post as ModelType & { name: "Post" }) },
       },
-      role: "value",
+      role: "collectionNavigation",
+      get foreignKey() { return (domain.types.Post as ModelType & { name: "Post" }).props.groupId as ForeignKeyProperty },
+      get inverseNavigation() { return (domain.types.Post as ModelType & { name: "Post" }).props.group as ModelReferenceNavigationProperty },
       dontSerialize: true,
     },
     events: {
@@ -606,7 +632,7 @@ export const Group = domain.types.Group = {
 export const Post = domain.types.Post = {
   name: "Post" as const,
   displayName: "Post",
-  get displayProp() { return this.props.postId }, 
+  get displayProp() { return this.props.title }, 
   type: "model",
   controllerRoute: "Post",
   get keyProp() { return this.props.postId }, 
@@ -639,12 +665,28 @@ export const Post = domain.types.Post = {
         required: val => (val != null && val !== '') || "Body is required.",
       }
     },
+    groupId: {
+      name: "groupId",
+      displayName: "Group Id",
+      type: "number",
+      role: "foreignKey",
+      get principalKey() { return (domain.types.Group as ModelType & { name: "Group" }).props.groupId as PrimaryKeyProperty },
+      get principalType() { return (domain.types.Group as ModelType & { name: "Group" }) },
+      get navigationProp() { return (domain.types.Post as ModelType & { name: "Post" }).props.group as ModelReferenceNavigationProperty },
+      hidden: 3 as HiddenAreas,
+      rules: {
+        required: val => val != null || "Group is required.",
+      }
+    },
     group: {
       name: "group",
       displayName: "Group",
       type: "model",
       get typeDef() { return (domain.types.Group as ModelType & { name: "Group" }) },
-      role: "value",
+      role: "referenceNavigation",
+      get foreignKey() { return (domain.types.Post as ModelType & { name: "Post" }).props.groupId as ForeignKeyProperty },
+      get principalKey() { return (domain.types.Group as ModelType & { name: "Group" }).props.groupId as PrimaryKeyProperty },
+      get inverseNavigation() { return (domain.types.Group as ModelType & { name: "Group" }).props.posts as ModelCollectionNavigationProperty },
       dontSerialize: true,
     },
     comments: {
@@ -658,7 +700,9 @@ export const Post = domain.types.Post = {
         type: "model",
         get typeDef() { return (domain.types.Comment as ModelType & { name: "Comment" }) },
       },
-      role: "value",
+      role: "collectionNavigation",
+      get foreignKey() { return (domain.types.Comment as ModelType & { name: "Comment" }).props.postId as ForeignKeyProperty },
+      get inverseNavigation() { return (domain.types.Comment as ModelType & { name: "Comment" }).props.post as ModelReferenceNavigationProperty },
       dontSerialize: true,
     },
     modifiedById: {
@@ -723,6 +767,20 @@ export const Post = domain.types.Post = {
   methods: {
   },
   dataSources: {
+    postsForGroup: {
+      type: "dataSource",
+      name: "PostsForGroup" as const,
+      displayName: "Posts For Group",
+      isDefault: true,
+      props: {
+        groupId: {
+          name: "groupId",
+          displayName: "Group Id",
+          type: "number",
+          role: "value",
+        },
+      },
+    },
   },
 }
 export const Role = domain.types.Role = {

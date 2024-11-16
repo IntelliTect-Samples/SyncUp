@@ -58,12 +58,6 @@
         <v-divider></v-divider>
         <v-list-item
           v-if="$can(Permission.UserAdmin)"
-          to="/Group"
-          prepend-icon="fa fa-users"
-          title="Group"
-        />
-        <v-list-item
-          v-if="$can(Permission.UserAdmin)"
           to="/admin/User"
           prepend-icon="fa fa-users"
           title="Users"
@@ -97,6 +91,26 @@
       </div>
     </v-navigation-drawer>
 
+    <v-overlay
+      v-model="showOverlay"
+      class="align-center justify-center"
+      transition="slide-y-reverse-transition"
+      scrim="blue"
+    >
+      <!-- load the sync-up.png file -->
+      <img
+        src="/sync-up.png"
+        alt="SyncUp"
+        class="sync-up-logo"
+        style="
+          max-height: 50%;
+          max-width: 50%;
+          margin-right: 25%;
+          margin-left: 25%;
+        "
+      />
+    </v-overlay>
+
     <v-main>
       <!-- https://stackoverflow.com/questions/52847979/what-is-router-view-key-route-fullpath -->
       <router-view v-slot="{ Component, route }">
@@ -125,6 +139,11 @@ const drawer = ref<boolean | null>(null);
 const router = useRouter();
 const { userInfo } = useUser();
 const vuetifyTheme = useTheme();
+const showOverlay = ref(true);
+
+setTimeout(() => {
+  showOverlay.value = false;
+}, 1000);
 
 const theme = useLocalStorage(
   "theme",

@@ -16,7 +16,7 @@
       </div>
     </v-card>
 
-    <v-card class="ma-3">
+    <v-card class="mt-3">
       <v-row class="ma-1">
         <v-col cols="auto">
           <v-chip v-if="badge1Text" class="mr-1" size="small" color="primary">
@@ -47,7 +47,7 @@
 <script setup lang="ts">
 const props = withDefaults(
   defineProps<{
-    title: string;
+    title?: string | null;
     imageUrl: string;
     description: string;
     badge1Text?: string | null;
@@ -58,6 +58,7 @@ const props = withDefaults(
     badge1Text: null,
     badge2Text: null,
     minHeight: "300",
+    title: "No title",
   },
 );
 

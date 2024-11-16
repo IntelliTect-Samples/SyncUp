@@ -96,6 +96,7 @@ export class AuditLogProperty {
 export interface Comment extends Model<typeof metadata.Comment> {
   commentId: number | null
   body: string | null
+  postId: number | null
   post: Post | null
   modifiedBy: User | null
   modifiedById: string | null
@@ -164,7 +165,8 @@ export class Event {
 export interface Group extends Model<typeof metadata.Group> {
   groupId: number | null
   name: string | null
-  subTitle: string | null
+  imageUrl: string | null
+  description: string | null
   posts: Post[] | null
   events: Event[] | null
   modifiedBy: User | null
@@ -199,6 +201,7 @@ export interface Post extends Model<typeof metadata.Post> {
   postId: number | null
   title: string | null
   body: string | null
+  groupId: number | null
   group: Group | null
   comments: Comment[] | null
   modifiedBy: User | null
@@ -225,6 +228,20 @@ export class Post {
   /** Instantiate a new Post, optionally basing it on the given data. */
   constructor(data?: Partial<Post> | {[k: string]: any}) {
     Object.assign(this, Post.map(data || {}));
+  }
+}
+export namespace Post {
+  export namespace DataSources {
+    
+    export class PostsForGroup implements DataSource<typeof metadata.Post.dataSources.postsForGroup> {
+      readonly $metadata = metadata.Post.dataSources.postsForGroup
+      groupId: number | null = null
+      
+      constructor(params?: Omit<Partial<PostsForGroup>, '$metadata'>) {
+        if (params) Object.assign(this, params);
+        return reactiveDataSource(this);
+      }
+    }
   }
 }
 

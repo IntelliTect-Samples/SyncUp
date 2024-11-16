@@ -65,7 +65,7 @@ jobs:
         run: dotnet build --configuration Release --no-restore --no-incremental 
 
       - name: dotnet test
-        run: dotnet test --configuration Release --no-restore --no-build
+        run: dotnet test --configuration Release --no-restore --no-build 
 
       - name: dotnet publish
         run: dotnet publish ${{ github.workspace }}/SyncUp.Web/SyncUp.Web.csproj --configuration Release --output ${{ github.workspace }}/publish --no-restore --no-build
