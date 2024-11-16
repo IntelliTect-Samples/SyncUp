@@ -57,7 +57,7 @@ jobs:
         working-directory: SyncUp.Data
         run: |
           dotnet tool restore
-          dotnet ef migrations has-pending-model-changes --no-build
+          dotnet ef migrations has-pending-model-changes
 
       - name: npm run lint
         run: npm run lint
