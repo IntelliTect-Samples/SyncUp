@@ -30,7 +30,10 @@
 import { EventListViewModel } from "@/viewmodels.g";
 import { Event } from "@/models.g";
 
+const { userInfo } = useUser();
+
 const eventsDataSource = new Event.DataSources.EventsByDate();
+eventsDataSource.userId = userInfo.value.id;
 const events = new EventListViewModel();
 events.$dataSource = eventsDataSource;
 events.$useAutoLoad();

@@ -17,7 +17,7 @@
               <v-chip
                 v-if="isPast"
                 size="small"
-                class="pa-3"
+                class="pa-3 mr-n2"
                 prepend-icon="fa fa-clock-rotate-left"
               >
                 Ended
@@ -39,7 +39,7 @@
             <v-chip
               size="small"
               color="primary"
-              class="ma-5 pa-3"
+              class="my-auto mx-2 pa-3"
               prepend-icon="fa fa-location-dot"
             >
               {{ event.location }}

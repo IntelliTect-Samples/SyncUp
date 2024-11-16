@@ -497,6 +497,12 @@ export const Event = domain.types.Event = {
           type: "boolean",
           role: "value",
         },
+        userId: {
+          name: "userId",
+          displayName: "User Id",
+          type: "string",
+          role: "value",
+        },
       },
     },
   },
