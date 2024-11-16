@@ -1,7 +1,4 @@
 ﻿using IntelliTect.SyncUp.Data;
-using Microsoft.AspNetCore.Http.HttpResults;
-using SyncUp.Data.Auth.Restrictions;
-using System.ComponentModel;
 
 namespace SyncUp.Data.Models;
 public class Event : TenantedBase
@@ -18,7 +15,7 @@ public class Event : TenantedBase
     public string? Location { get; set; }
 
     [Required]
-    public long GroupId {get; init; }
+    public long GroupId { get; init; }
     [ForeignKey(nameof(GroupId))]
     public Group Group { get; set; } = null!;
 
@@ -27,7 +24,7 @@ public class Event : TenantedBase
     {
         public override ItemResult BeforeSave(SaveKind kind, Event? oldItem, Event item)
         {
-            if(User.Can(Permission.Admin) || User.GetUserId() == Db.Groups.Find(item.GroupId)?.CreatedById)
+            if (User.Can(Permission.Admin) || User.GetUserId() == Db.Groups.Find(item.GroupId)?.CreatedById)
             {
                 return true;
             }
