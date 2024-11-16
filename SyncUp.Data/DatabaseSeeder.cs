@@ -28,7 +28,7 @@ public class DatabaseSeeder(AppDbContext db)
         await db.SaveChangesAsync();
     }
 
-    public async Task SeedDemoTenant()
+    public async Task SeedDemoTenant(ImageService imageService)
     {
         if (!db.Tenants.Any(t => t.Name.Contains("Demo Tenant")))
         {
@@ -95,6 +95,7 @@ public class DatabaseSeeder(AppDbContext db)
                 Name = "Spokane",
                 Description = "Generic group for the Spokane area",
                 BannerImage = imageService == null ? null : await imageService.AddImage("https://wallpapers.com/images/hd/scenic-view-of-spokane-city-at-dusk-dqhl672fwbv622gt.jpg"),
+                AvatarImage = imageService == null ? null : await imageService.AddImage("https://131386496.cdn6.editmysite.com/uploads/1/3/1/3/131386496/s461248140339740542_p2046_i3_w960.jpeg"),
                 Posts = [
                     new()
                     {
@@ -120,6 +121,7 @@ public class DatabaseSeeder(AppDbContext db)
                 Name = "Seattle",
                 Description = "Generic group for the Seattle area",
                 BannerImage = imageService == null ? null : await imageService.AddImage("https://i.pinimg.com/736x/5d/d2/38/5dd238ea8ac9ee41002b8037417ee5de.jpg"),
+                AvatarImage = imageService == null ? null : await imageService.AddImage("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGLRAlpUwgnA01Ksosn99mzvGi1dZEeLS0Mw&s"),
                 Posts = [
                     new()
                     {
@@ -131,6 +133,7 @@ public class DatabaseSeeder(AppDbContext db)
             {
                 Name = "Gym Girlies",
                 BannerImage = imageService == null ? null : await imageService.AddImage("https://www.foundationalconcepts.com/wp-content/uploads/2016/09/meditation.jpg"),
+                AvatarImage = imageService == null ? null : await imageService.AddImage("https://avatars.githubusercontent.com/u/43832670?s=64&v=4"),
                 Description = "Everything fitness and gym related!",
 
             },
@@ -138,12 +141,14 @@ public class DatabaseSeeder(AppDbContext db)
             {
                 Name = "Soccer Moms",
                 BannerImage = imageService == null ? null : await imageService.AddImage("https://st3.depositphotos.com/3971595/16719/i/450/depositphotos_167194490-stock-photo-image-of-family-mother-and.jpg"),
+                AvatarImage = imageService == null ? null : await imageService.AddImage("https://avatars.githubusercontent.com/u/40438334?s=64&v=4"),
                 Description = "Made for the busy mom life"
             },
             new()
             {
                 Name = "DIY Divas",
                 BannerImage = imageService == null ? null : await imageService.AddImage("https://wallpapersmug.com/download/1600x900/128b37/wolf-disco-jockey-art.jpg"),
+                AvatarImage = imageService == null ? null : await imageService.AddImage("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCYnLAL0b-nqnyHK2mxqGCDZo8PVH1SANOsg&s"),
                 Description = "Share DIY tips and find new inspiration",
                 Posts = [
                     new()

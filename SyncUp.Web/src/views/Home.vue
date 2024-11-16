@@ -2,8 +2,8 @@
   <v-container>
     <c-loader-status :loaders="[tenantListViewModel.toggleMembership]" />
     <PageImageBanner
-      :title="userInfo.tenantName"
-      image-url="https://wallpapers.com/images/featured/widescreen-3ao0esn9qknhdudj.jpg"
+      :title="tenant.name"
+      :image-url="tenant.bannerImage?.imageUrl!"
       badge1-text="23 members"
       :badge2-text="numberOfGroups"
       description="This is a fake description that needs love"
@@ -21,11 +21,20 @@
         <GroupCard :group="group" />
       </v-col>
     </v-row>
+    <v-row>
+      <v-col>
+        <UploadImage v-model="tenant.bannerImage" />
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
 <script setup lang="ts">
-import { GroupListViewModel, TenantListViewModel } from "@/viewmodels.g";
+import {
+  GroupListViewModel,
+  TenantListViewModel,
+  TenantViewModel,
+} from "@/viewmodels.g";
 
 useTitle("Home");
 const groups = new GroupListViewModel();
@@ -35,6 +44,7 @@ groups.$count();
 const { userInfo } = useUser();
 
 const tenantListViewModel = new TenantListViewModel();
+const tenant = ref<TenantViewModel>(new TenantViewModel());
 
 async function toggleMembership() {
   await tenantListViewModel.toggleMembership(userInfo.value.tenantId);
@@ -46,11 +56,12 @@ const isMember = ref(false);
 async function lookupMembership() {
   const tenantListViewModel = new TenantListViewModel();
   await tenantListViewModel.isMemberOf(userInfo.value.tenantId);
-  isMember.value = tenantListViewModel.isMemberOf.result ?? false;
+  isMember.value = (tenantListViewModel.isMemberOf.result as boolean) ?? false;
 }
 
 onMounted(async () => {
   await lookupMembership();
+  await tenant.value.$load(userInfo.value.tenantId!);
 });
 
 const numberOfGroups = computed(() => {

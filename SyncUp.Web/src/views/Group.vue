@@ -3,7 +3,7 @@
     <c-loader-status no-initial-content :loaders="[groupService.group.$load]">
       <PageImageBanner
         :title="groupService.group.name!"
-        :image-url="groupService.group.imageUrl!"
+        :image-url="groupService.group.bannerImage?.imageUrl!"
         :description="groupService.group.description!"
         :badge1-text="groupService.numberOfPosts.value"
         :badge2-text="groupService.numberOfUsers.value"

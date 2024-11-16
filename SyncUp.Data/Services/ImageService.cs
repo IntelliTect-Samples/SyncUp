@@ -27,6 +27,7 @@ public class ImageService(AppDbContext db, IOptions<AzureBlobStorageOptions> opt
 
     public async Task<Image> AddImage(byte[] content)
     {
+        if (content.Length == 0) throw new Exception("No image provided");
         try
         {
             var imageId = Guid.NewGuid().ToString().Replace("-", "");

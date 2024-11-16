@@ -18,8 +18,8 @@ public class Tenant
 
     public bool IsPublic { get; set; }
 
-    [ForeignKey(nameof(BannerImageId))]
     public string? BannerImageId { get; set; }
+    [ForeignKey(nameof(BannerImageId))]
     public Image? BannerImage { get; set; }
 
 

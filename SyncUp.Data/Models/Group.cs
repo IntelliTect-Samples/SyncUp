@@ -11,9 +11,13 @@ public class Group : TenantedBase
     [Required]
     public required string Name { get; set; }
 
-    [ForeignKey(nameof(BannerImageId))]
     public string? BannerImageId { get; set; }
+    [ForeignKey(nameof(BannerImageId))]
     public Image? BannerImage { get; set; }
+
+    public string? AvatarImageId { get; set; }
+    [ForeignKey(nameof(AvatarImageId))]
+    public Image? AvatarImage { get; set; }
 
     [Required]
     public required string Description { get; set; }

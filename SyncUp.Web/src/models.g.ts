@@ -167,6 +167,8 @@ export interface Group extends Model<typeof metadata.Group> {
   name: string | null
   bannerImageId: string | null
   bannerImage: Image | null
+  avatarImageId: string | null
+  avatarImage: Image | null
   description: string | null
   posts: Post[] | null
   events: Event[] | null

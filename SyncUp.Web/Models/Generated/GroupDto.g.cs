@@ -15,6 +15,7 @@ namespace SyncUp.Web.Models
         private long? _GroupId;
         private string _Name;
         private string _BannerImageId;
+        private string _AvatarImageId;
         private string _Description;
 
         public long? GroupId
@@ -31,6 +32,11 @@ namespace SyncUp.Web.Models
         {
             get => _BannerImageId;
             set { _BannerImageId = value; Changed(nameof(BannerImageId)); }
+        }
+        public string AvatarImageId
+        {
+            get => _AvatarImageId;
+            set { _AvatarImageId = value; Changed(nameof(AvatarImageId)); }
         }
         public string Description
         {
@@ -49,6 +55,7 @@ namespace SyncUp.Web.Models
 
             if (ShouldMapTo(nameof(Name))) entity.Name = Name;
             if (ShouldMapTo(nameof(BannerImageId))) entity.BannerImageId = BannerImageId;
+            if (ShouldMapTo(nameof(AvatarImageId))) entity.AvatarImageId = AvatarImageId;
             if (ShouldMapTo(nameof(Description))) entity.Description = Description;
         }
 
@@ -68,6 +75,7 @@ namespace SyncUp.Web.Models
 
             if (OnUpdate(entity, context)) return entity;
             if (ShouldMapTo(nameof(BannerImageId))) entity.BannerImageId = BannerImageId;
+            if (ShouldMapTo(nameof(AvatarImageId))) entity.AvatarImageId = AvatarImageId;
 
             return entity;
         }
@@ -80,12 +88,14 @@ namespace SyncUp.Web.Models
         public long? GroupId { get; set; }
         public string Name { get; set; }
         public string BannerImageId { get; set; }
+        public string AvatarImageId { get; set; }
         public string Description { get; set; }
         public string ModifiedById { get; set; }
         public System.DateTimeOffset? ModifiedOn { get; set; }
         public string CreatedById { get; set; }
         public System.DateTimeOffset? CreatedOn { get; set; }
         public SyncUp.Web.Models.ImageResponse BannerImage { get; set; }
+        public SyncUp.Web.Models.ImageResponse AvatarImage { get; set; }
         public System.Collections.Generic.ICollection<SyncUp.Web.Models.PostResponse> Posts { get; set; }
         public System.Collections.Generic.ICollection<SyncUp.Web.Models.EventResponse> Events { get; set; }
         public SyncUp.Web.Models.UserResponse ModifiedBy { get; set; }
@@ -102,6 +112,7 @@ namespace SyncUp.Web.Models
             this.GroupId = obj.GroupId;
             this.Name = obj.Name;
             this.BannerImageId = obj.BannerImageId;
+            this.AvatarImageId = obj.AvatarImageId;
             this.Description = obj.Description;
             this.ModifiedById = obj.ModifiedById;
             this.ModifiedOn = obj.ModifiedOn;
@@ -109,6 +120,9 @@ namespace SyncUp.Web.Models
             this.CreatedOn = obj.CreatedOn;
             if (tree == null || tree[nameof(this.BannerImage)] != null)
                 this.BannerImage = obj.BannerImage.MapToDto<SyncUp.Data.Models.Image, ImageResponse>(context, tree?[nameof(this.BannerImage)]);
+
+            if (tree == null || tree[nameof(this.AvatarImage)] != null)
+                this.AvatarImage = obj.AvatarImage.MapToDto<SyncUp.Data.Models.Image, ImageResponse>(context, tree?[nameof(this.AvatarImage)]);
 
             var propValPosts = obj.Posts;
             if (propValPosts != null && (tree == null || tree[nameof(this.Posts)] != null))
