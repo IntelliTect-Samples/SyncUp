@@ -14,13 +14,28 @@
 
     <!-- Posts List -->
     <c-loader-status :loaders="[groupService.posts.$load]">
-      <v-text-field
-        v-model="groupService.posts.$params.search"
-        label="Search Posts"
-        prepend-inner-icon="fa fa-search"
-        hide-details
-        clearable
-      />
+      <v-row dense>
+        <v-col>
+          <v-text-field
+            v-model="groupService.posts.$params.search"
+            label="Search Posts"
+            prepend-inner-icon="fa fa-search"
+            hide-details
+            clearable
+          />
+        </v-col>
+        <v-col cols="auto" align="right">
+          <v-btn color="primary" @click="showAddPostDialog = true">
+            <v-icon class="mr-2"> fas fa-plus </v-icon> Add Post
+          </v-btn>
+
+          <EditOrAddPostDialog
+            v-model="showAddPostDialog"
+            :group-id="groupId"
+            @saved="groupService.posts.$load"
+          />
+        </v-col>
+      </v-row>
 
       <v-card
         v-for="post in groupService.posts.$items"
@@ -29,7 +44,6 @@
         :to="`/post/${post.postId}`"
       >
         <v-card-title> {{ post.title }} </v-card-title>
-        <!-- TODO: Truncate this text to a max character amount-->
         <v-card-text> {{ truncateText(post.body) }} </v-card-text>
       </v-card>
     </c-loader-status>
@@ -45,6 +59,8 @@ useTitle("Group");
 const props = defineProps<{
   groupId: number;
 }>();
+
+const showAddPostDialog = ref(false);
 
 // Load group
 const groupService = new GroupService(new GroupViewModel());
