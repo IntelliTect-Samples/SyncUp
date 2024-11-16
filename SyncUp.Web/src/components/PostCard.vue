@@ -5,7 +5,8 @@
         {{ post.title }}
       </v-card-title>
       <v-card-subtitle>
-        <c-display :model="post" for="createdOn" />
+        <v-chip>{{ post.group?.name }}</v-chip>
+        <c-display :model="post" for="createdOn" format="M/d/yyyy" />
       </v-card-subtitle>
     </v-card-item>
     <v-card-text>
@@ -32,7 +33,7 @@ const shortBody = computed(() => {
   if (props.post.body) {
     body = props.post.body?.slice(0, 100);
     if (props.post.body.length > 100) {
-      body.concat("...");
+      body = body.concat("...");
     }
   }
   return body;
