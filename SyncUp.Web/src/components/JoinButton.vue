@@ -1,6 +1,5 @@
 <template>
   <v-btn
-    width="100px"
     size="small"
     :color="isMember ? 'grey' : 'success'"
     variant="flat"

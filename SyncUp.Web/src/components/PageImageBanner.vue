@@ -28,8 +28,13 @@
         </v-col>
         <v-col align="right">
           <JoinButton
+            class="mr-2"
             :is-member="isMember"
             @toggle-membership="$emit('toggleMembership')"
+          />
+          <AddGroupButton
+            :group="newGroup"
+            @new-group-created="$emit('refreshGroups')"
           />
         </v-col>
       </v-row>
@@ -39,6 +44,8 @@
 </template>
 
 <script setup lang="ts">
+import { GroupViewModel } from "@/viewmodels.g";
+
 const props = withDefaults(
   defineProps<{
     title: string | null;
@@ -56,5 +63,8 @@ const props = withDefaults(
   },
 );
 
-defineEmits(["toggleMembership"]);
+defineEmits(["toggleMembership", "refreshGroups"]);
+
+const newGroup = new GroupViewModel();
+newGroup.$stopAutoSave();
 </script>

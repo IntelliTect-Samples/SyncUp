@@ -9,12 +9,10 @@
       description="This is a fake description that needs love"
       :is-member="isMember"
       @toggle-membership="toggleMembership"
+      @refresh-groups="groups.$load()"
     />
 
     <v-row class="ma-1">
-      <v-col cols="12" md="6" lg="8">
-        <AddGroupCard :group="newGroup" />
-      </v-col>
       <v-col cols="12" md="6" lg="8">
         <v-row>
           <v-col
@@ -33,10 +31,10 @@
 </template>
 
 <script setup lang="ts">
-import { GroupListViewModel, TenantListViewModel, GroupViewModel } from "@/viewmodels.g";
+import { GroupListViewModel, TenantListViewModel } from "@/viewmodels.g";
 
 useTitle("Home");
-const newGroup = new GroupViewModel();
+
 const groups = new GroupListViewModel();
 groups.$useAutoLoad();
 groups.$load();
