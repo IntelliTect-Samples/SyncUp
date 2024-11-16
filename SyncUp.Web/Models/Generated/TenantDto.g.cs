@@ -14,6 +14,7 @@ namespace SyncUp.Web.Models
 
         private string _TenantId;
         private string _Name;
+        private bool? _IsPublic;
 
         public string TenantId
         {
@@ -24,6 +25,11 @@ namespace SyncUp.Web.Models
         {
             get => _Name;
             set { _Name = value; Changed(nameof(Name)); }
+        }
+        public bool? IsPublic
+        {
+            get => _IsPublic;
+            set { _IsPublic = value; Changed(nameof(IsPublic)); }
         }
 
         /// <summary>
@@ -37,6 +43,7 @@ namespace SyncUp.Web.Models
 
             if (ShouldMapTo(nameof(TenantId))) entity.TenantId = TenantId;
             if (ShouldMapTo(nameof(Name))) entity.Name = Name;
+            if (ShouldMapTo(nameof(IsPublic))) entity.IsPublic = (IsPublic ?? entity.IsPublic);
         }
 
         /// <summary>
@@ -53,6 +60,7 @@ namespace SyncUp.Web.Models
 
             if (OnUpdate(entity, context)) return entity;
             if (ShouldMapTo(nameof(TenantId))) entity.TenantId = TenantId;
+            if (ShouldMapTo(nameof(IsPublic))) entity.IsPublic = (IsPublic ?? entity.IsPublic);
 
             return entity;
         }
@@ -64,6 +72,7 @@ namespace SyncUp.Web.Models
 
         public string TenantId { get; set; }
         public string Name { get; set; }
+        public bool? IsPublic { get; set; }
 
         /// <summary>
         /// Map from the domain object to the properties of the current DTO instance.
@@ -75,6 +84,7 @@ namespace SyncUp.Web.Models
 
             this.TenantId = obj.TenantId;
             this.Name = obj.Name;
+            this.IsPublic = obj.IsPublic;
         }
     }
 }

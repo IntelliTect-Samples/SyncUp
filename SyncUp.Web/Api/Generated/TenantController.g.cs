@@ -153,5 +153,66 @@ namespace SyncUp.Web.Api
             var _result = new ItemResult(_methodResult);
             return _result;
         }
+
+        /// <summary>
+        /// Method: Join
+        /// </summary>
+        [HttpPost("Join")]
+        [Authorize]
+        [Consumes("application/x-www-form-urlencoded", "multipart/form-data")]
+        public virtual async Task<ItemResult> Join(
+            [FromForm(Name = "tenantId")] string tenantId)
+        {
+            var _params = new
+            {
+                TenantId = tenantId
+            };
+
+            if (Context.Options.ValidateAttributesForMethods)
+            {
+                var _validationResult = ItemResult.FromParameterValidation(
+                    GeneratedForClassViewModel!.MethodByName("Join"), _params, HttpContext.RequestServices);
+                if (!_validationResult.WasSuccessful) return _validationResult;
+            }
+
+            var _methodResult = await IntelliTect.SyncUp.Data.Models.Tenant.Join(
+                Db,
+                User,
+                _params.TenantId
+            );
+            var _result = new ItemResult(_methodResult);
+            return _result;
+        }
+
+        public class JoinParameters
+        {
+            public string TenantId { get; set; }
+        }
+
+        /// <summary>
+        /// Method: Join
+        /// </summary>
+        [HttpPost("Join")]
+        [Authorize]
+        [Consumes("application/json")]
+        public virtual async Task<ItemResult> Join(
+            [FromBody] JoinParameters _params
+        )
+        {
+            if (Context.Options.ValidateAttributesForMethods)
+            {
+                var _validationResult = ItemResult.FromParameterValidation(
+                    GeneratedForClassViewModel!.MethodByName("Join"), _params, HttpContext.RequestServices);
+                if (!_validationResult.WasSuccessful) return _validationResult;
+            }
+
+            var _methodResult = await IntelliTect.SyncUp.Data.Models.Tenant.Join(
+                Db,
+                User,
+                _params.TenantId
+            );
+            var _result = new ItemResult(_methodResult);
+            return _result;
+        }
     }
 }

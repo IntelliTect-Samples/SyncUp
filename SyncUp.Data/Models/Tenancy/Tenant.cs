@@ -14,6 +14,8 @@ public class Tenant
 
     public required string Name { get; set; }
 
+    public bool IsPublic { get; set; }
+
 
     [DefaultDataSource]
     public class DefaultSource(CrudContext<AppDbContext> context) : AppDataSource<Tenant>(context)
@@ -55,5 +57,32 @@ public class Tenant
         new DatabaseSeeder(db).SeedNewTenant(tenant);
 
         return await invitationService.CreateAndSendInvitation(adminEmail, db.Roles.ToArray());
+    }
+
+    [Coalesce]
+    public static async Task<ItemResult> Join(
+        AppDbContext db,
+        ClaimsPrincipal user, 
+        string tenantId
+    )
+    {
+        var tenant = db.Tenants.FirstOrDefault(t => t.TenantId == tenantId);
+        if (tenant == null)
+        {
+            return "Organization not found.";
+        } else if (!tenant.IsPublic)
+        {
+            return "An invitation is required to join this organization.";
+        }
+        
+        db.ForceSetTenant(tenant.TenantId);
+
+        db.TenantMemberships.Add(new()
+        {
+            UserId = user.GetUserId()
+        });
+        db.SaveChanges();
+
+        return true;
     }
 }

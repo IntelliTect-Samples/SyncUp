@@ -226,6 +226,7 @@ export class RoleListViewModel extends ListViewModel<$models.Role, $apiClients.R
 export interface TenantViewModel extends $models.Tenant {
   tenantId: string | null;
   name: string | null;
+  isPublic: boolean | null;
 }
 export class TenantViewModel extends ViewModel<$models.Tenant, $apiClients.TenantApiClient, string> implements $models.Tenant  {
   static DataSources = $models.Tenant.DataSources;
@@ -248,6 +249,17 @@ export class TenantListViewModel extends ListViewModel<$models.Tenant, $apiClien
     
     Object.defineProperty(this, 'create', {value: create});
     return create
+  }
+  
+  public get join() {
+    const join = this.$apiClient.$makeCaller(
+      this.$metadata.methods.join,
+      (c, tenantId: string | null) => c.join(tenantId),
+      () => ({tenantId: null as string | null, }),
+      (c, args) => c.join(args.tenantId))
+    
+    Object.defineProperty(this, 'join', {value: join});
+    return join
   }
   
   constructor() {
