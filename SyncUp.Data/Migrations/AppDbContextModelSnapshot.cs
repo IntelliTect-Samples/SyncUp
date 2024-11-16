@@ -54,7 +54,7 @@ namespace IntelliTect.SyncUp.Data.Migrations
 
                     b.HasIndex("ParentId");
 
-                    b.ToTable("AuditLogProperties");
+                    b.ToTable("AuditLogProperties", (string)null);
                 });
 
             modelBuilder.Entity("IntelliTect.SyncUp.Data.Models.AuditLog", b =>
@@ -110,7 +110,7 @@ namespace IntelliTect.SyncUp.Data.Migrations
 
                     b.HasIndex("Type", "KeyValue");
 
-                    b.ToTable("AuditLogs");
+                    b.ToTable("AuditLogs", (string)null);
                 });
 
             modelBuilder.Entity("IntelliTect.SyncUp.Data.Models.Comment", b =>
@@ -154,61 +154,7 @@ namespace IntelliTect.SyncUp.Data.Migrations
 
                     b.HasIndex("TenantId", "PostId");
 
-                    b.ToTable("Comments");
-                });
-
-            modelBuilder.Entity("IntelliTect.SyncUp.Data.Models.Event", b =>
-                {
-                    b.Property<string>("TenantId")
-                        .HasMaxLength(36)
-                        .HasColumnType("nvarchar(36)");
-
-                    b.Property<long>("EventId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("EventId"));
-
-                    b.Property<string>("CreatedById")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTimeOffset>("CreatedOn")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<long>("GroupId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("Location")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ModifiedById")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTimeOffset>("ModifiedOn")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<DateTimeOffset?>("Time")
-                        .HasColumnType("datetimeoffset");
-
-                    b.HasKey("TenantId", "EventId");
-
-                    b.HasAlternateKey("EventId");
-
-                    b.HasIndex("CreatedById");
-
-                    b.HasIndex("ModifiedById");
-
-                    b.HasIndex("TenantId", "GroupId");
-
-                    b.ToTable("Events");
+                    b.ToTable("Comments", (string)null);
                 });
 
             modelBuilder.Entity("IntelliTect.SyncUp.Data.Models.Group", b =>
@@ -253,7 +199,7 @@ namespace IntelliTect.SyncUp.Data.Migrations
 
                     b.HasIndex("ModifiedById");
 
-                    b.ToTable("Groups");
+                    b.ToTable("Groups", (string)null);
                 });
 
             modelBuilder.Entity("IntelliTect.SyncUp.Data.Models.Post", b =>
@@ -302,7 +248,7 @@ namespace IntelliTect.SyncUp.Data.Migrations
 
                     b.HasIndex("TenantId", "GroupId");
 
-                    b.ToTable("Posts");
+                    b.ToTable("Posts", (string)null);
                 });
 
             modelBuilder.Entity("IntelliTect.SyncUp.Data.Models.Role", b =>
@@ -378,16 +324,13 @@ namespace IntelliTect.SyncUp.Data.Migrations
                         .HasMaxLength(36)
                         .HasColumnType("nvarchar(36)");
 
-                    b.Property<bool>("IsPublic")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("TenantId");
 
-                    b.ToTable("Tenants");
+                    b.ToTable("Tenants", (string)null);
                 });
 
             modelBuilder.Entity("IntelliTect.SyncUp.Data.Models.TenantMembership", b =>
@@ -427,7 +370,7 @@ namespace IntelliTect.SyncUp.Data.Migrations
                     b.HasIndex("UserId", "TenantId")
                         .IsUnique();
 
-                    b.ToTable("TenantMemberships");
+                    b.ToTable("TenantMemberships", (string)null);
                 });
 
             modelBuilder.Entity("IntelliTect.SyncUp.Data.Models.User", b =>
@@ -541,7 +484,7 @@ namespace IntelliTect.SyncUp.Data.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("UserPhotos");
+                    b.ToTable("UserPhotos", (string)null);
                 });
 
             modelBuilder.Entity("IntelliTect.SyncUp.Data.Models.UserRole", b =>
@@ -580,7 +523,7 @@ namespace IntelliTect.SyncUp.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("DataProtectionKeys");
+                    b.ToTable("DataProtectionKeys", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -649,6 +592,60 @@ namespace IntelliTect.SyncUp.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("SyncUp.Data.Models.Event", b =>
+                {
+                    b.Property<string>("TenantId")
+                        .HasMaxLength(36)
+                        .HasColumnType("nvarchar(36)");
+
+                    b.Property<long>("EventId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("EventId"));
+
+                    b.Property<string>("CreatedById")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("GroupId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Location")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ModifiedById")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTimeOffset>("ModifiedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<DateTimeOffset?>("Time")
+                        .HasColumnType("datetimeoffset");
+
+                    b.HasKey("TenantId", "EventId");
+
+                    b.HasAlternateKey("EventId");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("ModifiedById");
+
+                    b.HasIndex("TenantId", "GroupId");
+
+                    b.ToTable("Events", (string)null);
+                });
+
             modelBuilder.Entity("IntelliTect.Coalesce.AuditLogging.AuditLogProperty", b =>
                 {
                     b.HasOne("IntelliTect.SyncUp.Data.Models.AuditLog", null)
@@ -704,39 +701,6 @@ namespace IntelliTect.SyncUp.Data.Migrations
                     b.Navigation("ModifiedBy");
 
                     b.Navigation("Post");
-
-                    b.Navigation("Tenant");
-                });
-
-            modelBuilder.Entity("IntelliTect.SyncUp.Data.Models.Event", b =>
-                {
-                    b.HasOne("IntelliTect.SyncUp.Data.Models.User", "CreatedBy")
-                        .WithMany()
-                        .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("IntelliTect.SyncUp.Data.Models.User", "ModifiedBy")
-                        .WithMany()
-                        .HasForeignKey("ModifiedById")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("IntelliTect.SyncUp.Data.Models.Tenant", "Tenant")
-                        .WithMany()
-                        .HasForeignKey("TenantId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("IntelliTect.SyncUp.Data.Models.Group", "Group")
-                        .WithMany("Events")
-                        .HasForeignKey("TenantId", "GroupId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("CreatedBy");
-
-                    b.Navigation("Group");
-
-                    b.Navigation("ModifiedBy");
 
                     b.Navigation("Tenant");
                 });
@@ -939,6 +903,39 @@ namespace IntelliTect.SyncUp.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("SyncUp.Data.Models.Event", b =>
+                {
+                    b.HasOne("IntelliTect.SyncUp.Data.Models.User", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("IntelliTect.SyncUp.Data.Models.User", "ModifiedBy")
+                        .WithMany()
+                        .HasForeignKey("ModifiedById")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("IntelliTect.SyncUp.Data.Models.Tenant", "Tenant")
+                        .WithMany()
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("IntelliTect.SyncUp.Data.Models.Group", "Group")
+                        .WithMany("Events")
+                        .HasForeignKey("TenantId", "GroupId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("CreatedBy");
+
+                    b.Navigation("Group");
+
+                    b.Navigation("ModifiedBy");
+
+                    b.Navigation("Tenant");
                 });
 
             modelBuilder.Entity("IntelliTect.SyncUp.Data.Models.AuditLog", b =>
