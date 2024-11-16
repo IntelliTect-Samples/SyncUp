@@ -27,6 +27,7 @@ using Microsoft.AspNetCore.Identity;
 using IntelliTect.SyncUp.Data.Models;
 using IntelliTect.SyncUp.Data.Services;
 using Microsoft.Extensions.Options;
+using SyncUp.Data.Services;
 
 var builder = WebApplication.CreateBuilder(new WebApplicationOptions
 {
@@ -119,6 +120,7 @@ services.AddScoped<IUrlHelper>(x =>
 
 services.AddScoped<InvitationService>();
 services.AddScoped<ImageService>();
+services.AddScoped<TenantsService>();
 
 
 #endregion

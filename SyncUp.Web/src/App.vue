@@ -54,8 +54,10 @@
     </v-app-bar>
     <v-navigation-drawer v-model="drawer">
       <v-list>
-        <v-list-item to="/" prepend-icon="fa fa-home" title="Home" />
+        <v-list-item to="/" prepend-icon="fa fa-users" title="All Tenants" />
+
         <v-divider></v-divider>
+
         <v-list-item
           v-if="$can(Permission.UserAdmin)"
           to="/users"
@@ -81,12 +83,11 @@
           title="Admin"
         />
 
-        <v-divider></v-divider>
         <v-list-item
           v-if="$userInfo.roles?.includes('GlobalAdmin')"
           to="/admin/Tenant?dataSource=GlobalAdminSource"
           prepend-icon="fa fa-building"
-          title="All Tenants"
+          title="Tenant Admin"
         />
       </v-list>
 

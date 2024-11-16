@@ -1190,6 +1190,12 @@ export const Tenant = domain.types.Tenant = {
         required: val => (val != null && val !== '') || "Name is required.",
       }
     },
+    description: {
+      name: "description",
+      displayName: "Description",
+      type: "string",
+      role: "value",
+    },
     isPublic: {
       name: "isPublic",
       displayName: "Is Public",
@@ -1847,6 +1853,58 @@ export const SecurityService = domain.services.SecurityService = {
     },
   },
 }
+export const TenantsService = domain.services.TenantsService = {
+  name: "TenantsService",
+  displayName: "Tenants Service",
+  type: "service",
+  controllerRoute: "TenantsService",
+  methods: {
+    loadTenants: {
+      name: "loadTenants",
+      displayName: "Load Tenants",
+      transportType: "item",
+      httpMethod: "POST",
+      params: {
+      },
+      return: {
+        name: "$return",
+        displayName: "Result",
+        type: "collection",
+        itemType: {
+          name: "$collectionItem",
+          displayName: "",
+          role: "value",
+          type: "model",
+          get typeDef() { return (domain.types.Tenant as ModelType & { name: "Tenant" }) },
+        },
+        role: "value",
+      },
+    },
+    switchTenant: {
+      name: "switchTenant",
+      displayName: "Switch Tenant",
+      transportType: "item",
+      httpMethod: "POST",
+      params: {
+        tenantId: {
+          name: "tenantId",
+          displayName: "Tenant Id",
+          type: "string",
+          role: "value",
+          rules: {
+            required: val => (val != null && val !== '') || "Tenant Id is required.",
+          }
+        },
+      },
+      return: {
+        name: "$return",
+        displayName: "Result",
+        type: "void",
+        role: "value",
+      },
+    },
+  },
+}
 
 interface AppDomain extends Domain {
   enums: {
@@ -1871,6 +1929,7 @@ interface AppDomain extends Domain {
   services: {
     ImageService: typeof ImageService
     SecurityService: typeof SecurityService
+    TenantsService: typeof TenantsService
   }
 }
 
