@@ -33,11 +33,21 @@ export default class GroupService {
   }
 
   public numberOfPosts = computed(() => {
-    return (this.posts.$count.result ?? 0) + " posts";
+    let postfix = "-- ";
+    if (!this.posts.$count.isLoading) {
+      postfix = (this.posts.$count.result ?? 0).toString();
+    }
+
+    return postfix + " posts";
   });
 
   public numberOfUsers = computed(() => {
-    return (this.groupUser.$count.result ?? 0) + " users";
+    let postfix = "-- ";
+    if (!this.groupUser.$count.isLoading) {
+      postfix = (this.groupUser.$count.result ?? 0).toString();
+    }
+
+    return postfix + " members";
   });
 
   public async toggleMembership() {
