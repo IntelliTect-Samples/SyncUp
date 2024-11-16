@@ -1,6 +1,5 @@
 ﻿using IntelliTect.SyncUp.Data.Auth;
 using IntelliTect.SyncUp.Data.Models;
-using IntelliTect.Coalesce.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -16,8 +15,8 @@ public class ConfirmEmailModel(UserManager<User> userManager, SignInManager<User
     public async Task<IActionResult> OnGetAsync(string userId, string code, string? newEmail)
     {
         if (
-            string.IsNullOrWhiteSpace(userId) || 
-            string.IsNullOrWhiteSpace(code) || 
+            string.IsNullOrWhiteSpace(userId) ||
+            string.IsNullOrWhiteSpace(code) ||
             (await userManager.FindByIdAsync(userId)) is not { } user
         )
         {

@@ -1,7 +1,6 @@
 ﻿using IntelliTect.SyncUp.Data.Communication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
 using System.Net.Mail;
 using System.Text.Encodings.Web;
 

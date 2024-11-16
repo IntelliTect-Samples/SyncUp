@@ -1,28 +1,24 @@
+using IntelliTect.Coalesce;
 using IntelliTect.SyncUp.Data;
 using IntelliTect.SyncUp.Data.Auth;
+using IntelliTect.SyncUp.Data.Communication;
+using IntelliTect.SyncUp.Utilities;
 using IntelliTect.SyncUp.Web;
-using IntelliTect.Coalesce;
 using Microsoft.ApplicationInsights.DependencyCollector;
 using Microsoft.ApplicationInsights.Extensibility;
-using Microsoft.Extensions.Logging.ApplicationInsights;
 using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.Extensions.Logging.ApplicationInsights;
 using Microsoft.Extensions.Logging.Console;
 using Microsoft.OpenApi.Models;
 using Scalar.AspNetCore;
-using System.Security.Claims;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
-using Microsoft.AspNetCore.Mvc.Routing;
-using Microsoft.AspNetCore.Mvc;
-using IntelliTect.SyncUp.Data.Communication;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using Azure.Core;
-using Azure.Identity;
-using IntelliTect.SyncUp.Utilities;
 
 var builder = WebApplication.CreateBuilder(new WebApplicationOptions
 {
@@ -182,7 +178,7 @@ using (var scope = app.Services.CreateScope())
     // Run database migrations.
     using var db = serviceScope.GetRequiredService<AppDbContext>();
     db.Database.SetCommandTimeout(TimeSpan.FromMinutes(10));
-	db.Database.Migrate();
+    db.Database.Migrate();
     ActivatorUtilities.GetServiceOrCreateInstance<DatabaseSeeder>(serviceScope).Seed();
 }
 

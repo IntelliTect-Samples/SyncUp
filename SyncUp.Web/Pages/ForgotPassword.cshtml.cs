@@ -12,7 +12,7 @@ namespace IntelliTect.SyncUp.Web.Pages;
 
 [AllowAnonymous]
 public class ForgotPasswordModel(
-    UserManager<User> userManager, 
+    UserManager<User> userManager,
     UserManagementService userManagementService
 ) : PageModel
 {

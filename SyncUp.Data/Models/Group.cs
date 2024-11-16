@@ -1,6 +1,4 @@
-﻿using Microsoft.IdentityModel.Tokens;
-
-namespace IntelliTect.SyncUp.Data.Models;
+﻿namespace IntelliTect.SyncUp.Data.Models;
 
 public class Group : TenantedBase
 {

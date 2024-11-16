@@ -9,7 +9,7 @@ public class SqliteDatabaseFixture : IDisposable
     private readonly SqliteConnection _HoldOpenConnection;
 
     public DbContextOptions<AppDbContext> Options { get; }
-        
+
     private static readonly ILoggerFactory _LoggerFac = LoggerFactory.Create(b =>
     {
         b.SetMinimumLevel(LogLevel.Error);

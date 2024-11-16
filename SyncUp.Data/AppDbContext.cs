@@ -1,4 +1,3 @@
-using IntelliTect.SyncUp.Data.Coalesce;
 using IntelliTect.Coalesce.AuditLogging;
 using Microsoft.AspNetCore.DataProtection.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;

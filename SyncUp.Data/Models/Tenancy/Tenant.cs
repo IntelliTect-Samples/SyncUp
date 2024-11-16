@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-
-namespace IntelliTect.SyncUp.Data.Models;
+﻿namespace IntelliTect.SyncUp.Data.Models;
 
 [Read(AllowAuthenticated)]
 [Edit(Roles = nameof(Permission.Admin))]

@@ -1,4 +1,3 @@
-using IntelliTect.SyncUp.Data.Coalesce;
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel;
 

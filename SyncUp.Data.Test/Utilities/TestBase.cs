@@ -1,5 +1,4 @@
-﻿using IntelliTect.SyncUp.Data.Models;
-using IntelliTect.Coalesce;
+﻿using IntelliTect.Coalesce;
 using IntelliTect.Coalesce.TypeDefinition;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;

@@ -16,7 +16,7 @@ public class SendGridEmailService(
     {
         if (!env.IsProduction())
         {
-            logger.LogWarning("Suppressed email send of '{subject}' to {to}:\n\n{content}", 
+            logger.LogWarning("Suppressed email send of '{subject}' to {to}:\n\n{content}",
                 subject, to, htmlMessage);
             return await new NoOpEmailService(env).SendEmailAsync(to, subject, htmlMessage);
         }
@@ -42,10 +42,10 @@ public class SendGridEmailService(
 
             if (!response.IsSuccessStatusCode)
             {
-                logger.LogError("Error sending email '{subject}' to {to}: Status {status}, error {error}", 
-                    subject, 
-                    to, 
-                    response.StatusCode, 
+                logger.LogError("Error sending email '{subject}' to {to}: Status {status}, error {error}",
+                    subject,
+                    to,
+                    response.StatusCode,
                     await response.Body.ReadAsStringAsync());
 
                 return new ItemResult(false, $"Unable to send email.");

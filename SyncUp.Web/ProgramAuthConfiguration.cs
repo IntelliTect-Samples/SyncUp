@@ -1,10 +1,7 @@
 ﻿using IntelliTect.SyncUp.Data;
 using IntelliTect.SyncUp.Data.Auth;
-using IntelliTect.SyncUp.Data.Communication;
 using IntelliTect.SyncUp.Data.Models;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace IntelliTect.SyncUp.Web;
 

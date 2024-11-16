@@ -1,7 +1,4 @@
-﻿using IntelliTect.SyncUp.Data.Auth;
-using IntelliTect.Coalesce.Utilities;
-
-namespace IntelliTect.SyncUp.Data.Models;
+﻿namespace IntelliTect.SyncUp.Data.Models;
 
 public abstract class TrackingBase
 {

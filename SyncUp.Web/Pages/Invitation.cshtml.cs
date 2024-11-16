@@ -1,7 +1,6 @@
 using IntelliTect.SyncUp.Data;
 using IntelliTect.SyncUp.Data.Auth;
 using IntelliTect.SyncUp.Data.Models;
-using IntelliTect.Coalesce.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
