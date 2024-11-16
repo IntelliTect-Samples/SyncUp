@@ -71,10 +71,13 @@ public class DatabaseSeeder(AppDbContext db)
     {
         foreach (var user in db.Users)
         {
-            db.TenantMemberships.Add(new()
+            if (!db.TenantMemberships.Any(tm => tm.UserId == user.Id))
             {
-                User = user
-            });
+                db.TenantMemberships.Add(new()
+                {
+                    User = user
+                });
+            }
         }
         db.SaveChanges();
     }

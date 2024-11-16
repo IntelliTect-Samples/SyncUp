@@ -252,10 +252,8 @@ public class AppDbContext
             seeder.SeedGroups();
         }
 
-        if (!TenantMemberships.Any())
-        {
-            seeder.SeedExistingUsersWithDemoTenantAccess();
-        }
+        //Give any existing users access to the demo tenant
+        seeder.SeedExistingUsersWithDemoTenantAccess();
     }
 
     class TenantIdValueGenerator : ValueGenerator<string>
