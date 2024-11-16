@@ -91,7 +91,13 @@ public class DatabaseSeeder(AppDbContext db)
                     new()
                     {
                         Title = "What is there to do in Spokane?",
-                        Body = "Go check out IntelliTect! (And join their hackathon...)"
+                        Body = "Go check out IntelliTect! (And join their hackathon...)",
+                        Comments = [new(){
+                            Body = "What is a hackathon?"
+                        },
+                        new(){
+                            Body = "Check out the Looff Carousel. It's kinda cool."
+                        }]
                     },
                     new()
                     {
@@ -128,7 +134,13 @@ public class DatabaseSeeder(AppDbContext db)
                     new()
                     {
                         Title = "What should I do with this space?",
-                        Body = "Help brainstorm ideas to makeover this room."
+                        Body = "Help brainstorm ideas to makeover this room.",
+                        Comments = [new(){
+                            Body = "Make it blue!"
+                        },
+                        new(){
+                            Body = "Make it pink!"
+                        }]
                     }]
             });
 

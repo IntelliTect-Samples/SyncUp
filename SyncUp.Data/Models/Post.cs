@@ -11,5 +11,5 @@ public class Post : TenantedBase
 
     public Group Group { get; set; }
 
-    public ICollection<Comment> Comments { get; }
+    public ICollection<Comment> Comments { get; set; }
 }
