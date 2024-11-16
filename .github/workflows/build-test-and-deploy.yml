@@ -53,12 +53,6 @@ jobs:
         run: dotnet coalesce --what-if --verify
         working-directory: SyncUp.Web
 
-      - name: Check if a migration is needed
-        working-directory: SyncUp.Data
-        run: |
-          dotnet tool restore
-          dotnet ef migrations has-pending-model-changes
-
       - name: npm run lint
         run: npm run lint
         working-directory: SyncUp.Web
@@ -69,6 +63,12 @@ jobs:
 
       - name: dotnet build
         run: dotnet build --configuration Release --no-restore --no-incremental 
+
+      - name: Check if a migration is needed
+        working-directory: SyncUp.Data
+        run: |
+          dotnet tool restore
+          dotnet ef migrations has-pending-model-changes --no-build --configuration Release 
 
       - name: dotnet test
         run: dotnet test --configuration Release --no-restore --no-build
