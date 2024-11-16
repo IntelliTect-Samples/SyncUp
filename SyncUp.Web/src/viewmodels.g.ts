@@ -162,6 +162,28 @@ export class GroupViewModel extends ViewModel<$models.Group, $apiClients.GroupAp
     return this.$addChild('events', initialData) as EventViewModel
   }
   
+  public get checkMembership() {
+    const checkMembership = this.$apiClient.$makeCaller(
+      this.$metadata.methods.checkMembership,
+      (c) => c.checkMembership(this.$primaryKey),
+      () => ({}),
+      (c, args) => c.checkMembership(this.$primaryKey))
+    
+    Object.defineProperty(this, 'checkMembership', {value: checkMembership});
+    return checkMembership
+  }
+  
+  public get toggleMembership() {
+    const toggleMembership = this.$apiClient.$makeCaller(
+      this.$metadata.methods.toggleMembership,
+      (c) => c.toggleMembership(this.$primaryKey),
+      () => ({}),
+      (c, args) => c.toggleMembership(this.$primaryKey))
+    
+    Object.defineProperty(this, 'toggleMembership', {value: toggleMembership});
+    return toggleMembership
+  }
+  
   constructor(initialData?: DeepPartial<$models.Group> | null) {
     super($metadata.Group, new $apiClients.GroupApiClient(), initialData)
   }
@@ -172,6 +194,42 @@ export class GroupListViewModel extends ListViewModel<$models.Group, $apiClients
   
   constructor() {
     super($metadata.Group, new $apiClients.GroupApiClient())
+  }
+}
+
+
+export interface GroupUserViewModel extends $models.GroupUser {
+  groupUserId: number | null;
+  isOwner: boolean | null;
+  userId: string | null;
+  get user(): UserViewModel | null;
+  set user(value: UserViewModel | $models.User | null);
+  groupId: number | null;
+  get group(): GroupViewModel | null;
+  set group(value: GroupViewModel | $models.Group | null);
+  get modifiedBy(): UserViewModel | null;
+  set modifiedBy(value: UserViewModel | $models.User | null);
+  modifiedById: string | null;
+  modifiedOn: Date | null;
+  get createdBy(): UserViewModel | null;
+  set createdBy(value: UserViewModel | $models.User | null);
+  createdById: string | null;
+  createdOn: Date | null;
+}
+export class GroupUserViewModel extends ViewModel<$models.GroupUser, $apiClients.GroupUserApiClient, number> implements $models.GroupUser  {
+  static DataSources = $models.GroupUser.DataSources;
+  
+  constructor(initialData?: DeepPartial<$models.GroupUser> | null) {
+    super($metadata.GroupUser, new $apiClients.GroupUserApiClient(), initialData)
+  }
+}
+defineProps(GroupUserViewModel, $metadata.GroupUser)
+
+export class GroupUserListViewModel extends ListViewModel<$models.GroupUser, $apiClients.GroupUserApiClient, GroupUserViewModel> {
+  static DataSources = $models.GroupUser.DataSources;
+  
+  constructor() {
+    super($metadata.GroupUser, new $apiClients.GroupUserApiClient())
   }
 }
 
@@ -453,6 +511,7 @@ const viewModelTypeLookup = ViewModel.typeLookup = {
   Comment: CommentViewModel,
   Event: EventViewModel,
   Group: GroupViewModel,
+  GroupUser: GroupUserViewModel,
   Post: PostViewModel,
   Role: RoleViewModel,
   Tenant: TenantViewModel,
@@ -465,6 +524,7 @@ const listViewModelTypeLookup = ListViewModel.typeLookup = {
   Comment: CommentListViewModel,
   Event: EventListViewModel,
   Group: GroupListViewModel,
+  GroupUser: GroupUserListViewModel,
   Post: PostListViewModel,
   Role: RoleListViewModel,
   Tenant: TenantListViewModel,
