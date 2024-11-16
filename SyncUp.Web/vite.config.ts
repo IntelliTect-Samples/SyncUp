@@ -5,6 +5,7 @@ import { defineConfig } from "vite";
 import createVuePlugin from "@vitejs/plugin-vue";
 import { createAspNetCoreHmrPlugin } from "coalesce-vue/lib/build";
 import createAutoImport from "unplugin-auto-import/vite";
+import { VitePWA } from "vite-plugin-pwa";
 
 import createVueComponentImporterPlugin from "unplugin-vue-components/vite";
 import { CoalesceVuetifyResolver } from "coalesce-vue-vuetify3/build";
@@ -60,6 +61,42 @@ export default defineConfig({
       // OPTIONAL: https://github.com/vuetifyjs/vuetify-loader/tree/master/packages/vite-plugin#style-loading
       // Customize vuetify's styles with sass variables
       // styles: { configFile: "src/styles/settings.scss" },
+    }),
+
+    VitePWA({
+      registerType: "autoUpdate",
+      injectRegister: "auto",
+      manifest: {
+        name: "SyncUp",
+        short_name: "sync-up",
+        theme_color: "#4DBA87",
+        background_color: "#000000",
+        display: "standalone",
+        icons: [
+          {
+            src: "/img/icons/android-chrome-192x192.png",
+            sizes: "192x192",
+            type: "image/png",
+          },
+          {
+            src: "/img/icons/android-chrome-512x512.png",
+            sizes: "512x512",
+            type: "image/png",
+          },
+          {
+            src: "/img/icons/android-chrome-maskable-192x192.png",
+            sizes: "192x192",
+            type: "image/png",
+            purpose: "maskable",
+          },
+          {
+            src: "/img/icons/android-chrome-maskable-512x512.png",
+            sizes: "512x512",
+            type: "image/png",
+            purpose: "maskable",
+          },
+        ],
+      },
     }),
 
     {
