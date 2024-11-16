@@ -230,6 +230,20 @@ export class Post {
     Object.assign(this, Post.map(data || {}));
   }
 }
+export namespace Post {
+  export namespace DataSources {
+    
+    export class PostsForGroup implements DataSource<typeof metadata.Post.dataSources.postsForGroup> {
+      readonly $metadata = metadata.Post.dataSources.postsForGroup
+      groupId: number | null = null
+      
+      constructor(params?: Omit<Partial<PostsForGroup>, '$metadata'>) {
+        if (params) Object.assign(this, params);
+        return reactiveDataSource(this);
+      }
+    }
+  }
+}
 
 
 export interface Role extends Model<typeof metadata.Role> {

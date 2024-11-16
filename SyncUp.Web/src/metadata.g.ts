@@ -767,6 +767,20 @@ export const Post = domain.types.Post = {
   methods: {
   },
   dataSources: {
+    postsForGroup: {
+      type: "dataSource",
+      name: "PostsForGroup" as const,
+      displayName: "Posts For Group",
+      isDefault: true,
+      props: {
+        groupId: {
+          name: "groupId",
+          displayName: "Group Id",
+          type: "number",
+          role: "value",
+        },
+      },
+    },
   },
 }
 export const Role = domain.types.Role = {

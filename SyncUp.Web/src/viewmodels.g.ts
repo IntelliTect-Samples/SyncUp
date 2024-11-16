@@ -195,6 +195,7 @@ export interface PostViewModel extends $models.Post {
   createdOn: Date | null;
 }
 export class PostViewModel extends ViewModel<$models.Post, $apiClients.PostApiClient, number> implements $models.Post  {
+  static DataSources = $models.Post.DataSources;
   
   
   public addToComments(initialData?: DeepPartial<$models.Comment> | null) {
@@ -208,6 +209,7 @@ export class PostViewModel extends ViewModel<$models.Post, $apiClients.PostApiCl
 defineProps(PostViewModel, $metadata.Post)
 
 export class PostListViewModel extends ListViewModel<$models.Post, $apiClients.PostApiClient, PostViewModel> {
+  static DataSources = $models.Post.DataSources;
   
   constructor() {
     super($metadata.Post, new $apiClients.PostApiClient())
