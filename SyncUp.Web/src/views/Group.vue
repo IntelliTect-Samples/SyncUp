@@ -6,7 +6,8 @@
         :image-url="groupService.group.bannerImage?.imageUrl!"
         :description="groupService.group.description!"
         :badge1-text="groupService.numberOfPosts.value"
-        :badge2-text="groupService.numberOfUsers.value"
+        :badge2-text="groupService.numberOfEvents.value"
+        :badge3-text="groupService.numberOfUsers.value"
         :is-member="groupService.isMember.value"
         @toggle-membership="groupService.toggleMembership()"
       />
@@ -47,6 +48,9 @@
         <v-card-text> {{ truncateText(post.body) }} </v-card-text>
       </v-card>
     </c-loader-status>
+
+    <v-divider class="mt-5 mb-2" />
+    <EventList :group-id="groupId" />
   </v-container>
 </template>
 
@@ -70,6 +74,8 @@ groupService.group.$load(props.groupId).then(async () => {
 
   groupService.posts.$load();
   groupService.posts.$count();
+
+  groupService.events.$count();
 
   groupService.groupUser.$count();
 });

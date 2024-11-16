@@ -1,5 +1,6 @@
-import { GroupUser, Post } from "@/models.g";
+import { Event, GroupUser, Post } from "@/models.g";
 import {
+  EventListViewModel,
   GroupUserListViewModel,
   GroupViewModel,
   PostListViewModel,
@@ -9,6 +10,9 @@ import { ref } from "vue";
 export default class GroupService {
   public group: GroupViewModel;
   public isMember = ref(false);
+
+  public events = new EventListViewModel();
+  private eventsDataSource = new Event.DataSources.EventsByDate();
 
   public posts = new PostListViewModel();
   private postsDataSource = new Post.DataSources.PostsForGroup();
@@ -28,9 +32,21 @@ export default class GroupService {
 
         this.groupUserDataSource.groupId = this.group.groupId;
         this.groupUser.$dataSource = this.groupUserDataSource;
+
+        this.events.$params.filter = { groupId: this.group.groupId };
+        this.events.$dataSource = this.eventsDataSource;
       },
     );
   }
+
+  public numberOfEvents = computed(() => {
+    let postfix = "-- ";
+    if (!this.events.$count.isLoading) {
+      postfix = (this.events.$count.result ?? 0).toString();
+    }
+
+    return postfix + " events";
+  });
 
   public numberOfPosts = computed(() => {
     let postfix = "-- ";
