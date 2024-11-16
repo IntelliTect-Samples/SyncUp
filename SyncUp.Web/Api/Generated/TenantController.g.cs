@@ -218,12 +218,12 @@ namespace SyncUp.Web.Api
         }
 
         /// <summary>
-        /// Method: JoinOrganization
+        /// Method: ToggleMembership
         /// </summary>
-        [HttpPost("JoinOrganization")]
+        [HttpPost("ToggleMembership")]
         [Authorize]
         [Consumes("application/x-www-form-urlencoded", "multipart/form-data")]
-        public virtual async Task<ItemResult> JoinOrganization(
+        public virtual async Task<ItemResult> ToggleMembership(
             [FromForm(Name = "tenantId")] string tenantId)
         {
             var _params = new
@@ -234,11 +234,11 @@ namespace SyncUp.Web.Api
             if (Context.Options.ValidateAttributesForMethods)
             {
                 var _validationResult = ItemResult.FromParameterValidation(
-                    GeneratedForClassViewModel!.MethodByName("JoinOrganization"), _params, HttpContext.RequestServices);
+                    GeneratedForClassViewModel!.MethodByName("ToggleMembership"), _params, HttpContext.RequestServices);
                 if (!_validationResult.WasSuccessful) return _validationResult;
             }
 
-            var _methodResult = await IntelliTect.SyncUp.Data.Models.Tenant.JoinOrganization(
+            var _methodResult = await IntelliTect.SyncUp.Data.Models.Tenant.ToggleMembership(
                 Db,
                 User,
                 _params.TenantId
@@ -247,90 +247,29 @@ namespace SyncUp.Web.Api
             return _result;
         }
 
-        public class JoinOrganizationParameters
+        public class ToggleMembershipParameters
         {
             public string TenantId { get; set; }
         }
 
         /// <summary>
-        /// Method: JoinOrganization
+        /// Method: ToggleMembership
         /// </summary>
-        [HttpPost("JoinOrganization")]
+        [HttpPost("ToggleMembership")]
         [Authorize]
         [Consumes("application/json")]
-        public virtual async Task<ItemResult> JoinOrganization(
-            [FromBody] JoinOrganizationParameters _params
+        public virtual async Task<ItemResult> ToggleMembership(
+            [FromBody] ToggleMembershipParameters _params
         )
         {
             if (Context.Options.ValidateAttributesForMethods)
             {
                 var _validationResult = ItemResult.FromParameterValidation(
-                    GeneratedForClassViewModel!.MethodByName("JoinOrganization"), _params, HttpContext.RequestServices);
+                    GeneratedForClassViewModel!.MethodByName("ToggleMembership"), _params, HttpContext.RequestServices);
                 if (!_validationResult.WasSuccessful) return _validationResult;
             }
 
-            var _methodResult = await IntelliTect.SyncUp.Data.Models.Tenant.JoinOrganization(
-                Db,
-                User,
-                _params.TenantId
-            );
-            var _result = new ItemResult(_methodResult);
-            return _result;
-        }
-
-        /// <summary>
-        /// Method: LeaveOrganization
-        /// </summary>
-        [HttpPost("LeaveOrganization")]
-        [Authorize]
-        [Consumes("application/x-www-form-urlencoded", "multipart/form-data")]
-        public virtual async Task<ItemResult> LeaveOrganization(
-            [FromForm(Name = "tenantId")] string tenantId)
-        {
-            var _params = new
-            {
-                TenantId = tenantId
-            };
-
-            if (Context.Options.ValidateAttributesForMethods)
-            {
-                var _validationResult = ItemResult.FromParameterValidation(
-                    GeneratedForClassViewModel!.MethodByName("LeaveOrganization"), _params, HttpContext.RequestServices);
-                if (!_validationResult.WasSuccessful) return _validationResult;
-            }
-
-            var _methodResult = await IntelliTect.SyncUp.Data.Models.Tenant.LeaveOrganization(
-                Db,
-                User,
-                _params.TenantId
-            );
-            var _result = new ItemResult(_methodResult);
-            return _result;
-        }
-
-        public class LeaveOrganizationParameters
-        {
-            public string TenantId { get; set; }
-        }
-
-        /// <summary>
-        /// Method: LeaveOrganization
-        /// </summary>
-        [HttpPost("LeaveOrganization")]
-        [Authorize]
-        [Consumes("application/json")]
-        public virtual async Task<ItemResult> LeaveOrganization(
-            [FromBody] LeaveOrganizationParameters _params
-        )
-        {
-            if (Context.Options.ValidateAttributesForMethods)
-            {
-                var _validationResult = ItemResult.FromParameterValidation(
-                    GeneratedForClassViewModel!.MethodByName("LeaveOrganization"), _params, HttpContext.RequestServices);
-                if (!_validationResult.WasSuccessful) return _validationResult;
-            }
-
-            var _methodResult = await IntelliTect.SyncUp.Data.Models.Tenant.LeaveOrganization(
+            var _methodResult = await IntelliTect.SyncUp.Data.Models.Tenant.ToggleMembership(
                 Db,
                 User,
                 _params.TenantId

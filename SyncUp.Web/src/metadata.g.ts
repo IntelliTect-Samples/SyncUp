@@ -919,33 +919,9 @@ export const Tenant = domain.types.Tenant = {
         role: "value",
       },
     },
-    joinOrganization: {
-      name: "joinOrganization",
-      displayName: "Join Organization",
-      transportType: "item",
-      httpMethod: "POST",
-      isStatic: true,
-      params: {
-        tenantId: {
-          name: "tenantId",
-          displayName: "Tenant Id",
-          type: "string",
-          role: "value",
-          rules: {
-            required: val => (val != null && val !== '') || "Tenant Id is required.",
-          }
-        },
-      },
-      return: {
-        name: "$return",
-        displayName: "Result",
-        type: "void",
-        role: "value",
-      },
-    },
-    leaveOrganization: {
-      name: "leaveOrganization",
-      displayName: "Leave Organization",
+    toggleMembership: {
+      name: "toggleMembership",
+      displayName: "Toggle Membership",
       transportType: "item",
       httpMethod: "POST",
       isStatic: true,

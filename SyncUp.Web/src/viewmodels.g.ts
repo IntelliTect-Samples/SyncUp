@@ -277,26 +277,15 @@ export class TenantListViewModel extends ListViewModel<$models.Tenant, $apiClien
     return isMemberOf
   }
   
-  public get joinOrganization() {
-    const joinOrganization = this.$apiClient.$makeCaller(
-      this.$metadata.methods.joinOrganization,
-      (c, tenantId: string | null) => c.joinOrganization(tenantId),
+  public get toggleMembership() {
+    const toggleMembership = this.$apiClient.$makeCaller(
+      this.$metadata.methods.toggleMembership,
+      (c, tenantId: string | null) => c.toggleMembership(tenantId),
       () => ({tenantId: null as string | null, }),
-      (c, args) => c.joinOrganization(args.tenantId))
+      (c, args) => c.toggleMembership(args.tenantId))
     
-    Object.defineProperty(this, 'joinOrganization', {value: joinOrganization});
-    return joinOrganization
-  }
-  
-  public get leaveOrganization() {
-    const leaveOrganization = this.$apiClient.$makeCaller(
-      this.$metadata.methods.leaveOrganization,
-      (c, tenantId: string | null) => c.leaveOrganization(tenantId),
-      () => ({tenantId: null as string | null, }),
-      (c, args) => c.leaveOrganization(args.tenantId))
-    
-    Object.defineProperty(this, 'leaveOrganization', {value: leaveOrganization});
-    return leaveOrganization
+    Object.defineProperty(this, 'toggleMembership', {value: toggleMembership});
+    return toggleMembership
   }
   
   constructor() {

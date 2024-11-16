@@ -82,7 +82,7 @@ public class Tenant
     }
 
     [Coalesce]
-    public static async Task<ItemResult> JoinOrganization(
+    public static async Task<ItemResult> ToggleMembership(
         AppDbContext db,
         ClaimsPrincipal user, 
         string tenantId
@@ -92,42 +92,28 @@ public class Tenant
         if (tenant == null)
         {
             return "Organization not found.";
-        } else if (!tenant.IsPublic)
-        {
-            return "An invitation is required to join this organization.";
-        }
-        
-        db.ForceSetTenant(tenant.TenantId);
-
-        db.TenantMemberships.Add(new()
-        {
-            UserId = user.GetUserId()
-        });
-        db.SaveChanges();
-
-        return true;
-    }
-
-    [Coalesce]
-    public static async Task<ItemResult> LeaveOrganization(
-       AppDbContext db,
-       ClaimsPrincipal user,
-       string tenantId
-   )
-    {
-        var currentTenantId = user.GetTenantId();
-        var tenant = db.Tenants.FirstOrDefault(t => t.TenantId == tenantId);
-        if (tenant == null)
-        {
-            return "Organization not found.";
         }
 
         db.ForceSetTenant(tenant.TenantId);
+        var isMember = db.TenantMemberships.Any(tm => tm.UserId == user.GetUserId());
 
-        db.RemoveRange(db.TenantMemberships.Where(tm => tm.UserId == user.GetUserId()).ToList());
+        if (!isMember)
+        {
+            if (!tenant.IsPublic)
+            {
+                return "An invitation is required to join this organization.";
+            }
+
+            db.TenantMemberships.Add(new()
+            {
+                UserId = user.GetUserId()
+            });
+        }
+        else
+        {
+            db.RemoveRange(db.TenantMemberships.Where(tm => tm.UserId == user.GetUserId()).ToList());
+        }
         db.SaveChanges();
-
-        db.ForceSetTenant(currentTenantId);
 
         return true;
     }

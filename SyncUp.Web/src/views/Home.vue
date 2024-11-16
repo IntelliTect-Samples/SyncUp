@@ -6,7 +6,8 @@
       badge1-text="23 members"
       badge2-text="2047 posts"
       description="This is a fake description that needs love"
-      @toggle-membership="console.log('membership toggled')"
+      @toggle-membership="toggleMembership"
+      :refreshFlag="refreshFlag"
     />
     <v-row class="mt-1">
       <v-col
@@ -23,11 +24,19 @@
 </template>
 
 <script setup lang="ts">
-import { GroupListViewModel } from "@/viewmodels.g";
+import { GroupListViewModel, TenantListViewModel } from "@/viewmodels.g";
 
 useTitle("Home");
 const groups = new GroupListViewModel();
 groups.$useAutoLoad();
 groups.$load();
 const { userInfo } = useUser();
+const refreshFlag = ref(0);
+
+const tenantListViewModel = new TenantListViewModel();
+
+async function toggleMembership() {
+  await tenantListViewModel.toggleMembership(userInfo.value.tenantId);
+  refreshFlag.value += 1;
+}
 </script>
