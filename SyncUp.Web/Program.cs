@@ -129,7 +129,7 @@ if (app.Environment.IsDevelopment())
 
     app.UseViteDevelopmentServer(c =>
     {
-        c.DevServerPort = 54321;
+        c.DevServerPort = 60005;
     });
 
     app.MapCoalesceSecurityOverview("coalesce-security");
