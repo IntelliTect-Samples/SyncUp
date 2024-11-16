@@ -19,6 +19,9 @@
             {{ groupService.numberOfPosts }}
           </v-chip>
           <v-chip size="x-small" color="primary" class="ml-1 mt-n4">
+            {{ groupService.numberOfEvents }}
+          </v-chip>
+          <v-chip size="x-small" color="primary" class="ml-1 mt-n4">
             {{ groupService.numberOfUsers }}
           </v-chip>
         </v-col>
@@ -55,6 +58,7 @@ const props = defineProps<{
 const groupService = new GroupService(props.group);
 groupService.lookupMembership();
 
+groupService.events.$count();
 groupService.posts.$count();
 groupService.groupUser.$count();
 
