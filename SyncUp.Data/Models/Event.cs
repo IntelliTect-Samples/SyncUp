@@ -37,4 +37,36 @@ public class Event : TenantedBase
             return "You must be an admin or have created the group associated to this event to delete it.";
         }
     }
+
+    public class EventsByDate(CrudContext<AppDbContext> context) : StandardDataSource<Event, AppDbContext>(context)
+    {
+        [Coalesce]
+        public bool ShowPastEvents { get; set; }
+
+        [Coalesce]
+        public string? UserId { get; set; }
+
+        public override IQueryable<Event> GetQuery(IDataSourceParameters parameters)
+        {
+            var query = base.GetQuery(parameters);
+
+            if (!ShowPastEvents)
+            {
+                query = query.Where(e => e.Time > DateTimeOffset.Now);
+            }
+
+            if (UserId != null)
+            {
+                var groupIds = Db.GroupUsers.Where(gu => gu.UserId == UserId).Select(gu => gu.GroupId).Distinct();
+                query = query.Where(e => groupIds.Contains(e.GroupId));
+            }
+
+            return query.OrderBy(e => e.Time);
+        }
+
+        public override IQueryable<Event> ApplyListDefaultSorting(IQueryable<Event> query)
+        {
+            return base.ApplyListDefaultSorting(query).OrderBy(x => x.Time);
+        }
+    }
 }

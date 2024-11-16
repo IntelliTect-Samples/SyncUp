@@ -117,6 +117,7 @@ export interface EventViewModel extends $models.Event {
   createdOn: Date | null;
 }
 export class EventViewModel extends ViewModel<$models.Event, $apiClients.EventApiClient, number> implements $models.Event  {
+  static DataSources = $models.Event.DataSources;
   
   constructor(initialData?: DeepPartial<$models.Event> | null) {
     super($metadata.Event, new $apiClients.EventApiClient(), initialData)
@@ -125,6 +126,7 @@ export class EventViewModel extends ViewModel<$models.Event, $apiClients.EventAp
 defineProps(EventViewModel, $metadata.Event)
 
 export class EventListViewModel extends ListViewModel<$models.Event, $apiClients.EventApiClient, EventViewModel> {
+  static DataSources = $models.Event.DataSources;
   
   constructor() {
     super($metadata.Event, new $apiClients.EventApiClient())
