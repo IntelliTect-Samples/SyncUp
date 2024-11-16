@@ -1,12 +1,6 @@
 <template>
-  <v-btn
-    width="100px"
-    size="small"
-    color="success"
-    variant="flat"
-    @click="toggleShow"
-  >
-    Add Group
+  <v-btn color="primary" @click="toggleShow">
+    <v-icon class="mr-2"> fas fa-plus </v-icon> Add Group
   </v-btn>
 
   <v-dialog v-model="show" max-width="500">
@@ -22,7 +16,6 @@
         <v-card-text>
           <c-input :model="group" for="name" />
           <c-input :model="group" for="description" />
-          <c-input :model="group" for="imageUrl" />
         </v-card-text>
         <v-divider class="mt-2"></v-divider>
 

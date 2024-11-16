@@ -11,26 +11,37 @@
       @toggle-membership="toggleMembership"
     />
 
-    <v-row class="ma-1">
-      <v-col cols="12" md="6" lg="8">
-        <AddGroupButton :group="newGroup" @new-group-created="groups.$load" />
-      </v-col>
-    </v-row>
-    <v-row class="ma-1">
-      <v-col cols="12" md="6" lg="8">
-        <v-row>
-          <v-col
-            v-for="group in groups.$items"
-            :key="group.groupId!"
-            cols="12"
-            md="6"
-            lg="4"
-          >
-            <GroupCard :group="group" />
-          </v-col>
-        </v-row>
-      </v-col>
-    </v-row>
+    <c-loader-status :loaders="[groups.$load]">
+      <v-row align="center">
+        <v-col>
+          <v-text-field
+            v-model="groups.$params.search"
+            label="Search groups"
+            prepend-inner-icon="fa fa-search"
+            hide-details
+            clearable
+          />
+        </v-col>
+        <v-col cols="auto" align="right">
+          <AddGroupButton :group="newGroup" @new-group-created="groups.$load" />
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col>
+          <v-row>
+            <v-col
+              v-for="group in groups.$items"
+              :key="group.groupId!"
+              cols="12"
+              md="6"
+              lg="4"
+            >
+              <GroupCard :group="group" />
+            </v-col>
+          </v-row>
+        </v-col>
+      </v-row>
+    </c-loader-status>
   </v-container>
 </template>
 
