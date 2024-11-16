@@ -31,7 +31,7 @@
 
     <v-tabs-window v-model="tab">
       <v-tabs-window-item :value="1">
-        <v-row class="justify-center">
+        <v-row class="justify-center mt-3">
           <v-col cols="12" md="6" lg="4" xl="3">
             <template v-for="post in userPosts.$items" :key="post.id!">
               <PostCard class="mb-4" :post="post" />
