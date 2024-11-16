@@ -330,6 +330,7 @@ export class RoleListViewModel extends ListViewModel<$models.Role, $apiClients.R
 export interface TenantViewModel extends $models.Tenant {
   tenantId: string | null;
   name: string | null;
+  description: string | null;
   isPublic: boolean | null;
   bannerImageId: string | null;
   get bannerImage(): ImageViewModel | null;
@@ -569,6 +570,36 @@ export class SecurityServiceViewModel extends ServiceViewModel<typeof $metadata.
 }
 
 
+export class TenantsServiceViewModel extends ServiceViewModel<typeof $metadata.TenantsService, $apiClients.TenantsServiceApiClient> {
+  
+  public get loadTenants() {
+    const loadTenants = this.$apiClient.$makeCaller(
+      this.$metadata.methods.loadTenants,
+      (c) => c.loadTenants(),
+      () => ({}),
+      (c, args) => c.loadTenants())
+    
+    Object.defineProperty(this, 'loadTenants', {value: loadTenants});
+    return loadTenants
+  }
+  
+  public get joinOrSwitchTenant() {
+    const joinOrSwitchTenant = this.$apiClient.$makeCaller(
+      this.$metadata.methods.joinOrSwitchTenant,
+      (c, tenantId: string | null) => c.joinOrSwitchTenant(tenantId),
+      () => ({tenantId: null as string | null, }),
+      (c, args) => c.joinOrSwitchTenant(args.tenantId))
+    
+    Object.defineProperty(this, 'joinOrSwitchTenant', {value: joinOrSwitchTenant});
+    return joinOrSwitchTenant
+  }
+  
+  constructor() {
+    super($metadata.TenantsService, new $apiClients.TenantsServiceApiClient())
+  }
+}
+
+
 const viewModelTypeLookup = ViewModel.typeLookup = {
   AuditLog: AuditLogViewModel,
   AuditLogProperty: AuditLogPropertyViewModel,
@@ -600,5 +631,6 @@ const listViewModelTypeLookup = ListViewModel.typeLookup = {
 const serviceViewModelTypeLookup = ServiceViewModel.typeLookup = {
   ImageService: ImageServiceViewModel,
   SecurityService: SecurityServiceViewModel,
+  TenantsService: TenantsServiceViewModel,
 }
 

@@ -16,6 +16,8 @@ public class Tenant
 
     public required string Name { get; set; }
 
+    public string? Description { get; set; }
+
     public bool IsPublic { get; set; }
 
     [ForeignKey(nameof(BannerImageId))]
@@ -92,7 +94,7 @@ public class Tenant
     [Coalesce]
     public static async Task<ItemResult> ToggleMembership(
         AppDbContext db,
-        ClaimsPrincipal user, 
+        ClaimsPrincipal user,
         string tenantId
     )
     {

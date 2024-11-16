@@ -190,3 +190,23 @@ export class SecurityServiceApiClient extends ServiceApiClient<typeof $metadata.
 }
 
 
+export class TenantsServiceApiClient extends ServiceApiClient<typeof $metadata.TenantsService> {
+  constructor() { super($metadata.TenantsService) }
+  public loadTenants($config?: AxiosRequestConfig): AxiosPromise<ItemResult<$models.Tenant[]>> {
+    const $method = this.$metadata.methods.loadTenants
+    const $params =  {
+    }
+    return this.$invoke($method, $params, $config)
+  }
+  
+  public joinOrSwitchTenant(tenantId: string | null, $config?: AxiosRequestConfig): AxiosPromise<ItemResult<$models.Tenant[]>> {
+    const $method = this.$metadata.methods.joinOrSwitchTenant
+    const $params =  {
+      tenantId,
+    }
+    return this.$invoke($method, $params, $config)
+  }
+  
+}
+
+

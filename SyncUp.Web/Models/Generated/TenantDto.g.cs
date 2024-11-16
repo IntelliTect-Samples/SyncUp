@@ -14,6 +14,7 @@ namespace SyncUp.Web.Models
 
         private string _TenantId;
         private string _Name;
+        private string _Description;
         private bool? _IsPublic;
         private string _BannerImageId;
 
@@ -26,6 +27,11 @@ namespace SyncUp.Web.Models
         {
             get => _Name;
             set { _Name = value; Changed(nameof(Name)); }
+        }
+        public string Description
+        {
+            get => _Description;
+            set { _Description = value; Changed(nameof(Description)); }
         }
         public bool? IsPublic
         {
@@ -49,6 +55,7 @@ namespace SyncUp.Web.Models
 
             if (ShouldMapTo(nameof(TenantId))) entity.TenantId = TenantId;
             if (ShouldMapTo(nameof(Name))) entity.Name = Name;
+            if (ShouldMapTo(nameof(Description))) entity.Description = Description;
             if (ShouldMapTo(nameof(IsPublic))) entity.IsPublic = (IsPublic ?? entity.IsPublic);
             if (ShouldMapTo(nameof(BannerImageId))) entity.BannerImageId = BannerImageId;
         }
@@ -67,6 +74,7 @@ namespace SyncUp.Web.Models
 
             if (OnUpdate(entity, context)) return entity;
             if (ShouldMapTo(nameof(TenantId))) entity.TenantId = TenantId;
+            if (ShouldMapTo(nameof(Description))) entity.Description = Description;
             if (ShouldMapTo(nameof(IsPublic))) entity.IsPublic = (IsPublic ?? entity.IsPublic);
             if (ShouldMapTo(nameof(BannerImageId))) entity.BannerImageId = BannerImageId;
 
@@ -80,6 +88,7 @@ namespace SyncUp.Web.Models
 
         public string TenantId { get; set; }
         public string Name { get; set; }
+        public string Description { get; set; }
         public bool? IsPublic { get; set; }
         public string BannerImageId { get; set; }
         public SyncUp.Web.Models.ImageResponse BannerImage { get; set; }
@@ -94,6 +103,7 @@ namespace SyncUp.Web.Models
 
             this.TenantId = obj.TenantId;
             this.Name = obj.Name;
+            this.Description = obj.Description;
             this.IsPublic = obj.IsPublic;
             this.BannerImageId = obj.BannerImageId;
             if (tree == null || tree[nameof(this.BannerImage)] != null)
