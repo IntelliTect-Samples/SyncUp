@@ -113,7 +113,7 @@ namespace SyncUp.Web.Models
             {
                 this.Events = propValEvents
                     .OrderBy(f => f.Name)
-                    .Select(f => f.MapToDto<SyncUp.Data.Models.Event, EventResponse>(context, tree?[nameof(this.Events)])).ToList();
+                    .Select(f => f.MapToDto<IntelliTect.SyncUp.Data.Models.Event, EventResponse>(context, tree?[nameof(this.Events)])).ToList();
             }
             else if (propValEvents == null && tree?[nameof(this.Events)] != null)
             {

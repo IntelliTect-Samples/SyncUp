@@ -25,11 +25,11 @@ namespace SyncUp.Web.Api
     [Authorize]
     [ServiceFilter(typeof(IApiActionFilter))]
     public partial class EventController
-        : BaseApiController<SyncUp.Data.Models.Event, EventParameter, EventResponse, IntelliTect.SyncUp.Data.AppDbContext>
+        : BaseApiController<IntelliTect.SyncUp.Data.Models.Event, EventParameter, EventResponse, IntelliTect.SyncUp.Data.AppDbContext>
     {
         public EventController(CrudContext<IntelliTect.SyncUp.Data.AppDbContext> context) : base(context)
         {
-            GeneratedForClassViewModel = context.ReflectionRepository.GetClassViewModel<SyncUp.Data.Models.Event>();
+            GeneratedForClassViewModel = context.ReflectionRepository.GetClassViewModel<IntelliTect.SyncUp.Data.Models.Event>();
         }
 
         [HttpGet("get/{id}")]
@@ -37,21 +37,21 @@ namespace SyncUp.Web.Api
         public virtual Task<ItemResult<EventResponse>> Get(
             long id,
             [FromQuery] DataSourceParameters parameters,
-            IDataSource<SyncUp.Data.Models.Event> dataSource)
+            IDataSource<IntelliTect.SyncUp.Data.Models.Event> dataSource)
             => GetImplementation(id, parameters, dataSource);
 
         [HttpGet("list")]
         [Authorize]
         public virtual Task<ListResult<EventResponse>> List(
             [FromQuery] ListParameters parameters,
-            IDataSource<SyncUp.Data.Models.Event> dataSource)
+            IDataSource<IntelliTect.SyncUp.Data.Models.Event> dataSource)
             => ListImplementation(parameters, dataSource);
 
         [HttpGet("count")]
         [Authorize]
         public virtual Task<ItemResult<int>> Count(
             [FromQuery] FilterParameters parameters,
-            IDataSource<SyncUp.Data.Models.Event> dataSource)
+            IDataSource<IntelliTect.SyncUp.Data.Models.Event> dataSource)
             => CountImplementation(parameters, dataSource);
 
         [HttpPost("save")]
@@ -60,8 +60,8 @@ namespace SyncUp.Web.Api
         public virtual Task<ItemResult<EventResponse>> Save(
             [FromForm] EventParameter dto,
             [FromQuery] DataSourceParameters parameters,
-            IDataSource<SyncUp.Data.Models.Event> dataSource,
-            IBehaviors<SyncUp.Data.Models.Event> behaviors)
+            IDataSource<IntelliTect.SyncUp.Data.Models.Event> dataSource,
+            IBehaviors<IntelliTect.SyncUp.Data.Models.Event> behaviors)
             => SaveImplementation(dto, parameters, dataSource, behaviors);
 
         [HttpPost("save")]
@@ -70,8 +70,8 @@ namespace SyncUp.Web.Api
         public virtual Task<ItemResult<EventResponse>> SaveFromJson(
             [FromBody] EventParameter dto,
             [FromQuery] DataSourceParameters parameters,
-            IDataSource<SyncUp.Data.Models.Event> dataSource,
-            IBehaviors<SyncUp.Data.Models.Event> behaviors)
+            IDataSource<IntelliTect.SyncUp.Data.Models.Event> dataSource,
+            IBehaviors<IntelliTect.SyncUp.Data.Models.Event> behaviors)
             => SaveImplementation(dto, parameters, dataSource, behaviors);
 
         [HttpPost("bulkSave")]
@@ -79,7 +79,7 @@ namespace SyncUp.Web.Api
         public virtual Task<ItemResult<EventResponse>> BulkSave(
             [FromBody] BulkSaveRequest dto,
             [FromQuery] DataSourceParameters parameters,
-            IDataSource<SyncUp.Data.Models.Event> dataSource,
+            IDataSource<IntelliTect.SyncUp.Data.Models.Event> dataSource,
             [FromServices] IDataSourceFactory dataSourceFactory,
             [FromServices] IBehaviorsFactory behaviorsFactory)
             => BulkSaveImplementation(dto, parameters, dataSource, dataSourceFactory, behaviorsFactory);
@@ -88,8 +88,8 @@ namespace SyncUp.Web.Api
         [Authorize]
         public virtual Task<ItemResult<EventResponse>> Delete(
             long id,
-            IBehaviors<SyncUp.Data.Models.Event> behaviors,
-            IDataSource<SyncUp.Data.Models.Event> dataSource)
+            IBehaviors<IntelliTect.SyncUp.Data.Models.Event> behaviors,
+            IDataSource<IntelliTect.SyncUp.Data.Models.Event> dataSource)
             => DeleteImplementation(id, new DataSourceParameters(), dataSource, behaviors);
     }
 }

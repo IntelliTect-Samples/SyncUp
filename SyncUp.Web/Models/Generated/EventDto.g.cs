@@ -8,7 +8,7 @@ using System.Security.Claims;
 
 namespace SyncUp.Web.Models
 {
-    public partial class EventParameter : GeneratedParameterDto<SyncUp.Data.Models.Event>
+    public partial class EventParameter : GeneratedParameterDto<IntelliTect.SyncUp.Data.Models.Event>
     {
         public EventParameter() { }
 
@@ -53,7 +53,7 @@ namespace SyncUp.Web.Models
         /// <summary>
         /// Map from the current DTO instance to the domain object.
         /// </summary>
-        public override void MapTo(SyncUp.Data.Models.Event entity, IMappingContext context)
+        public override void MapTo(IntelliTect.SyncUp.Data.Models.Event entity, IMappingContext context)
         {
             var includes = context.Includes;
 
@@ -68,11 +68,11 @@ namespace SyncUp.Web.Models
         /// <summary>
         /// Map from the current DTO instance to a new instance of the domain object.
         /// </summary>
-        public override SyncUp.Data.Models.Event MapToNew(IMappingContext context)
+        public override IntelliTect.SyncUp.Data.Models.Event MapToNew(IMappingContext context)
         {
             var includes = context.Includes;
 
-            var entity = new SyncUp.Data.Models.Event()
+            var entity = new IntelliTect.SyncUp.Data.Models.Event()
             {
                 EventId = (EventId ?? default),
                 GroupId = (GroupId ?? default),
@@ -88,7 +88,7 @@ namespace SyncUp.Web.Models
         }
     }
 
-    public partial class EventResponse : GeneratedResponseDto<SyncUp.Data.Models.Event>
+    public partial class EventResponse : GeneratedResponseDto<IntelliTect.SyncUp.Data.Models.Event>
     {
         public EventResponse() { }
 
@@ -109,7 +109,7 @@ namespace SyncUp.Web.Models
         /// <summary>
         /// Map from the domain object to the properties of the current DTO instance.
         /// </summary>
-        public override void MapFrom(SyncUp.Data.Models.Event obj, IMappingContext context, IncludeTree tree = null)
+        public override void MapFrom(IntelliTect.SyncUp.Data.Models.Event obj, IMappingContext context, IncludeTree tree = null)
         {
             if (obj == null) return;
             var includes = context.Includes;

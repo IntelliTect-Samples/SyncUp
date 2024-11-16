@@ -1,4 +1,3 @@
-using IntelliTect.SyncUp.Data.Coalesce;
 using IntelliTect.Coalesce.AuditLogging;
 using Microsoft.AspNetCore.DataProtection.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
@@ -8,7 +7,6 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.ValueGeneration;
 using System.Linq.Expressions;
 using System.Security.Cryptography;
-using SyncUp.Data.Models;
 
 namespace IntelliTect.SyncUp.Data;
 
