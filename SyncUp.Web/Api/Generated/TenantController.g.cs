@@ -247,7 +247,7 @@ namespace SyncUp.Web.Api
             return _result;
         }
 
-        public class ToggleMembershipParameters
+        public class TenantToggleMembershipParameters
         {
             public string TenantId { get; set; }
         }
@@ -259,7 +259,7 @@ namespace SyncUp.Web.Api
         [Authorize]
         [Consumes("application/json")]
         public virtual async Task<ItemResult> ToggleMembership(
-            [FromBody] ToggleMembershipParameters _params
+            [FromBody] TenantToggleMembershipParameters _params
         )
         {
             if (Context.Options.ValidateAttributesForMethods)

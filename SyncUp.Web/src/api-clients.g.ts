@@ -25,6 +25,27 @@ export class EventApiClient extends ModelApiClient<$models.Event> {
 
 export class GroupApiClient extends ModelApiClient<$models.Group> {
   constructor() { super($metadata.Group) }
+  public checkMembership(id: number | null, $config?: AxiosRequestConfig): AxiosPromise<ItemResult<boolean>> {
+    const $method = this.$metadata.methods.checkMembership
+    const $params =  {
+      id,
+    }
+    return this.$invoke($method, $params, $config)
+  }
+  
+  public toggleMembership(id: number | null, $config?: AxiosRequestConfig): AxiosPromise<ItemResult<void>> {
+    const $method = this.$metadata.methods.toggleMembership
+    const $params =  {
+      id,
+    }
+    return this.$invoke($method, $params, $config)
+  }
+  
+}
+
+
+export class GroupUserApiClient extends ModelApiClient<$models.GroupUser> {
+  constructor() { super($metadata.GroupUser) }
 }
 
 

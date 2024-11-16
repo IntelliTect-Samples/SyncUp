@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.ValueGeneration;
+using SyncUp.Data.Models;
 using System.Linq.Expressions;
 using System.Security.Cryptography;
 
@@ -67,6 +68,8 @@ public class AppDbContext
     public DbSet<Post> Posts => Set<Post>();
     public DbSet<Event> Events => Set<Event>();
     public DbSet<Comment> Comments => Set<Comment>();
+
+    public DbSet<GroupUser> GroupUsers => Set<GroupUser>();
 
     public DbSet<AuditLog> AuditLogs => Set<AuditLog>();
     public DbSet<AuditLogProperty> AuditLogProperties => Set<AuditLogProperty>();

@@ -197,6 +197,55 @@ export class Group {
 }
 
 
+export interface GroupUser extends Model<typeof metadata.GroupUser> {
+  groupUserId: number | null
+  isOwner: boolean | null
+  userId: string | null
+  user: User | null
+  groupId: number | null
+  group: Group | null
+  modifiedBy: User | null
+  modifiedById: string | null
+  modifiedOn: Date | null
+  createdBy: User | null
+  createdById: string | null
+  createdOn: Date | null
+}
+export class GroupUser {
+  
+  /** Mutates the input object and its descendents into a valid GroupUser implementation. */
+  static convert(data?: Partial<GroupUser>): GroupUser {
+    return convertToModel(data || {}, metadata.GroupUser) 
+  }
+  
+  /** Maps the input object and its descendents to a new, valid GroupUser implementation. */
+  static map(data?: Partial<GroupUser>): GroupUser {
+    return mapToModel(data || {}, metadata.GroupUser) 
+  }
+  
+  static [Symbol.hasInstance](x: any) { return x?.$metadata === metadata.GroupUser; }
+  
+  /** Instantiate a new GroupUser, optionally basing it on the given data. */
+  constructor(data?: Partial<GroupUser> | {[k: string]: any}) {
+    Object.assign(this, GroupUser.map(data || {}));
+  }
+}
+export namespace GroupUser {
+  export namespace DataSources {
+    
+    export class UsersForGroup implements DataSource<typeof metadata.GroupUser.dataSources.usersForGroup> {
+      readonly $metadata = metadata.GroupUser.dataSources.usersForGroup
+      groupId: number | null = null
+      
+      constructor(params?: Omit<Partial<UsersForGroup>, '$metadata'>) {
+        if (params) Object.assign(this, params);
+        return reactiveDataSource(this);
+      }
+    }
+  }
+}
+
+
 export interface Post extends Model<typeof metadata.Post> {
   postId: number | null
   title: string | null
@@ -430,6 +479,7 @@ declare module "coalesce-vue/lib/model" {
     Comment: Comment
     Event: Event
     Group: Group
+    GroupUser: GroupUser
     Post: Post
     Role: Role
     Tenant: Tenant
