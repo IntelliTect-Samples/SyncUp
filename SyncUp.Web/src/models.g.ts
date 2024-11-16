@@ -96,6 +96,7 @@ export class AuditLogProperty {
 export interface Comment extends Model<typeof metadata.Comment> {
   commentId: number | null
   body: string | null
+  postId: number | null
   post: Post | null
   modifiedBy: User | null
   modifiedById: string | null
@@ -199,6 +200,7 @@ export interface Post extends Model<typeof metadata.Post> {
   postId: number | null
   title: string | null
   body: string | null
+  groupId: number | null
   group: Group | null
   comments: Comment[] | null
   modifiedBy: User | null

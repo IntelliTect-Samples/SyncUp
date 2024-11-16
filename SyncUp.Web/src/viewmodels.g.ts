@@ -70,6 +70,7 @@ export class AuditLogPropertyListViewModel extends ListViewModel<$models.AuditLo
 export interface CommentViewModel extends $models.Comment {
   commentId: number | null;
   body: string | null;
+  postId: number | null;
   get post(): PostViewModel | null;
   set post(value: PostViewModel | $models.Post | null);
   get modifiedBy(): UserViewModel | null;
@@ -151,6 +152,11 @@ export interface GroupViewModel extends $models.Group {
 export class GroupViewModel extends ViewModel<$models.Group, $apiClients.GroupApiClient, number> implements $models.Group  {
   
   
+  public addToPosts(initialData?: DeepPartial<$models.Post> | null) {
+    return this.$addChild('posts', initialData) as PostViewModel
+  }
+  
+  
   public addToEvents(initialData?: DeepPartial<$models.Event> | null) {
     return this.$addChild('events', initialData) as EventViewModel
   }
@@ -173,6 +179,7 @@ export interface PostViewModel extends $models.Post {
   postId: number | null;
   title: string | null;
   body: string | null;
+  groupId: number | null;
   get group(): GroupViewModel | null;
   set group(value: GroupViewModel | $models.Group | null);
   get comments(): ViewModelCollection<CommentViewModel, $models.Comment>;
@@ -187,6 +194,11 @@ export interface PostViewModel extends $models.Post {
   createdOn: Date | null;
 }
 export class PostViewModel extends ViewModel<$models.Post, $apiClients.PostApiClient, number> implements $models.Post  {
+  
+  
+  public addToComments(initialData?: DeepPartial<$models.Comment> | null) {
+    return this.$addChild('comments', initialData) as CommentViewModel
+  }
   
   constructor(initialData?: DeepPartial<$models.Post> | null) {
     super($metadata.Post, new $apiClients.PostApiClient(), initialData)

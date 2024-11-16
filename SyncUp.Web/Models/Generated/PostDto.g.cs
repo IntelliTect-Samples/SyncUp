@@ -15,6 +15,7 @@ namespace SyncUp.Web.Models
         private long? _PostId;
         private string _Title;
         private string _Body;
+        private long? _GroupId;
 
         public long? PostId
         {
@@ -31,6 +32,11 @@ namespace SyncUp.Web.Models
             get => _Body;
             set { _Body = value; Changed(nameof(Body)); }
         }
+        public long? GroupId
+        {
+            get => _GroupId;
+            set { _GroupId = value; Changed(nameof(GroupId)); }
+        }
 
         /// <summary>
         /// Map from the current DTO instance to the domain object.
@@ -43,6 +49,7 @@ namespace SyncUp.Web.Models
 
             if (ShouldMapTo(nameof(Title))) entity.Title = Title;
             if (ShouldMapTo(nameof(Body))) entity.Body = Body;
+            if (ShouldMapTo(nameof(GroupId))) entity.GroupId = (GroupId ?? entity.GroupId);
         }
 
         /// <summary>
@@ -60,6 +67,7 @@ namespace SyncUp.Web.Models
             };
 
             if (OnUpdate(entity, context)) return entity;
+            if (ShouldMapTo(nameof(GroupId))) entity.GroupId = (GroupId ?? entity.GroupId);
 
             return entity;
         }
@@ -72,6 +80,7 @@ namespace SyncUp.Web.Models
         public long? PostId { get; set; }
         public string Title { get; set; }
         public string Body { get; set; }
+        public long? GroupId { get; set; }
         public string ModifiedById { get; set; }
         public System.DateTimeOffset? ModifiedOn { get; set; }
         public string CreatedById { get; set; }
@@ -92,6 +101,7 @@ namespace SyncUp.Web.Models
             this.PostId = obj.PostId;
             this.Title = obj.Title;
             this.Body = obj.Body;
+            this.GroupId = obj.GroupId;
             this.ModifiedById = obj.ModifiedById;
             this.ModifiedOn = obj.ModifiedOn;
             this.CreatedById = obj.CreatedById;
