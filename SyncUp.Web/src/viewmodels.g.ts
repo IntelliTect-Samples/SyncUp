@@ -97,12 +97,48 @@ export class CommentListViewModel extends ListViewModel<$models.Comment, $apiCli
 }
 
 
+export interface EventViewModel extends $models.Event {
+  eventId: number | null;
+  name: string | null;
+  description: string | null;
+  time: Date | null;
+  location: string | null;
+  groupId: number | null;
+  get group(): GroupViewModel | null;
+  set group(value: GroupViewModel | $models.Group | null);
+  get modifiedBy(): UserViewModel | null;
+  set modifiedBy(value: UserViewModel | $models.User | null);
+  modifiedById: string | null;
+  modifiedOn: Date | null;
+  get createdBy(): UserViewModel | null;
+  set createdBy(value: UserViewModel | $models.User | null);
+  createdById: string | null;
+  createdOn: Date | null;
+}
+export class EventViewModel extends ViewModel<$models.Event, $apiClients.EventApiClient, number> implements $models.Event  {
+  
+  constructor(initialData?: DeepPartial<$models.Event> | null) {
+    super($metadata.Event, new $apiClients.EventApiClient(), initialData)
+  }
+}
+defineProps(EventViewModel, $metadata.Event)
+
+export class EventListViewModel extends ListViewModel<$models.Event, $apiClients.EventApiClient, EventViewModel> {
+  
+  constructor() {
+    super($metadata.Event, new $apiClients.EventApiClient())
+  }
+}
+
+
 export interface GroupViewModel extends $models.Group {
   groupId: number | null;
   name: string | null;
   subTitle: string | null;
   get posts(): ViewModelCollection<PostViewModel, $models.Post>;
   set posts(value: (PostViewModel | $models.Post)[] | null);
+  get events(): ViewModelCollection<EventViewModel, $models.Event>;
+  set events(value: (EventViewModel | $models.Event)[] | null);
   get modifiedBy(): UserViewModel | null;
   set modifiedBy(value: UserViewModel | $models.User | null);
   modifiedById: string | null;
@@ -113,6 +149,11 @@ export interface GroupViewModel extends $models.Group {
   createdOn: Date | null;
 }
 export class GroupViewModel extends ViewModel<$models.Group, $apiClients.GroupApiClient, number> implements $models.Group  {
+  
+  
+  public addToEvents(initialData?: DeepPartial<$models.Event> | null) {
+    return this.$addChild('events', initialData) as EventViewModel
+  }
   
   constructor(initialData?: DeepPartial<$models.Group> | null) {
     super($metadata.Group, new $apiClients.GroupApiClient(), initialData)
@@ -372,6 +413,7 @@ const viewModelTypeLookup = ViewModel.typeLookup = {
   AuditLog: AuditLogViewModel,
   AuditLogProperty: AuditLogPropertyViewModel,
   Comment: CommentViewModel,
+  Event: EventViewModel,
   Group: GroupViewModel,
   Post: PostViewModel,
   Role: RoleViewModel,
@@ -383,6 +425,7 @@ const listViewModelTypeLookup = ListViewModel.typeLookup = {
   AuditLog: AuditLogListViewModel,
   AuditLogProperty: AuditLogPropertyListViewModel,
   Comment: CommentListViewModel,
+  Event: EventListViewModel,
   Group: GroupListViewModel,
   Post: PostListViewModel,
   Role: RoleListViewModel,

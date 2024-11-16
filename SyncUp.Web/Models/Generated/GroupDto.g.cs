@@ -77,6 +77,7 @@ namespace SyncUp.Web.Models
         public string CreatedById { get; set; }
         public System.DateTimeOffset? CreatedOn { get; set; }
         public System.Collections.Generic.ICollection<SyncUp.Web.Models.PostResponse> Posts { get; set; }
+        public System.Collections.Generic.ICollection<SyncUp.Web.Models.EventResponse> Events { get; set; }
         public SyncUp.Web.Models.UserResponse ModifiedBy { get; set; }
         public SyncUp.Web.Models.UserResponse CreatedBy { get; set; }
 
@@ -105,6 +106,18 @@ namespace SyncUp.Web.Models
             else if (propValPosts == null && tree?[nameof(this.Posts)] != null)
             {
                 this.Posts = new PostResponse[0];
+            }
+
+            var propValEvents = obj.Events;
+            if (propValEvents != null && (tree == null || tree[nameof(this.Events)] != null))
+            {
+                this.Events = propValEvents
+                    .OrderBy(f => f.Name)
+                    .Select(f => f.MapToDto<SyncUp.Data.Models.Event, EventResponse>(context, tree?[nameof(this.Events)])).ToList();
+            }
+            else if (propValEvents == null && tree?[nameof(this.Events)] != null)
+            {
+                this.Events = new EventResponse[0];
             }
 
             if (tree == null || tree[nameof(this.ModifiedBy)] != null)

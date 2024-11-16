@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.ValueGeneration;
 using System.Linq.Expressions;
 using System.Security.Cryptography;
+using SyncUp.Data.Models;
 
 namespace IntelliTect.SyncUp.Data;
 
@@ -66,6 +67,7 @@ public class AppDbContext
 
     public DbSet<Group> Groups => Set<Group>();
     public DbSet<Post> Posts => Set<Post>();
+    public DbSet<Event> Events => Set<Event>();
     public DbSet<Comment> Comments => Set<Comment>();
 
     public DbSet<AuditLog> AuditLogs => Set<AuditLog>();
