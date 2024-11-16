@@ -58,12 +58,6 @@
         <v-divider></v-divider>
         <v-list-item
           v-if="$can(Permission.UserAdmin)"
-          to="/Group"
-          prepend-icon="fa fa-users"
-          title="Group"
-        />
-        <v-list-item
-          v-if="$can(Permission.UserAdmin)"
           to="/admin/User"
           prepend-icon="fa fa-users"
           title="Users"

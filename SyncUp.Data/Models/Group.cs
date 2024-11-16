@@ -1,4 +1,4 @@
-﻿namespace IntelliTect.SyncUp.Data.Models;
+namespace IntelliTect.SyncUp.Data.Models;
 
 public class Group : TenantedBase
 {
@@ -6,12 +6,17 @@ public class Group : TenantedBase
 
     [MaxLength(500)]
     [ListText]
+    [Required]
     public required string Name { get; set; }
 
-    [MaxLength(500)]
-    public required string SubTitle { get; set; }
+    // TODO: Allow uploading images
+    [Required]
+    public required string ImageUrl { get; set; }
 
-    public ICollection<Post> Posts { get; set; }
+    [Required]
+    public required string Description { get; set; }
 
-    public ICollection<Event> Events { get; set; }
+    public ICollection<Post> Posts { get; set; } = [];
+
+    public ICollection<Event> Events { get; set; } = [];
 }

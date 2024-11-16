@@ -14,7 +14,8 @@ namespace SyncUp.Web.Models
 
         private long? _GroupId;
         private string _Name;
-        private string _SubTitle;
+        private string _ImageUrl;
+        private string _Description;
 
         public long? GroupId
         {
@@ -26,10 +27,15 @@ namespace SyncUp.Web.Models
             get => _Name;
             set { _Name = value; Changed(nameof(Name)); }
         }
-        public string SubTitle
+        public string ImageUrl
         {
-            get => _SubTitle;
-            set { _SubTitle = value; Changed(nameof(SubTitle)); }
+            get => _ImageUrl;
+            set { _ImageUrl = value; Changed(nameof(ImageUrl)); }
+        }
+        public string Description
+        {
+            get => _Description;
+            set { _Description = value; Changed(nameof(Description)); }
         }
 
         /// <summary>
@@ -42,7 +48,8 @@ namespace SyncUp.Web.Models
             if (OnUpdate(entity, context)) return;
 
             if (ShouldMapTo(nameof(Name))) entity.Name = Name;
-            if (ShouldMapTo(nameof(SubTitle))) entity.SubTitle = SubTitle;
+            if (ShouldMapTo(nameof(ImageUrl))) entity.ImageUrl = ImageUrl;
+            if (ShouldMapTo(nameof(Description))) entity.Description = Description;
         }
 
         /// <summary>
@@ -56,7 +63,8 @@ namespace SyncUp.Web.Models
             {
                 GroupId = (GroupId ?? default),
                 Name = Name,
-                SubTitle = SubTitle,
+                ImageUrl = ImageUrl,
+                Description = Description,
             };
 
             if (OnUpdate(entity, context)) return entity;
@@ -71,7 +79,8 @@ namespace SyncUp.Web.Models
 
         public long? GroupId { get; set; }
         public string Name { get; set; }
-        public string SubTitle { get; set; }
+        public string ImageUrl { get; set; }
+        public string Description { get; set; }
         public string ModifiedById { get; set; }
         public System.DateTimeOffset? ModifiedOn { get; set; }
         public string CreatedById { get; set; }
@@ -91,7 +100,8 @@ namespace SyncUp.Web.Models
 
             this.GroupId = obj.GroupId;
             this.Name = obj.Name;
-            this.SubTitle = obj.SubTitle;
+            this.ImageUrl = obj.ImageUrl;
+            this.Description = obj.Description;
             this.ModifiedById = obj.ModifiedById;
             this.ModifiedOn = obj.ModifiedOn;
             this.CreatedById = obj.CreatedById;

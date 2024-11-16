@@ -16,7 +16,7 @@
       </div>
     </v-card>
 
-    <v-card class="ma-3">
+    <v-card class="mt-3">
       <v-row class="ma-1">
         <v-col cols="auto">
           <v-chip v-if="badge1Text" class="mr-1" size="small" color="primary">

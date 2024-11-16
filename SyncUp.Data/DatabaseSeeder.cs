@@ -89,7 +89,8 @@ public class DatabaseSeeder(AppDbContext db)
             db.Groups.AddRange(new()
             {
                 Name = "Spokane",
-                SubTitle = "Generic group for the Spokane area",
+                Description = "Generic group for the Spokane area",
+                ImageUrl = "https://wallpapers.com/images/hd/scenic-view-of-spokane-city-at-dusk-dqhl672fwbv622gt.jpg",
                 Posts = [
                     new()
                     {
@@ -113,7 +114,8 @@ public class DatabaseSeeder(AppDbContext db)
             new()
             {
                 Name = "Seattle",
-                SubTitle = "Generic group for the Seattle area",
+                Description = "Generic group for the Seattle area",
+                ImageUrl = "https://i.pinimg.com/736x/5d/d2/38/5dd238ea8ac9ee41002b8037417ee5de.jpg",
                 Posts = [
                     new()
                     {
@@ -124,18 +126,21 @@ public class DatabaseSeeder(AppDbContext db)
             new()
             {
                 Name = "Gym Girlies",
-                SubTitle = "Everything fitness and gym related!",
+                ImageUrl = "https://www.foundationalconcepts.com/wp-content/uploads/2016/09/meditation.jpg",
+                Description = "Everything fitness and gym related!",
 
             },
             new()
             {
                 Name = "Soccer Moms",
-                SubTitle = "Made for the busy mom life"
+                ImageUrl = "https://rare-gallery.com/uploads/posts/521319-soccer.jpg",
+                Description = "Made for the busy mom life"
             },
             new()
             {
                 Name = "DIY Divas",
-                SubTitle = "Share DIY tips and find new inspiration",
+                ImageUrl = "https://wallpapersmug.com/download/1600x900/128b37/wolf-disco-jockey-art.jpg",
+                Description = "Share DIY tips and find new inspiration",
                 Posts = [
                     new()
                     {

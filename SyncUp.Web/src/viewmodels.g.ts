@@ -135,7 +135,8 @@ export class EventListViewModel extends ListViewModel<$models.Event, $apiClients
 export interface GroupViewModel extends $models.Group {
   groupId: number | null;
   name: string | null;
-  subTitle: string | null;
+  imageUrl: string | null;
+  description: string | null;
   get posts(): ViewModelCollection<PostViewModel, $models.Post>;
   set posts(value: (PostViewModel | $models.Post)[] | null);
   get events(): ViewModelCollection<EventViewModel, $models.Event>;

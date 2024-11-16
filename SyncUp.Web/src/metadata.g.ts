@@ -515,14 +515,22 @@ export const Group = domain.types.Group = {
         maxLength: val => !val || val.length <= 500 || "Name may not be more than 500 characters.",
       }
     },
-    subTitle: {
-      name: "subTitle",
-      displayName: "Sub Title",
+    imageUrl: {
+      name: "imageUrl",
+      displayName: "Image Url",
       type: "string",
       role: "value",
       rules: {
-        required: val => (val != null && val !== '') || "Sub Title is required.",
-        maxLength: val => !val || val.length <= 500 || "Sub Title may not be more than 500 characters.",
+        required: val => (val != null && val !== '') || "Image Url is required.",
+      }
+    },
+    description: {
+      name: "description",
+      displayName: "Description",
+      type: "string",
+      role: "value",
+      rules: {
+        required: val => (val != null && val !== '') || "Description is required.",
       }
     },
     posts: {

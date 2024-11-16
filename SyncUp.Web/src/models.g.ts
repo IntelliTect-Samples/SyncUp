@@ -165,7 +165,8 @@ export class Event {
 export interface Group extends Model<typeof metadata.Group> {
   groupId: number | null
   name: string | null
-  subTitle: string | null
+  imageUrl: string | null
+  description: string | null
   posts: Post[] | null
   events: Event[] | null
   modifiedBy: User | null
