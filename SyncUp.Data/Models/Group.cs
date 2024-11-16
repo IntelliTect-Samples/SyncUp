@@ -5,6 +5,7 @@ public class Group : TenantedBase
     public long GroupId { get; init; }
 
     [MaxLength(500)]
+    [ListText]
     public required string Name { get; set; }
 
     [MaxLength(500)]

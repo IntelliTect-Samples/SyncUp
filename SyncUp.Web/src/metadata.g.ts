@@ -242,7 +242,7 @@ export const AuditLogProperty = domain.types.AuditLogProperty = {
 export const Comment = domain.types.Comment = {
   name: "Comment" as const,
   displayName: "Comment",
-  get displayProp() { return this.props.commentId }, 
+  get displayProp() { return this.props.body }, 
   type: "model",
   controllerRoute: "Comment",
   get keyProp() { return this.props.commentId }, 
@@ -606,7 +606,7 @@ export const Group = domain.types.Group = {
 export const Post = domain.types.Post = {
   name: "Post" as const,
   displayName: "Post",
-  get displayProp() { return this.props.postId }, 
+  get displayProp() { return this.props.title }, 
   type: "model",
   controllerRoute: "Post",
   get keyProp() { return this.props.postId }, 
