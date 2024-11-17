@@ -43,7 +43,7 @@
       </v-row>
       <v-row>
         <v-col>
-          <UploadImage v-model="tenant.bannerImage" />
+          <UploadImage v-model="tenant.bannerImage" @changed="tenant.$save()" />
         </v-col>
       </v-row>
     </c-loader-status>
