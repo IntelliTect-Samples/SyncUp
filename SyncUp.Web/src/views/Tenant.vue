@@ -43,7 +43,13 @@
       </v-row>
       <v-row>
         <v-col>
-          <UploadImage v-model="tenant.bannerImage" @changed="tenant.$save()" />
+          <UploadImage
+            v-model="tenant.bannerImage"
+            :height="100"
+            :width="350"
+            cover
+            @changed="tenant.$save()"
+          />
         </v-col>
       </v-row>
     </c-loader-status>

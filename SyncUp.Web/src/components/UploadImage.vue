@@ -1,5 +1,5 @@
 <template>
-  <div style="width: 300px">
+  <div>
     <v-file-input
       id="file"
       v-model="file"
@@ -8,12 +8,18 @@
     />
     <v-hover v-slot="{ isHovering, props }">
       <div v-bind="props">
-        <v-img :width="300" cover :src="imageUrl">
+        <v-img
+          :cover="cover"
+          :src="imageUrl"
+          :max-width="width"
+          :max-height="height"
+          lazy-src="/placeholder.svg"
+        >
           <v-overlay
             v-if="!busy && !errorMessage"
             :model-value="!!isHovering"
             class="align-center justify-center"
-            scrim="#036358"
+            :scrim="image?.color || '#036358'"
             contained
           >
             <div v-if="!busy">
@@ -21,23 +27,6 @@
               <v-btn @click="imageLink">Link</v-btn>
             </div>
           </v-overlay>
-          <v-row style="height: 100%" class="text-center" align="center">
-            <v-col>
-              <v-progress-circular
-                v-if="busy"
-                indeterminate
-                :size="50"
-                color="primary"
-              />
-              <v-chip
-                v-if="errorMessage"
-                variant="elevated"
-                color="error"
-                size="default"
-                >{{ errorMessage }}</v-chip
-              >
-            </v-col>
-          </v-row>
         </v-img>
       </div>
     </v-hover>
@@ -49,6 +38,14 @@ import { Image } from "@/models.g";
 import { ImageServiceViewModel } from "@/viewmodels.g";
 
 const image = defineModel<Image | null>({ default: null });
+
+const props = defineProps<{
+  cover?: boolean;
+  height?: number;
+  width?: number;
+}>();
+
+//console.log(props.height);
 
 const emits = defineEmits(["changed"]);
 
@@ -85,7 +82,7 @@ const imageUrl = computed(() => {
   if (image.value?.imageUrl) {
     return image.value.imageUrl;
   }
-  return "https://www.pngkey.com/png/detail/233-2332677_image-500580-placeholder-transparent.png";
+  return "/placeholder.svg";
   //return URL.createObjectURL(file.value);
 });
 
