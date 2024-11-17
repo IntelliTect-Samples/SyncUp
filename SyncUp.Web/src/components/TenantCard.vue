@@ -18,7 +18,6 @@
 
 <script setup lang="ts">
 import { Tenant } from "@/models.g";
-import router from "@/router";
 import { TenantsServiceViewModel } from "@/viewmodels.g";
 
 const props = defineProps<{
