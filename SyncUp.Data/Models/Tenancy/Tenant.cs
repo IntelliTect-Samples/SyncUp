@@ -1,6 +1,7 @@
 using IntelliTect.SyncUp.Data.Services;
 using SyncUp.Data.Models;
 using System.ComponentModel;
+using File = IntelliTect.Coalesce.Models.File;
 
 namespace IntelliTect.SyncUp.Data.Models;
 
@@ -24,7 +25,41 @@ public class Tenant
     [ForeignKey(nameof(BannerImageId))]
     public Image? BannerImage { get; set; }
 
+    [Coalesce]
+    public async Task<ItemResult<Image>> UploadImageFile(AppDbContext db, [Inject] ImageService imageService, File file)
+    {
+        try
+        {
+            Image image = await imageService.AddImage(file);
 
+            BannerImageId = image.ImageId;
+            await db.SaveChangesAsync();
+
+            return image;
+        }
+        catch(Exception ex)
+        {
+            return ex.Message;
+        }
+    }
+
+    [Coalesce]
+    public async Task<ItemResult<Image>> UploadImageUrl(AppDbContext db, [Inject] ImageService imageService, string url)
+    {
+        try
+        {
+            Image image = await imageService.AddImage(url);
+
+            BannerImageId = image.ImageId;
+            await db.SaveChangesAsync();
+
+            return image;
+        }
+        catch (Exception ex)
+        {
+            return ex.Message;
+        }
+    }
 
     [DefaultDataSource]
     public class DefaultSource(CrudContext<AppDbContext> context) : AppDataSource<Tenant>(context)

@@ -6,28 +6,25 @@ using ImageMagick;
 using IntelliTect.SyncUp.Data;
 using SyncUp.Data.Models;
 using System.Net;
+using File = IntelliTect.Coalesce.Models.File;
 
 namespace IntelliTect.SyncUp.Data.Services;
-[Coalesce, Service]
 public class ImageService(AppDbContext db, IOptions<AzureBlobStorageOptions> options)
 {
-    [Coalesce]
-    [Execute(SecurityPermissionLevels.AllowAuthenticated, HttpMethod = IntelliTect.Coalesce.DataAnnotations.HttpMethod.Post)]
-    public async Task<ItemResult<Image>> Upload(byte[] content)
+    public async Task<Image> AddImage(string url)
     {
-        try
+        byte[] bytes = [];
+        using (var client = new HttpClient())
         {
-            return await AddImage(content);
+            bytes = await client.GetByteArrayAsync(url);
         }
-        catch (Exception ex)
-        {
-            return ex.Message;
-        }
+
+        return await AddImage(new File(bytes));
     }
 
-    public async Task<Image> AddImage(byte[] content)
+    public async Task<Image> AddImage(File file)
     {
-        if (content.Length == 0) throw new Exception("No image provided");
+        if (file.Length == 0 || file.Content is null) throw new Exception("No image provided");
         try
         {
             var imageId = Guid.NewGuid().ToString().Replace("-", "");
@@ -36,7 +33,7 @@ public class ImageService(AppDbContext db, IOptions<AzureBlobStorageOptions> opt
 
             try
             {
-                await cloudBlob.UploadAsync(new MemoryStream(content), new BlobUploadOptions
+                await cloudBlob.UploadAsync(file.Content, new BlobUploadOptions
                 {
                     Conditions = new() { IfNoneMatch = Azure.ETag.All }
                 });
@@ -46,7 +43,11 @@ public class ImageService(AppDbContext db, IOptions<AzureBlobStorageOptions> opt
                 throw new Exception("An Error occurred while trying to save the specified image to blob storage", ex);
 
             }
-            var imageScan = new MagickImage(content);
+
+            // Reset stream position to 0 before reusing
+            file.Content.Position = 0;
+
+            var imageScan = new MagickImage(file.Content);
             var colors = imageScan.Histogram();
 
             string dominantColor = colors.MaxBy(kvp => kvp.Value).Key.ToHexString();
@@ -66,31 +67,6 @@ public class ImageService(AppDbContext db, IOptions<AzureBlobStorageOptions> opt
         catch (Exception ex)
         {
             throw new Exception("Unable to upload image", ex);
-        }
-    }
-
-    [Coalesce]
-    [Execute(SecurityPermissionLevels.AllowAuthenticated, HttpMethod = IntelliTect.Coalesce.DataAnnotations.HttpMethod.Post)]
-    public async Task<ItemResult<Image>> UploadFromUrl(string url)
-    {
-        // Download the file get a byte array
-        try
-        {
-            return await AddImage(url);
-        }
-        catch
-        {
-            // TODO: Log this
-            return $"An Error occurred while trying to download the specified image.";
-        }
-    }
-
-    public async Task<Image> AddImage(string url)
-    {
-        using (var client = new HttpClient())
-        {
-            var bytes = await client.GetByteArrayAsync(url);
-            return await AddImage(bytes);
         }
     }
 

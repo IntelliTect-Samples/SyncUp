@@ -48,6 +48,7 @@
             :height="100"
             :width="350"
             cover
+            :view-model="tenant"
             @changed="tenant.$save()"
           />
         </v-col>

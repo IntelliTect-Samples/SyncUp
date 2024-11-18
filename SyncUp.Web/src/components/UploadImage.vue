@@ -6,7 +6,8 @@
       accept="image/*"
       style="display: none"
     />
-    <v-hover v-slot="{ isHovering, props }">
+    <v-skeleton-loader v-if="busy" type="image" width="300" />
+    <v-hover v-else v-slot="{ isHovering, props }">
       <div v-bind="props">
         <v-img
           :cover="cover"
@@ -35,7 +36,7 @@
 
 <script setup lang="ts">
 import { Image } from "@/models.g";
-import { ImageServiceViewModel } from "@/viewmodels.g";
+import { TenantViewModel } from "@/viewmodels.g";
 
 const image = defineModel<Image | null>({ default: null });
 
@@ -43,24 +44,21 @@ const props = defineProps<{
   cover?: boolean;
   height?: number;
   width?: number;
+  viewModel: TenantViewModel; //| GroupViewModel; // Uncomment when implemented on the Group Model as well.
 }>();
-
-//console.log(props.height);
 
 const emits = defineEmits(["changed"]);
 
 const file = ref<File | null>(null);
-const imageService = new ImageServiceViewModel();
 const busy = ref(false);
 const errorMessage = ref<string | null>(null);
 
 watch(file, async (value) => {
   if (value) {
     busy.value = true;
-    const bytes = await fileToByteArray(value);
 
-    imageService
-      .upload(bytes)
+    props.viewModel
+      .uploadImageFile(value)
       .then((result) => {
         if (result) {
           busy.value = false;
@@ -97,29 +95,12 @@ function imageClick() {
   };
 }
 
-async function fileToByteArray(file: File): Promise<Uint8Array> {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const arrayBuffer = event.target?.result as ArrayBuffer;
-      const byteArray = new Uint8Array(arrayBuffer);
-      resolve(byteArray);
-    };
-
-    reader.onerror = (error) => {
-      reject(error);
-    };
-
-    reader.readAsArrayBuffer(file);
-  });
-}
-
 async function imageLink() {
   const url = prompt("Enter the URL of the image");
   if (url) {
     busy.value = true;
-    imageService
-      .uploadFromUrl(url)
+    props.viewModel
+      .uploadImageUrl(url)
       .then((result) => {
         busy.value = false;
         if (result) {

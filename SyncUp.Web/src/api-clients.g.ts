@@ -66,6 +66,24 @@ export class RoleApiClient extends ModelApiClient<$models.Role> {
 
 export class TenantApiClient extends ModelApiClient<$models.Tenant> {
   constructor() { super($metadata.Tenant) }
+  public uploadImageFile(id: string | null, file: File | null, $config?: AxiosRequestConfig): AxiosPromise<ItemResult<$models.Image>> {
+    const $method = this.$metadata.methods.uploadImageFile
+    const $params =  {
+      id,
+      file,
+    }
+    return this.$invoke($method, $params, $config)
+  }
+  
+  public uploadImageUrl(id: string | null, url: string | null, $config?: AxiosRequestConfig): AxiosPromise<ItemResult<$models.Image>> {
+    const $method = this.$metadata.methods.uploadImageUrl
+    const $params =  {
+      id,
+      url,
+    }
+    return this.$invoke($method, $params, $config)
+  }
+  
   public create(name: string | null, adminEmail: string | null, $config?: AxiosRequestConfig): AxiosPromise<ItemResult<void>> {
     const $method = this.$metadata.methods.create
     const $params =  {
@@ -154,27 +172,6 @@ export class UserApiClient extends ModelApiClient<$models.User> {
 
 export class UserRoleApiClient extends ModelApiClient<$models.UserRole> {
   constructor() { super($metadata.UserRole) }
-}
-
-
-export class ImageServiceApiClient extends ServiceApiClient<typeof $metadata.ImageService> {
-  constructor() { super($metadata.ImageService) }
-  public upload(content: string | Uint8Array | null, $config?: AxiosRequestConfig): AxiosPromise<ItemResult<$models.Image>> {
-    const $method = this.$metadata.methods.upload
-    const $params =  {
-      content,
-    }
-    return this.$invoke($method, $params, $config)
-  }
-  
-  public uploadFromUrl(url: string | null, $config?: AxiosRequestConfig): AxiosPromise<ItemResult<$models.Image>> {
-    const $method = this.$metadata.methods.uploadFromUrl
-    const $params =  {
-      url,
-    }
-    return this.$invoke($method, $params, $config)
-  }
-  
 }
 
 
