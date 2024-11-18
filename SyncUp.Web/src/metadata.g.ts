@@ -1250,6 +1250,74 @@ export const Tenant = domain.types.Tenant = {
     },
   },
   methods: {
+    uploadImageFile: {
+      name: "uploadImageFile",
+      displayName: "Upload Image File",
+      transportType: "item",
+      httpMethod: "POST",
+      params: {
+        id: {
+          name: "id",
+          displayName: "Primary Key",
+          type: "string",
+          role: "value",
+          get source() { return (domain.types.Tenant as ModelType & { name: "Tenant" }).props.tenantId },
+          rules: {
+            required: val => (val != null && val !== '') || "Primary Key is required.",
+          }
+        },
+        file: {
+          name: "file",
+          displayName: "File",
+          type: "file",
+          role: "value",
+          rules: {
+            required: val => val != null || "File is required.",
+          }
+        },
+      },
+      return: {
+        name: "$return",
+        displayName: "Result",
+        type: "model",
+        get typeDef() { return (domain.types.Image as ModelType & { name: "Image" }) },
+        role: "value",
+      },
+    },
+    uploadImageUrl: {
+      name: "uploadImageUrl",
+      displayName: "Upload Image Url",
+      transportType: "item",
+      httpMethod: "POST",
+      params: {
+        id: {
+          name: "id",
+          displayName: "Primary Key",
+          type: "string",
+          role: "value",
+          get source() { return (domain.types.Tenant as ModelType & { name: "Tenant" }).props.tenantId },
+          rules: {
+            required: val => (val != null && val !== '') || "Primary Key is required.",
+          }
+        },
+        url: {
+          name: "url",
+          displayName: "Url",
+          type: "string",
+          role: "value",
+          rules: {
+            required: val => (val != null && val !== '') || "Url is required.",
+          }
+        },
+      },
+      return: {
+        name: "$return",
+        displayName: "Result",
+        type: "model",
+        get typeDef() { return (domain.types.Image as ModelType & { name: "Image" }) },
+        role: "value",
+      },
+    },
     create: {
       name: "create",
       displayName: "Create",
@@ -1800,62 +1868,6 @@ export const UserInfo = domain.types.UserInfo = {
     },
   },
 }
-export const ImageService = domain.services.ImageService = {
-  name: "ImageService",
-  displayName: "Image Service",
-  type: "service",
-  controllerRoute: "ImageService",
-  methods: {
-    upload: {
-      name: "upload",
-      displayName: "Upload",
-      transportType: "item",
-      httpMethod: "POST",
-      params: {
-        content: {
-          name: "content",
-          displayName: "Content",
-          type: "binary",
-          role: "value",
-          rules: {
-            required: val => val != null || "Content is required.",
-          }
-        },
-      },
-      return: {
-        name: "$return",
-        displayName: "Result",
-        type: "model",
-        get typeDef() { return (domain.types.Image as ModelType & { name: "Image" }) },
-        role: "value",
-      },
-    },
-    uploadFromUrl: {
-      name: "uploadFromUrl",
-      displayName: "Upload From Url",
-      transportType: "item",
-      httpMethod: "POST",
-      params: {
-        url: {
-          name: "url",
-          displayName: "Url",
-          type: "string",
-          role: "value",
-          rules: {
-            required: val => (val != null && val !== '') || "Url is required.",
-          }
-        },
-      },
-      return: {
-        name: "$return",
-        displayName: "Result",
-        type: "model",
-        get typeDef() { return (domain.types.Image as ModelType & { name: "Image" }) },
-        role: "value",
-      },
-    },
-  },
-}
 export const SecurityService = domain.services.SecurityService = {
   name: "SecurityService",
   displayName: "Security Service",
@@ -1953,7 +1965,6 @@ interface AppDomain extends Domain {
     UserRole: typeof UserRole
   }
   services: {
-    ImageService: typeof ImageService
     SecurityService: typeof SecurityService
     TenantsService: typeof TenantsService
   }

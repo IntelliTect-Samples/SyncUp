@@ -87,6 +87,182 @@ namespace SyncUp.Web.Api
         // Methods from data class exposed through API Controller.
 
         /// <summary>
+        /// Method: UploadImageFile
+        /// </summary>
+        [HttpPost("UploadImageFile")]
+        [Authorize]
+        [Consumes("application/x-www-form-urlencoded", "multipart/form-data")]
+        public virtual async Task<ItemResult<ImageResponse>> UploadImageFile(
+            [FromServices] IDataSourceFactory dataSourceFactory,
+            [FromServices] IntelliTect.SyncUp.Data.Services.ImageService imageService,
+            [FromForm(Name = "id")] string id,
+            Microsoft.AspNetCore.Http.IFormFile file)
+        {
+            var _params = new
+            {
+                Id = id,
+                File = file == null ? null : new IntelliTect.Coalesce.Models.File { Name = file.FileName, ContentType = file.ContentType, Length = file.Length, Content = file.OpenReadStream() }
+            };
+
+            var dataSource = dataSourceFactory.GetDataSource<IntelliTect.SyncUp.Data.Models.Tenant, IntelliTect.SyncUp.Data.Models.Tenant>("Default");
+            var itemResult = await dataSource.GetItemAsync(_params.Id, new DataSourceParameters());
+            if (!itemResult.WasSuccessful)
+            {
+                return new ItemResult<ImageResponse>(itemResult);
+            }
+            var item = itemResult.Object;
+            if (Context.Options.ValidateAttributesForMethods)
+            {
+                var _validationResult = ItemResult.FromParameterValidation(
+                    GeneratedForClassViewModel!.MethodByName("UploadImageFile"), _params, HttpContext.RequestServices);
+                if (!_validationResult.WasSuccessful) return new ItemResult<ImageResponse>(_validationResult);
+            }
+
+            IncludeTree includeTree = null;
+            var _mappingContext = new MappingContext(Context);
+            var _methodResult = await item.UploadImageFile(
+                Db,
+                imageService,
+                _params.File
+            );
+            var _result = new ItemResult<ImageResponse>(_methodResult);
+            _result.Object = Mapper.MapToDto<SyncUp.Data.Models.Image, ImageResponse>(_methodResult.Object, _mappingContext, includeTree ?? _methodResult.IncludeTree);
+            return _result;
+        }
+
+        public class UploadImageFileParameters
+        {
+            public string Id { get; set; }
+            public IntelliTect.Coalesce.Models.FileParameter File { get; set; }
+        }
+
+        /// <summary>
+        /// Method: UploadImageFile
+        /// </summary>
+        [HttpPost("UploadImageFile")]
+        [Authorize]
+        [Consumes("application/json")]
+        public virtual async Task<ItemResult<ImageResponse>> UploadImageFile(
+            [FromServices] IDataSourceFactory dataSourceFactory,
+            [FromServices] IntelliTect.SyncUp.Data.Services.ImageService imageService,
+            [FromBody] UploadImageFileParameters _params
+        )
+        {
+            var dataSource = dataSourceFactory.GetDataSource<IntelliTect.SyncUp.Data.Models.Tenant, IntelliTect.SyncUp.Data.Models.Tenant>("Default");
+            var itemResult = await dataSource.GetItemAsync(_params.Id, new DataSourceParameters());
+            if (!itemResult.WasSuccessful)
+            {
+                return new ItemResult<ImageResponse>(itemResult);
+            }
+            var item = itemResult.Object;
+            if (Context.Options.ValidateAttributesForMethods)
+            {
+                var _validationResult = ItemResult.FromParameterValidation(
+                    GeneratedForClassViewModel!.MethodByName("UploadImageFile"), _params, HttpContext.RequestServices);
+                if (!_validationResult.WasSuccessful) return new ItemResult<ImageResponse>(_validationResult);
+            }
+
+            IncludeTree includeTree = null;
+            var _mappingContext = new MappingContext(Context);
+            var _methodResult = await item.UploadImageFile(
+                Db,
+                imageService,
+                _params.File
+            );
+            var _result = new ItemResult<ImageResponse>(_methodResult);
+            _result.Object = Mapper.MapToDto<SyncUp.Data.Models.Image, ImageResponse>(_methodResult.Object, _mappingContext, includeTree ?? _methodResult.IncludeTree);
+            return _result;
+        }
+
+        /// <summary>
+        /// Method: UploadImageUrl
+        /// </summary>
+        [HttpPost("UploadImageUrl")]
+        [Authorize]
+        [Consumes("application/x-www-form-urlencoded", "multipart/form-data")]
+        public virtual async Task<ItemResult<ImageResponse>> UploadImageUrl(
+            [FromServices] IDataSourceFactory dataSourceFactory,
+            [FromServices] IntelliTect.SyncUp.Data.Services.ImageService imageService,
+            [FromForm(Name = "id")] string id,
+            [FromForm(Name = "url")] string url)
+        {
+            var _params = new
+            {
+                Id = id,
+                Url = url
+            };
+
+            var dataSource = dataSourceFactory.GetDataSource<IntelliTect.SyncUp.Data.Models.Tenant, IntelliTect.SyncUp.Data.Models.Tenant>("Default");
+            var itemResult = await dataSource.GetItemAsync(_params.Id, new DataSourceParameters());
+            if (!itemResult.WasSuccessful)
+            {
+                return new ItemResult<ImageResponse>(itemResult);
+            }
+            var item = itemResult.Object;
+            if (Context.Options.ValidateAttributesForMethods)
+            {
+                var _validationResult = ItemResult.FromParameterValidation(
+                    GeneratedForClassViewModel!.MethodByName("UploadImageUrl"), _params, HttpContext.RequestServices);
+                if (!_validationResult.WasSuccessful) return new ItemResult<ImageResponse>(_validationResult);
+            }
+
+            IncludeTree includeTree = null;
+            var _mappingContext = new MappingContext(Context);
+            var _methodResult = await item.UploadImageUrl(
+                Db,
+                imageService,
+                _params.Url
+            );
+            var _result = new ItemResult<ImageResponse>(_methodResult);
+            _result.Object = Mapper.MapToDto<SyncUp.Data.Models.Image, ImageResponse>(_methodResult.Object, _mappingContext, includeTree ?? _methodResult.IncludeTree);
+            return _result;
+        }
+
+        public class UploadImageUrlParameters
+        {
+            public string Id { get; set; }
+            public string Url { get; set; }
+        }
+
+        /// <summary>
+        /// Method: UploadImageUrl
+        /// </summary>
+        [HttpPost("UploadImageUrl")]
+        [Authorize]
+        [Consumes("application/json")]
+        public virtual async Task<ItemResult<ImageResponse>> UploadImageUrl(
+            [FromServices] IDataSourceFactory dataSourceFactory,
+            [FromServices] IntelliTect.SyncUp.Data.Services.ImageService imageService,
+            [FromBody] UploadImageUrlParameters _params
+        )
+        {
+            var dataSource = dataSourceFactory.GetDataSource<IntelliTect.SyncUp.Data.Models.Tenant, IntelliTect.SyncUp.Data.Models.Tenant>("Default");
+            var itemResult = await dataSource.GetItemAsync(_params.Id, new DataSourceParameters());
+            if (!itemResult.WasSuccessful)
+            {
+                return new ItemResult<ImageResponse>(itemResult);
+            }
+            var item = itemResult.Object;
+            if (Context.Options.ValidateAttributesForMethods)
+            {
+                var _validationResult = ItemResult.FromParameterValidation(
+                    GeneratedForClassViewModel!.MethodByName("UploadImageUrl"), _params, HttpContext.RequestServices);
+                if (!_validationResult.WasSuccessful) return new ItemResult<ImageResponse>(_validationResult);
+            }
+
+            IncludeTree includeTree = null;
+            var _mappingContext = new MappingContext(Context);
+            var _methodResult = await item.UploadImageUrl(
+                Db,
+                imageService,
+                _params.Url
+            );
+            var _result = new ItemResult<ImageResponse>(_methodResult);
+            _result.Object = Mapper.MapToDto<SyncUp.Data.Models.Image, ImageResponse>(_methodResult.Object, _mappingContext, includeTree ?? _methodResult.IncludeTree);
+            return _result;
+        }
+
+        /// <summary>
         /// Method: Create
         /// </summary>
         [HttpPost("Create")]

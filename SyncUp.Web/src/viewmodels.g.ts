@@ -348,6 +348,28 @@ export interface TenantViewModel extends $models.Tenant {
 export class TenantViewModel extends ViewModel<$models.Tenant, $apiClients.TenantApiClient, string> implements $models.Tenant  {
   static DataSources = $models.Tenant.DataSources;
   
+  public get uploadImageFile() {
+    const uploadImageFile = this.$apiClient.$makeCaller(
+      this.$metadata.methods.uploadImageFile,
+      (c, file: File | null) => c.uploadImageFile(this.$primaryKey, file),
+      () => ({file: null as File | null, }),
+      (c, args) => c.uploadImageFile(this.$primaryKey, args.file))
+    
+    Object.defineProperty(this, 'uploadImageFile', {value: uploadImageFile});
+    return uploadImageFile
+  }
+  
+  public get uploadImageUrl() {
+    const uploadImageUrl = this.$apiClient.$makeCaller(
+      this.$metadata.methods.uploadImageUrl,
+      (c, url: string | null) => c.uploadImageUrl(this.$primaryKey, url),
+      () => ({url: null as string | null, }),
+      (c, args) => c.uploadImageUrl(this.$primaryKey, args.url))
+    
+    Object.defineProperty(this, 'uploadImageUrl', {value: uploadImageUrl});
+    return uploadImageUrl
+  }
+  
   constructor(initialData?: DeepPartial<$models.Tenant> | null) {
     super($metadata.Tenant, new $apiClients.TenantApiClient(), initialData)
   }
@@ -530,36 +552,6 @@ export class UserRoleListViewModel extends ListViewModel<$models.UserRole, $apiC
 }
 
 
-export class ImageServiceViewModel extends ServiceViewModel<typeof $metadata.ImageService, $apiClients.ImageServiceApiClient> {
-  
-  public get upload() {
-    const upload = this.$apiClient.$makeCaller(
-      this.$metadata.methods.upload,
-      (c, content: string | Uint8Array | null) => c.upload(content),
-      () => ({content: null as string | Uint8Array | null, }),
-      (c, args) => c.upload(args.content))
-    
-    Object.defineProperty(this, 'upload', {value: upload});
-    return upload
-  }
-  
-  public get uploadFromUrl() {
-    const uploadFromUrl = this.$apiClient.$makeCaller(
-      this.$metadata.methods.uploadFromUrl,
-      (c, url: string | null) => c.uploadFromUrl(url),
-      () => ({url: null as string | null, }),
-      (c, args) => c.uploadFromUrl(args.url))
-    
-    Object.defineProperty(this, 'uploadFromUrl', {value: uploadFromUrl});
-    return uploadFromUrl
-  }
-  
-  constructor() {
-    super($metadata.ImageService, new $apiClients.ImageServiceApiClient())
-  }
-}
-
-
 export class SecurityServiceViewModel extends ServiceViewModel<typeof $metadata.SecurityService, $apiClients.SecurityServiceApiClient> {
   
   public get whoAmI() {
@@ -638,7 +630,6 @@ const listViewModelTypeLookup = ListViewModel.typeLookup = {
   UserRole: UserRoleListViewModel,
 }
 const serviceViewModelTypeLookup = ServiceViewModel.typeLookup = {
-  ImageService: ImageServiceViewModel,
   SecurityService: SecurityServiceViewModel,
   TenantsService: TenantsServiceViewModel,
 }
